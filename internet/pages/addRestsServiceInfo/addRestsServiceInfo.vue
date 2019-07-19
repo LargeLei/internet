@@ -58,13 +58,70 @@
 						</view>
 					</view>
 				</view>
-				<view class="target-info">
-					<view class="grace-items grace-noborder">
-						<view class="grace-label"><text>发生地点</text><text class="col-red">*</text></view>
+				<!-- 发生地点-->
+				<view class="target-info" v-show="safeShow">
+					<view class="grace-items">
+						<view class="grace-label"><text>发生地点</text></view>
 						<input type="text" class="input" v-model="place" placeholder="请输入发生地点"></input>
 					</view>
 				</view>
+				<!-- 金融监管-->
+				<view class="target-info" v-show="regulationShow">
+					<view class="grace-items grace-noborder">
+						<view class="grace-label"><text>涉案金额</text><text class="col-red">*</text></view>
+						<input type="text" class="input" v-model="regulationMoney" placeholder="请输入涉案金额"></input>
+					</view>
+				</view>
+				<!-- 生态环境-->
+				<view class="target-info" v-show="organShow">
+					<view class="grace-items">
+						<view class="grace-label"><text>污染类型</text><text class="col-red">*</text></view>
+						<view class="grace-form-r" v-if="pollution.length > 0">
+							<picker @change="pollutionChange" :value="pollutionIndex" range-key="pollutionName" :range="pollution" name="pollutionCode">
+								<text>{{pollution[pollutionIndex].pollutionName}}</text>
+							</picker>
+						</view>
+					</view>
+				</view>
+
+				<!-- 市场监管 -->
+				<view class="target-info" v-show="marketShow">
+					<view class="grace-items">
+						<view class="grace-label"><text>商品/服务类型</text><text class="col-red">*</text></view>
+						<view class="grace-form-r" v-if="serveType.length > 0">
+							<picker @change="bindServeTypeChange" :value="serveTypeIndex" range-key="serviceCame" :range="serveType" name="serveType">
+								<text>{{serveType[serveTypeIndex].serviceCame}}</text>
+							</picker>
+						</view>
+					</view>
+					<view class="grace-items">
+						<view class="grace-label"><text>二级分类</text></view>
+						<view class="grace-form-r" v-if="classifyOne.length > 0">
+							<picker @change="bindOneChange" :value="classifyOneIndex" range-key="serviceCame" :range="classifyOne" name="classifyOne">
+								<text>{{classifyOne[classifyOneIndex].serviceCame}}</text>
+							</picker>
+						</view>
+					</view>
+					<view class="grace-items grace-noborder">
+						<view class="grace-label"><text>三级分类</text></view>
+						<view class="grace-form-r" v-if="classifyTwo.length > 0">
+							<picker @change="bindTwoChange" :value="classifyTwoIndex" range-key="serviceCame" :range="classifyTwo" name="classifyTwo">
+								<text>{{classifyTwo[classifyTwoIndex].serviceCame}}</text>
+							</picker>
+						</view>
+					</view>
+					<view class="grace-items">
+						<view class="grace-label"><text>商品/服务名称</text><text class="col-red">*</text></view>
+						<input type="text" class="input" v-model="serveName" placeholder="请输入商品服务名称"></input>
+					</view>
+					<view class="grace-items">
+						<view class="grace-label"><text>品牌</text></view>
+						<input type="text" class="input" v-model="brand" placeholder="请输入品牌名称"></input>
+					</view>
+				</view>
+
 			</view>
+			<!--公共部分-->
 			<view class="suggest">
 				<view class="suggest-textarea">
 					<view class="suggest-list">
@@ -171,6 +228,7 @@
 				</view>
 			</view>
 		</graceMaskView>
+		<mpvue-city-picker :themeColor="themeColor" ref="mpvueCityPicker1" :pickerValueDefault="cityPickerValueDefault1" @onCancel="onCancel1" @onConfirm="onConfirm1"></mpvue-city-picker>
 	</view>
 </template>
 <script>
@@ -182,21 +240,24 @@
 	var id;
 	export default {
 		onLoad:function(option){
+			// console.log("============="+JSON.stringify(option))
 			_self = this;
 			id = option.id;
-			if(option.reportObject == 'undefined'){
+			if(option.reportObject == 'undefined' || option.reportObject == undefined){
 				this.getComponyInfo(option.reportObject);
 			}else{
 				this.reportObject = option.reportObject;
 			}
 			this.getUserinfo();
 			this.getProblemTypeList();
+			this.getServiceTypeList();
 			this.getProvinceList();
 			
 		},
 		onShow:function(option){
 			this.getUserinfo();
 			this.getProblemTypeList();
+			this.getServiceTypeList();
 			this.getProvinceList();
 		},
 		data() {
@@ -206,12 +267,12 @@
 				userCertificateNumber:'',
 				userAddress:'',
 				//举报对象
-				reportObject:'',
+				reportObject:'entName',
 				reportTerritory:'',
 				cptTypeIndex: 0,
-				cptType: [], //举报问题类型
+				cptType: [{'problemCode':'0','problemType':'请选择'}], //投诉问题类型
 				themeColor: '#3691B7', //属地颜色
-
+				
 				//省市区
 				province: [{'cityCode':'0','cityName':'请选择'}],
 				provinceIndex:0,
@@ -220,21 +281,41 @@
 				district : [{'cityCode':'0','cityName':'请选择'}],
 				districtIndex:0,
 				
-				pollution :[{'pollutionCode':'0','pollutionName':'请选择'}],
+				pollution :[{'pollutionCode':'0','pollutionName':'请选择'}],//污染类型
 				pollutionIndex:0,
-				
-				place:'',
+				//dom切换节点
+				problemCode:'',				
 								
+				//商品服务类型模块
+				serviceTypeList :[],
+				serveTypeIndex: 0,
+				serveType: [{'serviceCode':'0','serviceCame':'请选择'}],
+				classifyVal:'00000000',
+				classifyOneIndex:0,
+				classifyOne:[{'serviceCode':'0','serviceCame':'请选择'}],
+				classifyTwoIndex:0,
+				classifyTwo:[{'serviceCode':'0','serviceCame':'请选择'}],
+				serveName:'',
+				//品牌内容
+				brand:'',
+				patternIndex:0,
+				pattern:[],
+				orderNum:'JG56966262656263',
+				
+				//涉嫌金额
+				regulationMoney:'',
 				//上传
 				imgLists : [],
+				place:'',
 				reportDetail:'',
 				imgShow:false,
 				tapeShow:false,
-				//是否公开
+				
+				//公开
 				openIndex:0,
 				open:[
 					{'publicCode':'0','publicName':'公开'},
-					{'publicCode':'1','publicName':'不公开'}
+					{'publicCode':'1','publicName':'不公开'},
 				],
 				isPublic:0,
 				//是否匿名
@@ -248,6 +329,11 @@
 				searchKey: "",
 				successShow : false,
 				errorshow: false,
+				//显示 隐藏
+				safeShow:true,
+				regulationShow:false,
+				marketShow:false,
+				organShow:false
 			}
 		},
 		methods: {
@@ -282,13 +368,26 @@
 					}
 				);
 			},
+			//获取污染类型 TODO
+			pollutionList:function(){
+				_self.$qyc.interfaceRequest(
+					"/ebus/tsjb/admin/pollutiontype/getchildlistbyparentcode", {},
+					function(res) {
+						if(res.success){
+							var a=[{'pollutionCode':'0','pollutionType':'请选择'}];
+							_self.pollution = a.concat(res.data);
+						}
+					}
+				);
+			},
 			//获取举报问题类型
 			getProblemTypeList:function(){
 				_self.$qyc.interfaceRequest(
-					"/admin/problemtype/getChildListByParentCode", {
+					"/ebus/tsjb/admin/problemtype/getchildlistbyparentcode", {
 						"parentCode":"0000"
 					},
 					function(res) {
+						console.log(res)
 						if(res.success){
 							var a=[{'problemCode':'0','problemType':'请选择'}];
 							_self.cptType = a.concat(res.data);
@@ -296,15 +395,48 @@
 					}
 				);
 			},
-
-			//举报问题类型
+			//获取商品服务类型
+			getServiceTypeList:function(){
+				_self.$qyc.interfaceRequest(
+					"/ebus/tsjb/admin/servicetype/getchildlistbyparentcode", {
+						"parentCode":"000000"
+					},
+					function(res) {
+						if(res.success){
+							_self.serviceTypeList = res.data;
+							var a=[{'serviceCode':'0','serviceCame':'请选择'}];
+							_self.serveType = a.concat(res.data);
+						}
+					}
+				);
+			},
+			//举报问题类型    页面根据切换  TODO
 			bindTypeChange: function(e) {
 				this.cptTypeIndex = e.detail.value;
+				//根据选择，判断条件的显示隐藏
+				_self.problemCode = this.cptType[this.cptTypeIndex].problemCode;
+				if(_self.problemCode == '03'){//生态环境
+					this.regulationShow = false;
+					this.marketShow = false;
+					this.organShow = true;
+				}else if(_self.problemCode == '08'){//市场监管
+					this.regulationShow = false;
+					this.marketShow = true;
+					this.organShow = false;
+				}else if(_self.problemCode == '12'){//金融监管
+					this.regulationShow = true;
+					this.marketShow = false;
+					this.organShow = false;
+				}else{
+					this.regulationShow = false;
+					this.marketShow = false;
+					this.organShow = false;
+				}
 			},	
 			//省市区获取
 			getProvinceList : function(e){
 				_self.$qyc.interfaceRequest(
-					"/citycode/findCityInfoByParentCode", {
+					"/ebus/tsjb/citycode/findcityinfobyparentcode", {
 						parentCode: '000000'
 					},
 					function(res) {						
@@ -317,7 +449,7 @@
 				_self.provinceIndex=e.detail.value;
 				_self.complaintTerritory = _self.province[e.detail.value].cityName;
 				_self.$qyc.interfaceRequest(
-					"/citycode/findCityInfoByParentCode", {
+					"/ebus/tsjb/citycode/findcityinfobyparentcode", {
 						parentCode: _self.province[e.detail.value].cityCode
 					},
 					function(res) {
@@ -330,7 +462,7 @@
 				_self.cityIndex=e.detail.value;
 				_self.complaintTerritory = _self.complaintTerritory+_self.city[e.detail.value].cityName;
 				_self.$qyc.interfaceRequest(
-					"/citycode/findCityInfoByParentCode", {
+					"/ebus/tsjb/citycode/findcityinfobyparentcode", {
 						parentCode: _self.city[e.detail.value].cityCode
 					},
 					function(res) {
@@ -343,11 +475,57 @@
 				_self.reportTerritory = _self.reportTerritory+_self.district[e.detail.value].cityName;
 				_self.districtIndex=e.detail.value;
 			},
+			//商品服务类型模块
+			bindServeTypeChange: function(e) {
+				var val = _self.serveType[e.detail.value].serviceCode;
+				_self.$qyc.interfaceRequest(
+					"/ebus/tsjb/admin/servicetype/getchildlistbyparentcode", {
+						"parentCode":val
+					},
+					function(res) {
+						if(res.success){
+							var b=[{'serviceCode':'0','serviceCame':'请选择'}];
+							_self.classifyOne = b.concat(res.data);
+							_self.serveTypeIndex = e.detail.value;
+						}
+					}
+				);
+			},
+			bindOneChange: function(e) {
+				var val = _self.classifyOne[e.detail.value].serviceCode;
+				_self.$qyc.interfaceRequest(
+					"/ebus/tsjb/admin/servicetype/getchildlistbyparentcode", {
+						"parentCode":val
+					},
+					function(res) {
+						if(res.success){
+							var c=[{'serviceCode':'0','serviceCame':'请选择'}];
+							_self.classifyTwo = c.concat(res.data);
+							_self.classifyOneIndex = e.detail.value;
+						}
+					}
+				);
+				
+			},
+			bindTwoChange: function(e) {
+				var val = _self.classifyTwo[e.detail.value].serviceCode;
+				var fourArr = _self.serviceTypeList.filter(function (e) { 
+					return e.parentCode == val; 
+				});
+				var d=[{'serviceCode':'0','serviceCame':'请选择'}];
+				_self.classifyThree = d.concat(fourArr);
+				_self.classifyTwoIndex = e.detail.value;
+			},
+			//品牌内容
+			bindPatternChange: function(e) {
+				console.log(e);
+				this.patternIndex = e.detail.value;
+			},
 			//是否公开
 			bindOpenChange: function(e) {
 				_self.isPublic = _self.open[e.detail.value].publicCode;
 				this.openIndex = e.detail.value;
-			},	
+			},
 			//是否匿名
 			bindAnonymousChange: function(e) {
 				_self.isanonymous = _self.anonymous[e.detail.value].anonymousCode;
@@ -356,9 +534,9 @@
 				}else{
 					_self.userinfoShow = false;
 				}
-				
 				this.anonymousIndex = e.detail.value;
 			},
+			
 			//调起手机相册
 			wakeupPhoto : function(){
 				var numImg = maxNum - _self.imgLists.length;
@@ -421,39 +599,26 @@
 			},	
 			//提交
 			save : function(){
+				
 				var data = {
 					"userName": _self.userName,
 					"userCertificateNumber": _self.userCertificateNumber,
 					"userAddress": _self.userAddress,
 					"reportObject": _self.reportObject,
-					"reportTerritory":_self.reportTerritory,
 					"reportType": _self.cptType[_self.cptTypeIndex].problemCode,
-					"serviceType": _self.classifyTwo[_self.classifyTwoIndex].serviceCode,
+					"proviceCode":_self.province[_self.provinceIndex].cityCode,
+					"cityCode": _self.city[_self.cityIndex].cityCode,
+					"districtCode": _self.district[_self.districtIndex].cityCode,
+					"reportTerritory":_self.reportTerritory,
 					"occurplace": _self.place,
 					"reportDetail": _self.reportDetail,
 					"ispublic": _self.isPublic,
 					"isanonymous":_self.isanonymous,
-					"appealSource": 2,
-					"proviceCode":_self.province[_self.provinceIndex].cityCode,
-					"cityCode": _self.city[_self.cityIndex].cityCode,
-					"distinctCode": _self.district[_self.districtIndex].cityCode
+					// "shoppingMode": _self.pattern[_self.patternIndex].shoppingCode,
+					// "orderNumber": _self.orderNum,
+					// "appealSource": 2
 				};
-				if (_self.isanonymous == 1) {
-					data = {
-						"reportObject": _self.reportObject,
-						"reportTerritory":_self.reportTerritory,
-						"reportType": _self.cptType[_self.cptTypeIndex].problemCode,
-						"serviceType": _self.classifyTwo[_self.classifyTwoIndex].serviceCode,
-						"occurplace": _self.place,
-						"reportDetail": _self.reportDetail,
-						"ispublic": _self.isPublic,
-						"isanonymous":_self.isanonymous,
-						"appealSource": 2,
-						"proviceCode":_self.province[_self.provinceIndex].cityCode,
-						"cityCode": _self.city[_self.cityIndex].cityCode,
-						"distinctCode": _self.district[_self.districtIndex].cityCode
-					}
-				}
+			
 				if(_self.cptType[_self.cptTypeIndex].problemCode == "0"){
 					uni.showToast({
 						icon: 'none',
@@ -468,6 +633,60 @@
 					});
 					return;
 				}
+				if(_self.cityIndex == 0){
+					uni.showToast({
+						icon: 'none',
+						title: '请选择举报属地城市！'
+					});
+					return;
+				}
+				if(_self.districtIndex == 0){
+					uni.showToast({
+						icon: 'none',
+						title: '请选择举报属地区域！'
+					});
+					return;
+				}
+				if(_self.problemCode == '03'){
+					if(_self.pollution[_self.pollutionIndex].pollutionCode == "0"){
+						uni.showToast({
+							icon: 'none',
+							title: '请选择污染类型！'
+						});
+						return;
+					}
+					data.pollutionType = _self.pollution[_self.pollutionIndex].pollutionCode
+				}
+				
+				if(_self.problemCode == '08'){
+					if(_self.classifyTwo[_self.classifyTwoIndex].serviceCode == "0"){
+						uni.showToast({
+							icon: 'none',
+							title: '请选择商品服务类型！'
+						});
+						return;
+					}
+					if(this.serveName == ""){
+						uni.showToast({
+							icon: 'none',
+							title: '请填写商品服务名称！'
+						});
+						return;
+					}
+					data.serviceType = _self.classifyTwo[_self.classifyTwoIndex].serviceCode;
+					data.serviceName = _self.serveName;
+					data.brand = _self.brand;
+				}
+				if(_self.problemCode == '12'){
+					if(_self.regulationMoney == ""){
+						uni.showToast({
+							icon: 'none',
+							title: '请输入涉嫌金额！'
+						});
+						return;
+					}
+					data.involveAmount = _self.regulationMoney;
+				}
 				if(this.reportDetail == ""){
 					uni.showToast({
 						icon: 'none',
@@ -475,8 +694,9 @@
 					});
 					return;
 				}
+				//console.log(data)
 				_self.$qyc.interfaceRequest(
-					"/reportInformation/addReportInformation", data,
+					"/ebus/tsjb/reportinformation/addreportinformation", data,
 					function(res) {
 						if(res.success){
 							_self.successShow = true;
@@ -489,7 +709,6 @@
 								Object.assign(_self.$data, obj);
 							},2000);
 						}
-						
 					}
 				);
 			},
