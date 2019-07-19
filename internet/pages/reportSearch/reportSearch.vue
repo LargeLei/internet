@@ -103,19 +103,19 @@
 			findemagineList: function(e) {
 				_self.searchChange(e);
 				if (e.detail.value.length >= 1) {
-					_self.$qyc.interfaceRequest(
-					"/entInfo/findEntInformationsByKeyword", {
-						keywords: _self.componyName,
-						areaCode: "000000"
-					},
-						function(res) {
-							if (res.data.rows.length > 0) {
-								_self.historyShow = false;
-								_self.changeShow = false;
-								_self.searchList = res.data.rows;
-							}
-						}
-					);
+					// _self.$qyc.interfaceRequest(
+					// "/entInfo/findEntInformationsByKeyword", {
+					// 	keywords: _self.componyName,
+					// 	areaCode: "000000"
+					// },
+					// 	function(res) {
+					// 		if (res.data.length > 0) {
+					// 			_self.historyShow = false;
+					// 			_self.changeShow = false;
+					// 			_self.searchList = res.data;
+					// 		}
+					// 	}
+					// );
 				}
 			},
 			// 筛选
@@ -178,9 +178,9 @@
 							title: '搜索中...'
 						});
 						_self.$qyc.interfaceRequest(
-						"/entInfo/findEntInformationsByKeyword", {
+						"/ebus/tsjb/unittype/getchildlistbyparentcode", {
 							keywords: _self.searchKey,
-							areaCode: "000000"
+							parentCode: "0000"
 						},
 							function(res) {
 								_self.historyTemp = _self.searchKey + '|' + _self.historyTemp.split('|').filter(e => e != _self.searchKey).join(
@@ -188,10 +188,10 @@
 								uni.setStorageSync('reportHistory', _self.historyTemp);
 								console.log(uni.getStorageSync('reportHistory'));
 								uni.hideLoading();
-								if (res.data.rows.length > 0) {
+								if (res.data.length > 0) {
 									_self.historyShow = false;
 									_self.changeShow = false;
-									_self.searchList = res.data.rows;
+									_self.searchList = res.data;
 								} else {
 									_self.show = true;
 								}

@@ -75,7 +75,7 @@
 				<view class="target-info" v-show="regulationShow">
 					<view class="grace-items grace-noborder">
 						<view class="grace-label"><text>涉案金额</text><text class="col-red">*</text></view>
-						<input type="text" class="input" v-model="serveName" placeholder="请输入涉案金额"></input>
+						<input type="text" class="input" v-model="regulationMoney" placeholder="请输入涉案金额"></input>
 					</view>
 				</view>
 
@@ -172,10 +172,6 @@
 								<text>{{pollution[pollutionIndex].pollutionName}}</text>
 							</picker>
 						</view>
-					</view>
-					<view class="grace-items">
-						<view class="grace-label"><text>发生地点</text><text class="col-red">*</text></view>
-						<input type="text" class="input" v-model="place" placeholder="请输入发生地点"></input>
 					</view>
 				</view>
 			</view>
@@ -332,7 +328,8 @@
 				
 				pollution :[{'pollutionCode':'0','pollutionName':'请选择'}],
 				pollutionIndex:0,
-								
+				//dom切换节点
+				problemCode:'',				
 								
 				//商品服务类型模块
 				serviceTypeList :[],
@@ -357,9 +354,11 @@
 				today:new Date(),
 				consumedate:'',
 				disputeDate:'',
-				//
+				//涉嫌金额
+				regulationMoney:'',
 				//上传
 				imgLists : [],
+				place:'',
 				complaintDetail:'',
 				imgShow:false,
 				tapeShow:false,
@@ -490,27 +489,27 @@
 			//投诉问题类型    页面根据切换  TODO
 			bindTypeChange: function(e) {
 				this.cptTypeIndex = e.detail.value;
-				var problemCode = this.cptType[this.cptTypeIndex].problemCode;
-				if(problemCode == 'TS_0011'){
+				_self.problemCode = this.cptType[this.cptTypeIndex].problemCode;
+				if(_self.problemCode == '03'){//生态环境
 					this.safeShow = true;
 					this.regulationShow = false;
 					this.marketShow = false;
-					this.organShow = false;
-				}else if(problemCode == 'TS_0012'){
-					this.safeShow = false;
-					this.regulationShow = true;
-					this.marketShow = false;
-					this.organShow = false;
-				}else if(problemCode == 'TS_0008'){
+					this.organShow = true;
+				}else if(_self.problemCode == '08'){//市场监管
 					this.safeShow = false;
 					this.regulationShow = false;
 					this.marketShow = true;
 					this.organShow = false;
-				}else if(problemCode == 'TS_0003'){
-					this.safeShow = false;
+				}else if(_self.problemCode == '11'){//安全生产
+					this.safeShow = true;
 					this.regulationShow = false;
 					this.marketShow = false;
-					this.organShow = true;
+					this.organShow = false;
+				}else if(_self.problemCode == '12'){//金融监管
+					this.safeShow = false;
+					this.regulationShow = true;
+					this.marketShow = false;
+					this.organShow = false;
 				}else{
 					this.safeShow = false;
 					this.regulationShow = false;
@@ -718,23 +717,13 @@
 					"complaintObject": _self.complaintObject,
 					"complaintTerritory":_self.complaintTerritory,
 					"complaintType": _self.cptType[_self.cptTypeIndex].problemCode,
-					"serviceType": _self.classifyTwo[_self.classifyTwoIndex].serviceCode,
-					"serviceName": _self.serveName,
-					"brand": _self.brand,
-					"shoppingMode": _self.pattern[_self.patternIndex].shoppingCode,
-					"orderNumber": _self.orderNum,
-					"typeSpecification": _self.specification,
-					"count": _self.count,
-					"unit": _self.unit[_self.unitIndex].unitCode,
-					"amount": _self.amount,
-					"productDate": _self.consumedate,
-					"disputeDate": _self.disputeDate,
+					"proviceCode":_self.province[_self.provinceIndex].cityCode,
+					"cityCode": _self.city[_self.cityIndex].cityCode,
+					"districtCode": _self.district[_self.districtIndex].cityCode,
 					"complaintDetail": _self.complaintDetail,
-					"ispublic": 0,
-					appealSource: 2,
-					proviceCode:_self.province[_self.provinceIndex].cityCode,
-					cityCode: _self.city[_self.cityIndex].cityCode,
-					districtCode: _self.district[_self.districtIndex].cityCode
+					"ispublic": _self.isPublic
+					// appealSource: 2,
+					
 				};
 				if(_self.cptTypeIndex == 0){
 					uni.showToast({
@@ -764,33 +753,84 @@
 					});
 					return;
 				}
-				if(_self.classifyTwoIndex == 0){
-					uni.showToast({
-						icon: 'none',
-						title: '请选择商品服务类型！'
-					});
-					return;
+				if(_self.problemCode == '03'){
+					if(_self.pollution[_self.pollutionIndex].pollutionCode == "0"){
+						uni.showToast({
+							icon: 'none',
+							title: '请选择污染类型！'
+						});
+						return;
+					}
+					if(_self.place == ""){
+						uni.showToast({
+							icon: 'none',
+							title: '请输入发生地点！'
+						});
+						return;
+					}
+					data.pollutionType = _self.pollution[_self.pollutionIndex].pollutionCode;
+					data.occurplace = _self.place;
 				}
-				if(this.serveName == ""){
-					uni.showToast({
-						icon: 'none',
-						title: '请填写商品服务名称！'
-					});
-					return;
+				if(_self.problemCode == '08'){
+					if(_self.classifyTwo[_self.classifyTwoIndex].serviceCode == "0"){
+						uni.showToast({
+							icon: 'none',
+							title: '请选择商品服务类型！'
+						});
+						return;
+					}
+					if(this.serveName == ""){
+						uni.showToast({
+							icon: 'none',
+							title: '请填写商品服务名称！'
+						});
+						return;
+					}
+					if(_self.pattern[_self.patternIndex].shoppingCode == "0"){
+						uni.showToast({
+							icon: 'none',
+							title: '请选择购物方式！'
+						});
+						return;
+					}
+					if(_self.specification == ""){
+						uni.showToast({
+							icon: 'none',
+							title: '请输入型号规格！'
+						});
+						return;
+					}
+					data.serviceType = _self.classifyTwo[_self.classifyTwoIndex].serviceCode;
+					data.serviceName = _self.serveName;
+					data.brand = _self.brand;
+					data.shoppingMode = _self.pattern[_self.patternIndex].shoppingCode;
+					data.orderNumber = _self.orderNum;
+					data.typeSpecification = _self.specification;
+					data.count = _self.count;
+					data.unit = _self.unit[_self.unitIndex].unitCode;
+					data.amount = _self.amount;
+				    data.productDate = _self.consumedate;
+					data.disputeDate = _self.disputeDate
 				}
-				if(_self.patternIndex == 0){
-					uni.showToast({
-						icon: 'none',
-						title: '请选择购物方式！'
-					});
-					return;
+				if(_self.problemCode == '11'){
+					if(_self.place == ""){
+						uni.showToast({
+							icon: 'none',
+							title: '请输入发生地点！'
+						});
+						return;
+					}
+					data.occurplace = _self.place;
 				}
-				if(this.specification == ""){
-					uni.showToast({
-						icon: 'none',
-						title: '请输入型号规格！'
-					});
-					return;
+				if(_self.problemCode == '12'){
+					if(_self.regulationMoney == ""){
+						uni.showToast({
+							icon: 'none',
+							title: '请输入涉嫌金额！'
+						});
+						return;
+					}
+					data.involveAmount = _self.regulationMoney;
 				}
 				if(this.complaintDetail == ""){
 					uni.showToast({
@@ -799,23 +839,24 @@
 					});
 					return;
 				}
-				_self.$qyc.interfaceRequest(
-					"/complaints/addComplaintInformation", data,
-					function(res) {
-						if(res.success){
-							_self.successShow = true;
-							setTimeout(function(){
-								uni.navigateTo({ 
-									url: '/pages/myComplaint/myComplaint'
-								});
-								var obj = _self.$options.data();
-								obj.complaintObject = _self.complaintObject;
-								Object.assign(_self.$data, obj);
-							},2000);
-						}
-						
-					}
-				);
+				console.log(data)
+				// _self.$qyc.interfaceRequest(
+				// 	"/complaints/addComplaintInformation", data,
+				// 	function(res) {
+				// 		if(res.success){
+				// 			_self.successShow = true;
+				// 			setTimeout(function(){
+				// 				uni.navigateTo({ 
+				// 					url: '/pages/myComplaint/myComplaint'
+				// 				});
+				// 				var obj = _self.$options.data();
+				// 				obj.complaintObject = _self.complaintObject;
+				// 				Object.assign(_self.$data, obj);
+				// 			},2000);
+				// 		}
+				// 		
+				// 	}
+				// );
 			},
 		},
 		components: {
