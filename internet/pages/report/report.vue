@@ -2,23 +2,13 @@
 	<view class="grace-padding">
 		<view class="plaints">
 			<view class="plaints-head">投诉举报须知</view>
-			<view class="plaints-detail">
+			<view class="plaints-detail" :data='infors'>
 				<view class="plaints-title">一、投诉举报受理范围</view>
-				<view class="plaints-text">"明确写明监管对象范围、什么样的行为"限于境内监管对象。根据《XXXXXX》《XXXXXX》的规定。</view>
-				<view class="plaints-title">二、受理和不予受理条件</view>
-				<view class="plaints-text">"明确写明监管对象范围、什么样的行为"限于境内监管对象。根据《XXXXXX》《XXXXXX》的规定。</view>
-				<view class="plaints-text">（一）投诉举报符合下列条件的，应予受理：</view>
-				<view class="plaints-text">1.有具体明确的被投诉举报对象和违法行为；</view>
-				<view class="plaints-text">2.被投诉举报对象及违法行为在本部门受理范围内。</view>
-				<view class="plaints-text">（二）投诉举报具有下列情形之一的，不予受理：</view>
-				<view class="plaints-text">1.无具体明确的被投诉举报对象和违法行为的；</view>
-				<view class="plaints-text">2.被投诉举报对象及违法行为均不在本食品药品投诉举报机构或者管理部门管辖范围的；</view>
-				<view class="plaints-text">3.不属于""管理部门监管职责范围的；</view>
-				<view class="plaints-text">4.投诉举报已经受理且仍在调查处理过程中，投诉举报人就同一事项重复投诉举报的；</view>
-				<view class="plaints-text">5.投诉举报已依法处理，投诉举报人在无新线索的情况下以同一事实或者理由重复投诉举报的；</view>
-				<view class="plaints-text">6.违法行为已经超过法定追诉时限的；</view>
-				<view class="plaints-text">7.应当通过诉讼、仲裁、行政复议等法定途径解决或者已经进入上述程序的；</view>
-				<view class="plaints-text">8.其他依法不应当受理的情形。</view>
+				<view class="plaints-text">{{infors.area}}</view>
+				<view class="plaints-title">二、不予受理条件</view>
+				<view class="plaints-text" v-for="(item,index) in infors.term" :key="index">{{index+1}}.{{item.text}}</view>
+				<view class="plaints-title">三、注意事项</view>
+				<view class="plaints-text" v-for="(item,index) in infors.matter" :key="index">{{item.text}}</view>
 			</view>
 			<view class="plaints-check">
 				<checkbox-group @change="checkboxChange">
@@ -39,7 +29,53 @@
 		data() {
 			return {
 				bgClass: '', // 添加
-				totalTime: 1
+				totalTime: 1,
+				infors:{
+					area:"国家“互联网+监管”投诉举报系统接收社会公众关于政府监管事项清单所有涉及的监管对象的投诉举报，实现互联网在线投诉举报登记和结果反馈。投诉：应是对涉及自身、伤害自身利益的行为进行举证投诉，应包含明确的投诉对象、投诉内容等，请点击“我要投诉”提交信息。举报：应对反映监管对象涉嫌违法违规线索的行为举证举报，可匿名举报，请点击“我要举报”提交信息",
+				term:[
+					{
+						text:"无具体明确的被投诉举报对象和违法违规行为的；"
+					},
+					{
+						text:"投诉举报已经受理且仍在调查处理过程中，投诉举报人就同一事项重复投诉举报的；"
+					},
+					{
+						text:"投诉举报已依法处理，投诉举报人在无新线索的情况下以同一事实或者理由重复投诉举报的；"
+					},
+					{
+						text:"违法行为已经超过法定追诉时限的；"
+					},
+					{
+						text:"应当通过诉讼、仲裁、行政复议等法定途径解决或者已经进入上述程序的；"
+					},
+					{
+						text:"其他依法不应当受理的情形；"
+					},
+					{
+						text:"以投诉举报的形式进行咨询、政府信息公开申请、行政复议、信访、纪检监察检举控告、公职人员履职行为问题、政务服务投诉与建议等活动的，不适用本监管投诉举报业务范围。"
+					}
+				],
+				matter:[
+					{
+						text:'（一）投诉举报人应当提供客观真实的投诉举报材料及证据，说明事情的基本经过，提供被投诉举报对象信息，涉嫌违法违规的具体行为，举证相关佐证说明、照片截图等详细信息。'
+					},
+					{
+						text:'（二）提倡实名投诉举报。请您保持电话畅通，以便承办部门及时准确的与您联系，核实相关信息，并反馈办理结果。'
+					},
+					{
+						text:'（三）投诉举报人应据实进行投诉举报，不得捏造事实、制造假证、诬告陷害他人，应对投诉举报信息的客观性、真实性负责。'
+					},
+					{
+						text:'（四）举报主体提供的举报材料、举报要件将分发转交至相关主管部门，将对用户信息隐私信息保证安全不泄露。'
+					},
+					{
+						text:'（五）并非全部投诉举报信息都会获得受理处置，敬请谅解。'
+					},
+					{
+						text:'（六）如果还没有解决，建议走法律程序。'
+					}
+				]
+				}
 			}
 		},
 		onLoad() {
