@@ -1,0 +1,70 @@
+graceUI 代码块功能使用说明
+使用 HBuilderX 代码块功能可以快速的生成常用代码，大幅度提高开发速度！步骤：
+
+一、设置代码块
+-----------------------------------------
+1. 打开 HBuilderX 点击 工具 -> 代码块设置 -> vue 代码块：
+将 vue.json 内的内容添加到 “vue 代码块” 内，如果没有其他设置，全选覆盖即可!
+2. 打开 HBuilderX 点击 工具 -> 代码块设置 -> javascript 代码块：
+将 javascript.json 内的内容添加到 “javascript 代码块” 内，如果没有其他设置，全选覆盖即可(ctrl+s 保存哦)！
+
+二、使用代码块
+-----------------------------------------
+在 template 标签内输入 g+组件首字母即可弹出代码助手[对应组件部分]；
+在 script 标签内输入 g+组件首字母即可弹出代码助手[对应脚本部分]；
+
+三、组件激活列表  [在 template 标签内激活]
+  激活字母             对应组件
+graceui            : graceUI 初始化
+-------------- flex 布局 ----------------
+gpadding           : 带有间距的view
+gflex              : flex view
+gFlexWrap          : flex wrap
+gFlexNoWrap        : flex no wrap
+gFlexSpaceBetween  : flex Space Between
+-------------- 文本 ---------------------
+gtext              : 文本 view
+gTextSmall         : 小字体文本
+gh1 - 5            : h1 - 5
+graceLineThrough   : 删除线
+-------------- 组件 ---------------------
+gscrllx            : 横向滚动
+gscrlly            : 竖向滚动
+glistRimg          : 列表右图
+glistLimg          : 列表左图
+gbox               : 九宫格
+gimgitem           : 图文项目
+gnewslist          : 新闻列表
+gtab               : 局部选项卡
+gscrollmsgY        : 滚动公告[竖向]
+gscrollmsgX        : 滚动公告[横向]
+gstarStatic        : 静态星级图标
+gstarActive        : 动态星级图标
+gaccordion         : 折叠面板
+gLoading           : Loading
+gfullLoading       : 全屏 Loading
+gbadge             : 数字角标
+gtitlecenter       : 居中标题
+gtitle             : 标题 + 更多
+gtitleRefresh      : 标题加换一批
+gxbanner           : 横向公告
+gfooter            : 底部导航
+gmbanner           : 弹出式广告
+gicon              : 图标
+gstep              : 步骤
+gswiper            : 轮播
+gform              : 表单及项目
+gimg               : 图片
+gslider            : 滑块
+galert             : 顶部消息框
+
+四、脚本激活列表 [ 在 script 标签内激活 推荐第一行 ]
+---------------------------------------------------------------------------------------------
+     激活字母          对应脚本
+gtabdata          : 局部选项卡[data]
+gtabmethods       : 局部选项卡[methods]
+gstar             : 动态星级图标[methods]
+gaccordion        : 折叠面板 [methods]
+gLoading          : Loading [组件]
+gfullLoading      : Full Loading [组件]
+gchecker          : 表单验证 [组件及使用演示]

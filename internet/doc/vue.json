@@ -1,0 +1,468 @@
+{
+	//graceUI 代码块 grace.hcoder.net
+	"graceUI 初始化":{
+		"prefix" : "graceui",
+		"body"   : [
+			"<!-- 请将下面的代码放置到 App.vue 文件 stlye 内 -->",
+			"@import \"./graceUI/graceUI.css\";"
+		]
+	},
+	//flex 布局
+	"graceUI padding":{
+		"prefix" : "gpadding",
+		"body"   : ["<view class=\"grace-padding\">\n\t$1\n</view>"]
+	},
+	"grace Flex" :{
+		"prefix" : "gFlex",
+		"body"   : ["<view class=\"grace-flex\">\n\t$1\n</view>"]
+	},
+	"grace Flex Wrap" :{
+		"prefix" : "gFlexWrap",
+		"body"   : ["<view class=\"grace-wrap\">\n\t$1\n</view>"]
+	},
+	"grace Flex NoWrap" :{
+		"prefix" : "gFlexNoWrap",
+		"body"   : ["<view class=\"grace-nowrap\">\n\t$1\n</view>"]
+	},
+	"grace Flex Space Between" :{
+		"prefix" : "gFlexSpaceBetween",
+		"body"   : ["<view class=\"grace-space-between\">\n\t$1\n</view>"]
+	},
+	"graceUI scrollX [横向滚动]":{
+		"prefix" :"gscrllx",
+		"body"   : ["<scroll-view class=\"grace-scroll-x\" scroll-x>",
+			"\t<view class=\"grace-items\" style=\"background:#F00;\">\n\t\t$1\n\t</view>",
+			"\t<view class=\"grace-items\" style=\"background:#0F0;\">\n\t\t$1\n\t</view>",
+			"\t<view class=\"grace-items\" style=\"background:#00F;\">\n\t\t$1\n\t</view>",
+			"</scroll-view>"]
+	},
+	//文本
+	"graceUI text [文本]":{
+		"prefix" : "gText",
+		"body"   : ["<view class=\"grace-text\">\n$1\n</view>"]
+	},
+	"grace small text":{
+		"prefix" : "gTextSmall",
+		"body"   : ["<view class=\"grace-text-small\">\n\t$1\n</view>"]
+	},
+	"graceUI H1":{
+		"prefix" : "gh1",
+		"body"   : ["<view class=\"grace-h1 grace-blod\">$1</view>"]
+	},
+	"graceUI H2":{
+		"prefix" : "gh2",
+		"body"   : ["<view class=\"grace-h2 grace-blod\">$1</view>"]
+	},
+	"graceUI H3":{
+		"prefix" : "gh3",
+		"body"   : ["<view class=\"grace-h3 grace-blod\">$1</view>"]
+	},
+	"graceUI H4":{
+		"prefix" : "gh4",
+		"body"   : ["<view class=\"grace-h4 grace-blod\">$1</view>"]
+	},
+	"graceUI H5":{
+		"prefix" : "gh5",
+		"body"   : ["<view class=\"grace-h5 grace-blod\">$1</view>"]
+	},
+	"graceUI line through":{
+		"prefix" : "gLineThrough",
+		"body"   : ["<text class=\"grace-line-through\">$1</text>"]
+	},
+	//组件及界面
+	"graceUI scrollY [竖向滚动]":{
+		"prefix" : "gscrlly",
+		"body"   : ["<scroll-view class=\"grace-scroll-y\" scroll-y>",
+			"\t<view class=\"grace-items\" style=\"background:#F00;\">\n\t\t$1\n\t</view>",
+			"\t<view class=\"grace-items\" style=\"background:#0F0;\">\n\t\t$1\n\t</view>",
+			"\t<view class=\"grace-items\" style=\"background:#00F;\">\n\t\t$1\n\t</view>",
+			"</scroll-view>"
+		]
+	},
+	"graceUI list [列表右图]":{
+		"prefix" : "glistRimg",
+		"body"   : ["<view class=\"grace-list\">",
+			"	<text class=\"grace-list-text grace-text-overflow\">文字内容</text>",
+			"	<image src=\"../../static/$2\" class=\"grace-list-imgs-r\" mode=\"widthFix\"></image>",
+			"	<text class=\"grace-list-imgs-arrow grace-iconfont icon-arrow-right\"></text>",
+			"</view>"
+		]
+	},
+	"graceUI list [列表左图]":{
+		"prefix" : "glistLimg",
+		"body"   : ["<view class=\"grace-list\">",
+			"	<image src=\"../../static/$2\" class=\"grace-list-imgs-l\" mode=\"widthFix\"></image>",
+			"	<text class=\"grace-list-text grace-text-overflow\">文字内容</text>",
+			"	<text class=\"grace-list-imgs-arrow grace-iconfont icon-arrow-right\"></text>",
+			"</view>"
+		]
+	},
+	"graceUI box [九宫格]":{
+		"prefix" : "gbox",
+		"body"   : ["<view class=\"grace-wrap\">",
+			"	<view class=\"grace-boxes\">",
+			"		<view class=\"grace-boxes-img\">",
+			"			<image src=\"../../static/$1\" mode=\"widthFix\"></image>",
+			"		</view>",
+			"		<view class=\"grace-boxes-text\">文字</view>",
+			"	</view>",
+			"	<view class=\"grace-boxes\">",
+			"		<view class=\"grace-boxes-img\">",
+			"			<image src=\"../../static/$1\" mode=\"widthFix\"></image>",
+			"		</view>",
+			"		<view class=\"grace-boxes-text\">文字</view>",
+			"	</view>",
+			"</view>"
+		]
+	},
+	"graceUI imgitems [图文项目]":{
+		"prefix" : "gimgitem",
+		"body"   : ["<view class=\"grace-imgitems\">",
+			"	<!-- 项目开始  -->",
+			"	<view class=\"grace-items\">",
+			"		<image src=\"../../static/$1\" mode=\"widthFix\"></image>",
+			"		<view class=\"grace-imgitems-text\">",
+			"			<text class=\"grace-text-overflow\">标题</text>",
+			"		</view>",
+			"		<!-- 底部组件 -->",
+			"		<view class=\"grace-imgitems-more\">",
+			"			￥199.99",
+			"			<view class=\"grace-imgitems-button\">购买</view>",
+			"		</view>",
+			"		<!-- 标签 -->",
+			"		<view class=\"grace-imgitems-tips\">标签</view>",
+			"	</view>",
+			"	<!-- 项目结束  -->",
+			"</view>"
+		]
+	},
+	"graceUI newList [新闻列表]":{
+		"prefix" : "gnewslist",
+		"body"   : ["<view class=\"grace-news-list\">",
+			"	<!-- 图左文右模式 -->",
+			"	<navigator url=\"\">",
+			"		<view class=\"grace-news-list-items\">",
+			"			<image src=\"../../static/$1\" class=\"grace-news-list-img grace-list-imgs-l\" mode=\"widthFix\"></image>",
+			"			<view class=\"grace-news-list-title\">",
+			"				<view class=\"grace-news-list-title-main\">标题</view>",
+			"				<text class=\"grace-news-list-title-desc grace-text-overflow\">描述</text>",
+			"			</view>",
+			"			<view class=\"grace-news-tips grace-news-tips-l\">标签</view>",
+			"		</view>",
+			"	</navigator>",
+			"	<!-- 文左图右模式 -->",
+			"	<navigator url=\"\">",
+			"		<view class=\"grace-news-list-items\">",
+			"			<view class=\"grace-news-list-title\">",
+			"				<view class=\"grace-news-list-title-main\">标题</view>",
+			"				<text class=\"grace-news-list-title-desc grace-text-overflow\">描述</text>",
+			"			</view>",
+			"			<image src=\"../../static/$1\" class=\"grace-news-list-img grace-list-imgs-r\" mode=\"widthFix\"></image>",
+			"			<view class=\"grace-news-tips grace-news-tips-r\">新闻</view>",
+			"		</view>",
+			"	</navigator>",
+			"	<!-- 大图模式 -->",
+			"	<navigator url=\"\">",
+			"		<view class=\"grace-news-list-img-news\">",
+			"			<view class=\"grace-news-list-title-main\">标题</view>",
+			"			<view class=\"grace-news-list-img-big\">",
+			"				<image src=\"../../static/$1\" mode=\"widthFix\"></image>",
+			"			</view>",
+			"		</view>",
+			"		<view class=\"grace-news-list-info\">发布于2天前<text>其他元素</text></view>",
+			"	</navigator>",
+			"	<!-- 多图模式 -->",
+			"	<navigator url=\"\">",
+			"		<view class=\"grace-news-list-img-news\">",
+			"	    	<view class=\"grace-news-list-title-main\">标题</view>",
+			"			<view class=\"grace-news-list-imgs\">",
+			"				<image src=\"../../static/$1\" mode=\"widthFix\"></image>",
+			"				<image src=\"../../static/$1\" mode=\"widthFix\"></image>",
+			"				<image src=\"../../static/$1\" mode=\"widthFix\"></image>",
+			"	    	</view>",
+			"		</view>",
+			"		<view class=\"grace-news-list-info\">",
+			"			<view>",
+			"				<text class=\"grace-iconfont icon-time2\"></text>2天前",
+			"				<text class=\"grace-iconfont icon-eye\" style=\"margin-left:20px;\"></text>99次浏览",
+			"			</view>",
+			"		</view>",
+			"	</navigator>",
+			"</view>"]
+	},
+	"graceUI tab [局部选项卡]" : {
+		"prefix" : "gtab",
+		"body"   : ["<view class=\"grace-tab\">",
+			"	<scroll-view class=\"grace-tab-title\" scroll-x=\"true\">",
+			"		<view v-for=\"(tab, index) in tabs\" :class=\"[tabCurrentIndex == index ? 'grace-tab-current' : '']\"  :id=\"'tabTag-'+index\" @tap=\"tabChange\" :key=\"index\">{{tab.name}}</view>",
+			"	</scroll-view>",
+			"	<swiper class=\"grace-tab-swiper\" :current=\"swiperCurrentIndex\" @change=\"swiperChange\" style=\"height:350rpx;\">",
+			"		<swiper-item>内容区 - 1</swiper-item>",
+			"		<swiper-item>内容区 - 2</swiper-item>",	
+			"		<swiper-item>内容区 - 3</swiper-item>",
+			"		<swiper-item>内容区 - 4</swiper-item>",
+			"		<swiper-item>内容区 - 5</swiper-item>",
+			"		<swiper-item>内容区 - 6</swiper-item>",
+			"	</swiper>",
+			"</view>",
+			"<!-- 请在 script 标签顶层 输入代码块 gtabdata 并将代码移动到 data :{} -->",
+			"<!-- 请在 script 标签顶层 输入代码块 gtabmethods 并将代码移动到 methods :{} -->"]
+	},
+	"graceUI scrollmsgY [滚动公告]" : {
+		"prefix" : "gscrollmsgY",
+		"body"   : ["<view class=\"grace-swiper-msg\">",
+			"	<view class=\"grace-swiper-msg-icon\">",
+			"		<image src=\"../../static/imgs/speaker.png\" mode=\"widthFix\"></image>",
+			"	</view>",
+			"	<swiper vertical=\"true\" autoplay=\"true\" circular=\"true\" interval=\"3000\">",
+			"		<swiper-item>",
+			"			<navigator url=\"\">新闻公告内容</navigator>",
+			"		</swiper-item>",
+			"		<swiper-item>",
+			"			<navigator url=\"\">新闻公告内容</navigator>",
+			"		</swiper-item>",
+			"	</swiper>",
+			"</view>"]
+	},
+	"graceUI scrollmsgX [滚动公告]" : {
+		"prefix" : "gscrollmsgX",
+		"body"   : ["<view class=\"grace-swiper-msg\">",
+			"	<view class=\"grace-swiper-msg-icon\">",
+			"		<image src=\"../../static/imgs/speaker.png\" mode=\"widthFix\"></image>",
+			"	</view>",
+			"	<swiper autoplay=\"true\" circular=\"true\" interval=\"3000\">",
+			"		<swiper-item>",
+			"			<navigator url=\"\">新闻公告内容</navigator>",
+			"		</swiper-item>",
+			"		<swiper-item>",
+			"			<navigator url=\"\">新闻公告内容</navigator>",
+			"		</swiper-item>",
+			"	</swiper>",
+			"</view>"]
+	},
+	"graceUI star [静态星级图标]" : {
+		"prefix" :"gstarStatic",
+		"body"   : ["<graceStar :value=\"currentStarNumStatic\" :canTap=\"false\"></graceStar>",
+			"<!-- 在js区域data内添加变量 currentStarNumStatic : 3 -->",
+			"<!-- 在js区域引用 graceStar组件 -->",
+			"import graceStar from \"../../graceUI/components/graceStar.vue\";",
+			"components:{",
+			"	graceStar",
+			"}"
+		]
+	},
+	"graceUI star [动态星级图标]" : {
+		"prefix" :"gstarActive",
+		"body"   : ["<grace-star :value=\"currentStarNum\" :starNum=\"5\" v-on:starChange=\"starChange\"></grace-star>",
+			"<!-- 1. 在js区域data内添加变量 currentStarNum : 0 -->",
+			"<!-- 2. 在js区域引用 graceStar组件 -->",
+			"import graceStar from \"../../graceUI/components/graceStar.vue\";",
+			"components:{",
+			"	graceStar",
+			"}",
+			"<!-- 3. 在script顶层区域通过gStar代码块获取代码并添加到 methods:{} 内 -->"]
+	},
+	"graceUI accordion [折叠面板]" : {
+		"prefix" :"gaccordion",
+		"body"   : ["<view class=\"grace-accordion\">",
+			"	<view class=\"grace-accordion-items\">",
+			"		<view :class=\"[accordionActive == 'grace-accordion-1' ? 'grace-accordion-title grace-current' : 'grace-accordion-title']\" id=\"grace-accordion-1\" @tap=\"changeAccordion\">",
+			"			标题1",
+			"			<text class=\"grace-list-imgs-arrow grace-iconfont icon-arrow-up\" v-if=\"accordionActive == 'grace-accordion-1'\"></text>",
+			"			<text class=\"grace-list-imgs-arrow grace-iconfont icon-arrow-down\" wx:else></text>",
+			"		</view>",
+			"		<view class=\"grace-accordion-body\" v-if=\"accordionActive == 'grace-accordion-1'\">",
+			"			<view style=\"justify-content:center; line-height:50px; background:#FFFFFF;\">",
+			"				内容区域",
+			"			</view>",
+			"		</view>",
+			"	</view>",
+			"	<view class=\"grace-accordion-items\">",
+			"		<view :class=\"[accordionActive == 'grace-accordion-2' ? 'grace-accordion-title grace-current' : 'grace-accordion-title']\" id=\"grace-accordion-2\" @tap=\"changeAccordion\">",
+			"			标题2",
+			"			<text class=\"grace-list-imgs-arrow grace-iconfont icon-arrow-up\" v-if=\"accordionActive == 'grace-accordion-2'\"></text>",
+			"			<text class=\"grace-list-imgs-arrow grace-iconfont icon-arrow-down\" wx:else></text>",
+			"		</view>",
+			"		<view class=\"grace-accordion-body\" v-if=\"accordionActive == 'grace-accordion-2'\">",
+			"			<view style=\"justify-content:center; line-height:50px; background:#FFFFFF;\">",
+			"				内容区域",
+			"			</view>",
+			"		</view>",
+			"	</view>",
+			"</view>",
+			"<!-- 1. 在js区域data内添加变量 accordionActive : 'grace-accordion-1' -->",
+			"<!-- 2. 在script顶层区域通过gaccordion代码块获取代码并添加到 methods:{} 内 -->"]
+	},
+	"graceUI Loading" : {
+		"prefix" :"gLoading",
+		"body"   : ["<graceLoading :loadingType=\"loadingType\" :show=\"show\"></graceLoading>",
+			"<!-- 1. 在js区域data内添加变量 loadingType : 1' -->",
+			"<!-- 2. 在script顶层区域通过gLoading代码块获取代码并添加到对应位置 -->"]
+	},
+	"graceUI Full Loading" : {
+		"prefix" :"gfullLoading",
+		"body"   : ["<graceFullLoading :graceFullLoading=\"graceFullLoading\" logoUrl=\"../../static/imgs/$1\"></graceFullLoading>",
+			"<!-- 1. 在js区域data内添加变量 graceFullLoading : true -->",
+			"<!-- 2. 在script顶层区域通过gfullLoading代码块获取代码并添加到对应位置 -->"]
+	},
+	"graceUI badge [数字角标]" : {
+		"prefix" :"gbadge",
+		"body"   : ["<text class=\"grace-badge grace-badge-red\">$1</text>"]
+	},
+	"graceUI center title [居中标题]" : {
+		"prefix" :"gtitlecenter",
+		"body"   : ["<view class=\"grace-title\">",
+			"	<view class=\"grace-h5 grace-blod grace-center\">- 标题信息 -</view>",
+			"	<view class=\"grace-text-small grace-center\">描述信息</view>",
+			"</view>"]
+	},
+	"graceUI title [标题]" : {
+		"prefix" :"gtitle",
+		"body"   : ["<view class=\"grace-title grace-nowrap grace-space-between\">",
+			"	<view class=\"grace-h5 grace-blod\">标题</view>",
+			"	<navigator class=\"grace-more-r\" url=\"$1\">更多<text class=\"grace-iconfont icon-arrow-right\"></text></navigator>",
+			"</view>"]
+	},
+	"graceUI titleAndRefresh [标题加换一批]" : {
+		"prefix" :"gtitleRefresh",
+		"body"   : ["<view class=\"grace-title grace-nowrap grace-space-between\">",
+			"	<view class=\"grace-h5 grace-blod\">标题</view>",
+			"	<view class=\"grace-more-r\" style=\"color:#49A761;\"><text class=\"grace-iconfont icon-refresh\"></text> 换一批</view>",
+			"</view>"]
+	},
+	"graceUI [横向公告]" : {
+		"prefix" :"gxbanner",
+		"body"   : ["<view class=\"grace-box-banner\">",
+			"	<view class=\"garce-items\">",
+			"		<view class=\"line1\">10<text>个</text></view>",
+            "    	<view class=\"line2\">XXXX</view>",
+			"	</view>",
+			"	<view class=\"garce-items\">",
+			"		<view class=\"line1\">11<text>个</text></view>",
+			"    	<view class=\"line2\">XXXX</view>",
+			"	</view>",
+			"	<view class=\"garce-items\">",
+			"		<view class=\"line1\">12<text>个</text></view>",
+			"    	<view class=\"line2\">XXXX</view>",
+			"	</view>",
+			"	<view class=\"garce-items\">",
+			"		<view class=\"line1\">13<text>个</text></view>",
+			"    	<view class=\"line2\">XXXX</view>",
+			"	</view>",
+			"</view>"]
+	},
+	"graceUI footer [底部导航]" : {
+		"prefix" :"gfooter",
+		"body"   : ["<view class=\"grace-footer\">",
+			"	$1",
+			"</view>"]
+	},
+	"graceUI maskBanner [弹出式广告]" : {
+		"prefix" :"gmbanner",
+		"body"   : ["<!-- 弹出层 start -->",
+			"<graceMaskView :show=\"show\">",
+			"	此处放置弹出内容",
+			"</graceMaskView>",
+			"<!-- 在 scrip t顶层区域通过 gmbanner 代码块获取代码并添加到对应位置 -->"
+		]
+	},
+	"graceUI icons [图标]" : {
+		"prefix" :"gicon",
+		"body"   : ["<text class=\"grace-iconfont icon-$1\"></text>"]
+	},
+	"graceUI step [步骤]" : {
+		"prefix" :"gstep",
+		"body"   : ["<view class=\"grace-steps\" style=\"margin-top:25upx;\">",
+			"	<view class=\"step\">",
+			"		<view class=\"step-circle\">1</view>",
+			"		<view class=\"step-content\">",
+			"			<view class=\"step-title\">步骤1</view>",
+			"		</view>",
+			"	</view>",
+			"	<view class=\"step current\">",
+			"		<view class=\"step-circle\">2</view>",
+			"		<view class=\"step-content\">",
+			"			<view class=\"step-title\">步骤2</view>",
+			"		</view>",
+			"	</view>",
+			"	<view class=\"step\">",
+			"		<view class=\"step-circle\">3</view>",
+			"		<view class=\"step-content\">",
+			"			<view class=\"step-title\">步骤3</view>",
+			"		</view>",
+			"	</view>",
+			"</view>"]
+	},
+	"graceUI swiper [轮播]" : {
+		"prefix" :"gswiper",
+		"body"   : ["<view>",
+			"	<graceSwiper swiperId=\"garce-swiper-1\" interval=\"3000\" :indicatorDots=\"true\" :items=\"swiperItems\"></graceSwiper>",
+		"</view>",
+		"<!-- 1. 在 script 第一行加入 import graceSwiper from \"../../graceUI/components/graceSwiper.vue\" -->",
+		"<!-- 2. 在 data 内加入 -- >",
+		"swiperItems : [",
+		"	{ imgUrl: \"../../static/imgs/swiper-1.png\", path : \"\", title : \"标题1\"},",
+		"	{ imgUrl: \"../../static/imgs/swiper-2.png\", path : \"\", title : \"标题2\"}",
+		"]",
+		"<!-- 3. 在 js 内注册组件 -- >",
+		"components:{",
+		"	graceSwiper",
+		"}"]
+	},
+	"graceUI form [表单]" : {
+		"prefix" :"gform",
+		"body"   : ["<view class=\"grace-form\">",
+			"	<form @submit=\"formSubmit\">",
+			"		<view class=\"grace-items\">",	
+            "			<view class=\"grace-label\">标签</view>",
+            "			<input type=\"text\" name=\"$1\"></input>",
+			"		</view>",
+			"		<view class=\"grace-items\">",	
+			"			<view class=\"grace-label\">标签</view>",
+			"			<input type=\"text\" name=\"$2\"></input>",
+			"		</view>",
+			"	</form>",
+			"</view>"]
+	},
+	"graceUI slider [区间滑块]" : {
+		"prefix" :"gslider",
+		"body"   : ["<graceSlider min=\"1\" max=\"100\" :val1=\"valMin\" :val2=\"valMax\" v-on:sliding=\"sliding1\"></graceSlider>",
+			"<!-- 请在 js 脚本区域加入  -->",
+			"import graceSlider from '../../graceUI/components/graceSlider.vue';",
+			"<!-- 在 js data 中加入 -->",
+			"valMin : 20,",
+			"valMax : 55",
+			"<!-- 添加函数  -->",
+			"methods:{",
+			"	sliding1 : function(e){",
+			"		var min = e.min;",
+			"		var max = e.max;",
+			"		this.valMin = min;",
+			"		this.valMax = max;",
+			"	}",
+			"}",
+			"<!-- 在 js 中注册组件 -->",
+			"components : {",
+			"	graceSlider",
+			"}"
+		]
+	},
+	"graceUI image":{
+		"prefix" : "gImg",
+		"body"   : ["<image src=\"../../static/imgs/$1\" mode=\"widthFix\"></image>"]
+	},
+	"graceUI alert":{
+		"prefix" : "gAlert",
+		"body"   : ["<graceAlert :show=\"show\" :msg=\"msg\" :msgtype=\"msgtype\"></graceAlert>",
+			"<!-- 在 script 顶层加入 -->",
+			"import graceAlert from '../../graceUI/components/graceAlert.vue';",
+			"<!-- 在 script 内注册组件 -->",
+			"components : {graceAlert}",
+			"<!-- 在 script data 内加入变量 -->",
+			"show : true",
+			"msg : 'test...'",
+			"实现过程见 http://grace.hcoder.net/doc/info/82-1.html"
+		]
+	}
+	
+}
