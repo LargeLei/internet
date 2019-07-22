@@ -170,7 +170,7 @@
 					},
 					function(res) {
 						if (res.success) {
-							this.show = false;
+							_self.show = false;
 							uni.showToast({
 								title: "已撤回",
 								duration: 2000,
@@ -185,6 +185,7 @@
 				this.show = false;
 			},
 			showBanner: function(id) {
+				console.log(id)
 				_self.id = id;
 				this.show = true;
 			},

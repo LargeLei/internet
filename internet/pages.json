@@ -2,6 +2,12 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页
 		{
+			"path": "pages/myComplaint/myComplaint",
+			"style": {
+				"navigationBarTitleText": "我的投诉举报"
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"bounce": "none",
@@ -161,12 +167,7 @@
 				"navigationBarTitleText": "绑定身份信息"
 			}
 		},
-		{
-			"path": "pages/myComplaint/myComplaint",
-			"style": {
-				"navigationBarTitleText": "我的投诉举报"
-			}
-		},
+		
 		{
 			"path": "pages/complaitProcessing/complaitProcessing",
 			"style": {

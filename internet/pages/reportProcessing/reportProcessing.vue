@@ -36,6 +36,7 @@
 			<view v-if="data.ispublic"><text class="rate-list-title">是否可公开：</text><text class="rate-list-text">{{data.ispublic == 0?"公开":"不公开"}}</text></view>
 			<view><text class="rate-list-title">附件：</text><text class="rate-list-text">{{accessory}}</text></view>
 		</view>
+		
 		<view class="suggest">
 			<view class="grace-space-between suggest-list" style="border-bottom:2upx solid #DDDDDD;">
 				<text>是否满意</text><image :src="suggestImg" mode='widthFix' @tap="satisfaction"></image>
@@ -90,56 +91,46 @@
 				evaluateIndex: 0,
 				evaluate: [
 					{'feedBackCode':'0','feedBackName':'满意'},
-					{'feedBackCode':'0','feedBackName':'基本满意'},
-					{'feedBackCode':'0','feedBackName':'不满意'}
+					{'feedBackCode':'1','feedBackName':'基本满意'},
+					{'feedBackCode':'2','feedBackName':'不满意'}
 				],
 				suggest:0
 			}
 		},
 		methods: {
 			bindPickerChange: function(e) {
-				_self.suggest = _self.evaluate[e.detail.value].evaluateCode;
+				_self.suggest = _self.evaluate[e.detail.value].feedBackCode;
 				this.evaluateIndex = e.detail.value;
 			},
-			getInformationSteps:function(reportNumber){   
-				_self.$qyc.interfaceRequest(
-					"/informationStep/findInformationStepsByComplaintNumber", {complaintNumber:reportNumber},
-					function(res) {
-						if(res.success){
-							console.log(JSON.stringify(res.data));
-							_self.steps = res.data;
-						}
-					}
-				);
-			},
+			
 			loadReportData:function(){
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/reportinformation/getreportinformationbyid", {id:reportId},
 					function(res) {
-						console.log(JSON.stringify(res));
+						console.log(res.data)
 						if(res.success){
 							_self.data = res.data;
-							_self.getInformationSteps(res.data.reportNumber);
 						}
 					}
 				);
 			},
 			satisfaction:function(){
 				if (this.suggestImg == "../../static/imgs/dz_yd_icon.png") {
-					_self.islike = 0;
+					_self.islike = 1;
 					this.suggestImg = "../../static/imgs/dz_wd_icon.png"
 				} else{
-					_self.islike = 1;
+					_self.islike = 0;
 					this.suggestImg = "../../static/imgs/dz_yd_icon.png"
 				}
 			},
 			
 			//提交
 			saveSuggest :function(){
+				//console.log(_self.suggest,_self.islike)
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/reportinformation/updatereportinformation", {
 						id:reportId,
-						evaluate:_self.suggest,
+						evaluation:_self.suggest,
 						islike:_self.islike
 						},
 					function(res) {

@@ -12,7 +12,7 @@
 				</view>
 				<view class="target-list grace-space-between">
 					<view class="target-list-title" style="width:200upx;">联系地址</view>
-					<input type="text" class="input" style="width:100%;text-align: right;" v-model="userAddress" placeholder="请输入联系地址"></input>
+					<input type="text" class="input" maxlength="100" style="width:100%;text-align: right;" v-model="userAddress" placeholder="请输入联系地址(100字以内)"></input>
 				</view>
 			</view>
 			<!-- 举报对象 -->
@@ -62,7 +62,7 @@
 				<view class="target-info" v-show="safeShow">
 					<view class="grace-items">
 						<view class="grace-label"><text>发生地点</text></view>
-						<input type="text" class="input" v-model="place" placeholder="请输入发生地点"></input>
+						<input type="text" maxlength="200" class="input" v-model="place" placeholder="请输入发生地点(200字以内)"></input>
 					</view>
 				</view>
 				<!-- 金融监管-->
@@ -127,7 +127,7 @@
 					<view class="suggest-list">
 						<text>举报内容</text><text class="col-red">*</text>
 					</view>
-					<textarea placeholder-style="opacity: 0.3" v-model="reportDetail" placeholder="举报内容" />
+					<textarea maxlength="2000" placeholder-style="opacity: 0.3" v-model="reportDetail" placeholder="举报内容(2000字以内)" />
 					</view>
 			</view>
 			<!-- 上传 -->
@@ -655,6 +655,13 @@
 						});
 						return;
 					}
+					if(_self.place == ""){
+						uni.showToast({
+							icon: 'none',
+							title: '请输入发生地点！'
+						});
+						return;
+					}
 					data.pollutionType = _self.pollution[_self.pollutionIndex].pollutionCode
 				}
 				
@@ -677,16 +684,16 @@
 					data.serviceName = _self.serveName;
 					data.brand = _self.brand;
 				}
-				if(_self.problemCode == '12'){
-					if(_self.regulationMoney == ""){
+				if(_self.problemCode == '11'){
+					if(_self.place == ""){
 						uni.showToast({
 							icon: 'none',
-							title: '请输入涉嫌金额！'
+							title: '请输入发生地点！'
 						});
 						return;
 					}
-					data.involveAmount = _self.regulationMoney;
 				}
+				
 				if(this.reportDetail == ""){
 					uni.showToast({
 						icon: 'none',

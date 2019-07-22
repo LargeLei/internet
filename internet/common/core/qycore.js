@@ -2,6 +2,7 @@
 var _self;
 
 export default {
+	
 	install: function(Vue) {
 		_self = Vue.prototype;
 		
@@ -93,8 +94,8 @@ export default {
 			delta: 1
 		});
 		
-	}
-
+	},
+	
 
 
 }

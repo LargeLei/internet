@@ -12,7 +12,7 @@
 				</view>
 				<view class="target-list grace-space-between">
 					<view class="target-list-title" style="width:200upx;">联系地址</view>
-					<input type="text" class="input" style="width:100%;text-align: right;" v-model="userAddress" placeholder="请输入联系地址"></input>
+					<input type="text" class="input" maxlength="100" style="width:100%;text-align: right;" v-model="userAddress" placeholder="请输入联系地址(100字以内)"></input>
 				</view>
 			</view>
 			<!-- 投诉对象 -->
@@ -68,7 +68,7 @@
 				<view class="target-info" v-show="safeShow">
 					<view class="grace-items">
 						<view class="grace-label"><text>发生地点</text><text class="col-red">*</text></view>
-						<input type="text" class="input" v-model="place" placeholder="请输入发生地点"></input>
+						<input type="text" maxlength="200" class="input" v-model="place" placeholder="请输入发生地点(200字以内)"></input>
 					</view>
 				</view>
 				<!-- 金融监管-->
@@ -168,8 +168,8 @@
 					<view class="grace-items">
 						<view class="grace-label"><text>污染类型</text><text class="col-red">*</text></view>
 						<view class="grace-form-r" v-if="pollution.length > 0">
-							<picker @change="pollutionChange" :value="pollutionIndex" range-key="pollutionName" :range="pollution" name="pollutionCode">
-								<text>{{pollution[pollutionIndex].pollutionName}}</text>
+							<picker @change="pollutionChange" :value="pollutionIndex" range-key="pollutionType" :range="pollution" name="pollutionCode">
+								<text>{{pollution[pollutionIndex].pollutionType}}</text>
 							</picker>
 						</view>
 					</view>
@@ -182,7 +182,7 @@
 					<view class="suggest-list">
 						<text>投诉内容</text><text class="col-red">*</text>
 					</view>
-					<textarea placeholder-style="opacity: 0.3" v-model="complaintDetail" placeholder="投诉内容" />
+					<textarea maxlength="2000" placeholder-style="opacity: 0.3" v-model="complaintDetail" placeholder="投诉内容(2000字以内)" />
 					</view>
 			</view>
 			<!-- 上传 -->
@@ -276,7 +276,7 @@
 <script>
 	import mpvuePicker from '../../threeComponents/mpvuePicker.vue';
 	import graceMaskView from "../../graceUI/components/graceMaskView.vue";
-	import jsfunRecord from '@/components/jsfun-record/jsfun-record.vue'
+	import jsfunRecord from '@/components/jsfun-record/jsfun-record.vue';
 	var maxNum = 4;
 	var _self;
 	var id;
@@ -291,6 +291,7 @@
 				this.complaintObject = option.complaintObject;
 			}
 			this.getUserinfo();
+			this.getPollutionList();
 			this.getProblemTypeList();
 			this.getServiceTypeList();
 			this.getShoppingTypeList();
@@ -300,11 +301,13 @@
 		},
 		onShow:function(option){
 			this.getUserinfo();
+			this.getPollutionList();
 			this.getProblemTypeList();
 			this.getServiceTypeList();
 			this.getShoppingTypeList();
 			this.getUnitTypeList();
 			this.getProvinceList();
+			
 		},
 		data() {
 			return {
@@ -326,7 +329,7 @@
 				district : [{'cityCode':'0','cityName':'请选择'}],
 				districtIndex:0,
 				
-				pollution :[{'pollutionCode':'0','pollutionName':'请选择'}],
+				pollution :[{'pollutionCode':'0','pollutionType':'请选择'}],//污染类型
 				pollutionIndex:0,
 				//dom切换节点
 				problemCode:'',				
@@ -414,15 +417,16 @@
 				);
 			},
 			//获取污染类型 TODO
-			pollutionList:function(){
+			getPollutionList:function(){
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/admin/pollutiontype/getchildlistbyparentcode", {
-						parentCode:'0000'
+						'parentCode':'0000'
 					},
 					function(res) {
+						console.log(res)
 						if(res.success){
 							var a=[{'pollutionCode':'0','pollutionType':'请选择'}];
-							_self.cptType = a.concat(res.data.rows);
+							_self.pollution = a.concat(res.data);
 						}
 					}
 				);
@@ -435,7 +439,6 @@
 						"parentCode":"0000"
 					},
 					function(res) {
-						console.log(res)
 						if(res.success){
 							var a=[{'problemCode':'0','problemType':'请选择'}];
 							_self.cptType = a.concat(res.data);
@@ -529,6 +532,7 @@
 			},
 			//污染切换
 			pollutionChange:function(e){
+				console.log(e.detail.value)
 				this.pollutionIndex = e.detail.value;
 			},
 			//城市选择
@@ -711,10 +715,10 @@
 			//提交
 			goService : function(){
 				var data = {
-					"userName": _self.userName,
-					"userCertificateNumber": _self.userCertificateNumber,
-					"userAddress": _self.userAddress,
-					"complaintObject": _self.complaintObject,
+					"userName": 111,//_self.userName
+					//"userCertificateNumber": 312313,//_self.userCertificateNumber
+					"userAddress":312313 ,//_self.userAddress
+					"complaintObject":3242344 , //_self.complaintObject
 					"complaintTerritory":_self.complaintTerritory,
 					"complaintType": _self.cptType[_self.cptTypeIndex].problemCode,
 					"proviceCode":_self.province[_self.provinceIndex].cityCode,
@@ -725,6 +729,7 @@
 					// appealSource: 2,
 					
 				};
+				
 				if(_self.cptTypeIndex == 0){
 					uni.showToast({
 						icon: 'none',
@@ -754,6 +759,7 @@
 					return;
 				}
 				if(_self.problemCode == '03'){
+					
 					if(_self.pollution[_self.pollutionIndex].pollutionCode == "0"){
 						uni.showToast({
 							icon: 'none',
@@ -768,6 +774,7 @@
 						});
 						return;
 					}
+					
 					data.pollutionType = _self.pollution[_self.pollutionIndex].pollutionCode;
 					data.occurplace = _self.place;
 				}
@@ -840,23 +847,24 @@
 					return;
 				}
 				console.log(data)
-				// _self.$qyc.interfaceRequest(
-				// 	"/complaints/addComplaintInformation", data,
-				// 	function(res) {
-				// 		if(res.success){
-				// 			_self.successShow = true;
-				// 			setTimeout(function(){
-				// 				uni.navigateTo({ 
-				// 					url: '/pages/myComplaint/myComplaint'
-				// 				});
-				// 				var obj = _self.$options.data();
-				// 				obj.complaintObject = _self.complaintObject;
-				// 				Object.assign(_self.$data, obj);
-				// 			},2000);
-				// 		}
-				// 		
-				// 	}
-				// );
+				_self.$qyc.interfaceRequest(
+					"/ebus/tsjb/complaints/addcomplaintinformation", data,
+					function(res) {
+						console.log(res)
+						if(res.success){
+							_self.successShow = true;
+							setTimeout(function(){
+								uni.navigateTo({ 
+									url: '/pages/myComplaint/myComplaint'
+								});
+								var obj = _self.$options.data();
+								obj.complaintObject = _self.complaintObject;
+								Object.assign(_self.$data, obj);
+							},2000);
+						}
+						
+					}
+				);
 			},
 		},
 		components: {
