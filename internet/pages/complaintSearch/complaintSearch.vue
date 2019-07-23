@@ -81,21 +81,21 @@
 				_self.searchChange(e);
 				if (e.detail.value.length >= 1) {
 					console.log(111)
-// 					_self.$qyc.interfaceRequest(
-// 						"/ebus/tsjb/unittype/getchildlistbyparentcode", {
-// 							keywords: _self.componyName,
-// 							parentCode: "0000"
-// 						},
-// 						function(res) {
-// 							console.log(res)
-// 							if (res.data.rows.length > 0) {
-// 								_self.historyShow = false;
-// 								
-// 								_self.searchList = res.data.rows;
-// 							}
-// 
-// 						}
-// 					);
+					_self.$qyc.interfaceRequest(
+						"/ebus/tsjb/unittype/getchildlistbyparentcode", {
+							keywords: _self.componyName,
+							parentCode: "0000"
+						},
+						function(res) {
+							console.log(res)
+							if (res.data.rows.length > 0) {
+								_self.historyShow = false;
+								
+								_self.searchList = res.data.rows;
+							}
+
+						}
+					);
 				}
 
 			},
@@ -127,28 +127,29 @@
 			},
 			searchNow: function() {
 				if (_self.searchKey.length >= 1) {
-					uni.showLoading({
-						title: '搜索中...'
-					});
-					_self.historyShow = false;
-					_self.$qyc.interfaceRequest(
-						"/ebus/tsjb/unittype/getchildlistbyparentcode", {
-							keywords: _self.searchKey,
-							parentCode: "0000"
-						},
-						function(res) {
-							console.log(res)
-							uni.hideLoading();
-							_self.historyTemp = _self.searchKey + '|' + _self.historyTemp.split('|').filter(e => e != _self.searchKey).join(
-								'|');
-							uni.setStorageSync('history', _self.historyTemp);
-							if (res.data.length > 0) {
-								_self.searchList = res.data;
-							} else {
-								_self.show = true;
-							}
-						}
-					);
+					_self.show = true;
+					// uni.showLoading({
+					// 	title: '搜索中...'
+					// });
+					// _self.historyShow = false;
+					// _self.$qyc.interfaceRequest(
+					// 	"/ebus/tsjb/unittype/getchildlistbyparentcode", {
+					// 		keywords: _self.searchKey,
+					// 		parentCode: "0000"
+					// 	},
+					// 	function(res) {
+					// 		console.log(res)
+					// 		uni.hideLoading();
+					// 		_self.historyTemp = _self.searchKey + '|' + _self.historyTemp.split('|').filter(e => e != _self.searchKey).join(
+					// 			'|');
+					// 		uni.setStorageSync('history', _self.historyTemp);
+					// 		if (res.data.length > 0) {
+					// 			_self.searchList = res.data;
+					// 		} else {
+					// 			_self.show = true;
+					// 		}
+					// 	}
+					// );
 				}
 			},
 			//弹出层

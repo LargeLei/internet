@@ -174,29 +174,30 @@
 					}
 				} else {
 					if (_self.searchKey.length >= 1) {
-						uni.showLoading({
-							title: '搜索中...'
-						});
-						_self.$qyc.interfaceRequest(
-						"/ebus/tsjb/unittype/getchildlistbyparentcode", {
-							keywords: _self.searchKey,
-							parentCode: "0000"
-						},
-							function(res) {
-								_self.historyTemp = _self.searchKey + '|' + _self.historyTemp.split('|').filter(e => e != _self.searchKey).join(
-									'|');
-								uni.setStorageSync('reportHistory', _self.historyTemp);
-								console.log(uni.getStorageSync('reportHistory'));
-								uni.hideLoading();
-								if (res.data.length > 0) {
-									_self.historyShow = false;
-									_self.changeShow = false;
-									_self.searchList = res.data;
-								} else {
-									_self.show = true;
-								}
-							}
-						);
+						_self.show = true;
+						// uni.showLoading({
+						// 	title: '搜索中...'
+						// });
+						// _self.$qyc.interfaceRequest(
+						// "/ebus/tsjb/unittype/getchildlistbyparentcode", {
+						// 	keywords: _self.searchKey,
+						// 	parentCode: "0000"
+						// },
+						// 	function(res) {
+						// 		_self.historyTemp = _self.searchKey + '|' + _self.historyTemp.split('|').filter(e => e != _self.searchKey).join(
+						// 			'|');
+						// 		uni.setStorageSync('reportHistory', _self.historyTemp);
+						// 		console.log(uni.getStorageSync('reportHistory'));
+						// 		uni.hideLoading();
+						// 		if (res.data.length > 0) {
+						// 			_self.historyShow = false;
+						// 			_self.changeShow = false;
+						// 			_self.searchList = res.data;
+						// 		} else {
+						// 			_self.show = true;
+						// 		}
+						// 	}
+						// );
 					}
 				}
 			},

@@ -62,10 +62,47 @@
 			});
 		},
 		methods: {
+			// getHeadType: function() {
+			// 	_self.$qyc.request(
+			// 		"/f/mp/mplogin/findDiclable", {
+			// 			dicType: 'wx_lighthouse_type'
+			// 		},
+			// 		function(res) {
+			// 			console.log(res)
+			// 			_self.tabs = res.data;
+			// 			_self.getArticleList();
+			// 		}
+			// 	);
+			// },
+			// getArticleList: function() {
+			// 	uni.showLoading({
+			// 		title: '加载中...'
+			// 	});
+			// 	_self.$qyc.request(
+			// 		"/f/mp/mplogin/findArticleList", {
+			// 			newsType: 0
+			// 		},
+			// 		function(res) {
+			// 			uni.hideLoading();
+			// 			console.log(res)
+			// 			data = res.data.list;
+			// 			if (_self.tabs[0].dictValue == 1) {
+			// 				_self.newsAll = [data.slice(0, 5)];
+			// 			} else {
+			// 				_self.newsAll = [data.filter(function(e) {
+			// 					return e.typeLighthouse == _self.tabs[0].dictValue;
+			// 				})];
+			// 				console.log(_self.newsAll)
+			// 			}
+			// 
+			// 		}
+			// 	);
+			// },
 			getHeadType: function() {
-				_self.$qyc.request(
-					"/f/mp/mplogin/findDiclable", {
-						dicType: 'wx_lighthouse_type'
+				_self.$qyc.selfRequest(
+					"/jmportal_server/interfaces/cates.do", {
+						cateid : 31,
+						siteid : 1
 					},
 					function(res) {
 						console.log(res)
@@ -78,62 +115,26 @@
 				uni.showLoading({
 					title: '加载中...'
 				});
-				_self.$qyc.request(
-					"/f/mp/mplogin/findArticleList", {
-						newsType: 0
+				_self.$qyc.selfRequest(
+					"/jmportal_server/interfaces/infolist.do", {
+						resourceid : 33,
+						siteid : 1
 					},
 					function(res) {
 						uni.hideLoading();
 						console.log(res)
-						data = res.data.list;
-						if (_self.tabs[0].dictValue == 1) {
-							_self.newsAll = [data.slice(0, 5)];
-						} else {
-							_self.newsAll = [data.filter(function(e) {
-								return e.typeLighthouse == _self.tabs[0].dictValue;
-							})];
-						}
-			
+						//data = res.data.list;
+						// if (_self.tabs[0].dictValue == 1) {
+						// 	_self.newsAll = [data.slice(0, 5)];
+						// } else {
+						// 	_self.newsAll = [data.filter(function(e) {
+						// 		return e.typeLighthouse == _self.tabs[0].dictValue;
+						// 	})];
+						// }
+
 					}
 				);
 			},
-// 			getHeadType: function() {
-// 				_self.$qyc.request(
-// 					"/jmportal_server/interfaces/cates.do", {
-// 						cateid : 31,
-// 						siteid : 1
-// 					},
-// 					function(res) {
-// 						console.log(res)
-// 						//_self.tabs = res.data;
-// 						_self.getArticleList();
-// 					}
-// 				);
-// 			},
-// 			getArticleList: function() {
-// 				uni.showLoading({
-// 					title: '加载中...'
-// 				});
-// 				_self.$qyc.request(
-// 					"/jmportal_server/interfaces/infolist.do", {
-// 						resourceid : 33,
-// 						siteid : 1
-// 					},
-// 					function(res) {
-// 						uni.hideLoading();
-// 						console.log(res)
-// 						//data = res.data.list;
-// 						// if (_self.tabs[0].dictValue == 1) {
-// 						// 	_self.newsAll = [data.slice(0, 5)];
-// 						// } else {
-// 						// 	_self.newsAll = [data.filter(function(e) {
-// 						// 		return e.typeLighthouse == _self.tabs[0].dictValue;
-// 						// 	})];
-// 						// }
-// 
-// 					}
-// 				);
-// 			},
 			goLighthouseDetail: function(articleId) {
 				uni.navigateTo({
 					url: '/pages/lawsDetail/lawsDetail?articleId=' + articleId
@@ -144,20 +145,25 @@
 				var str = e.target.id;
 				var arr = str.split(",");
 				var index = arr[0].replace('tabTag-', '');
+				console.log(index)
 				currentDicvalue = arr[1].replace('tabId-', '');
+				console.log(currentDicvalue)
 				if (currentDicvalue == 1) {
 					_self.newsAll[index] = data.slice(0, 5);
 				} else {
 					_self.newsAll[index] = data.filter(function(val) {
-						console.log(currentDicvalue)
+						
 						return val.typeLighthouse == currentDicvalue;
+						console.log(_self.newsAll)
 					});
 				}
 				_self.swiperCurrentIndex = index;
 				_self.tabCurrentIndex = index;
 			},
 			swiperChange: function(e) {
+				
 				var index = e.detail.current;
+				console.log(e)
 				_self.tabCurrentIndex = index;
 			},
 			//每个选项滚动到底部
