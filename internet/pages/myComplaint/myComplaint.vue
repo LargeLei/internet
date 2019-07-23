@@ -113,6 +113,7 @@
 					},
 					function(res) {
 						if (res.success) {
+							console.log(res)
 							//展示loading
 							_self.loadingType = 1;
 							//追加数据(延迟1秒 模拟网络请求)

@@ -81,21 +81,21 @@
 				_self.searchChange(e);
 				if (e.detail.value.length >= 1) {
 					console.log(111)
-					_self.$qyc.interfaceRequest(
-						"/ebus/tsjb/unittype/getchildlistbyparentcode", {
-							keywords: _self.componyName,
-							parentCode: "0000"
-						},
-						function(res) {
-							console.log(res)
-							if (res.data.rows.length > 0) {
-								_self.historyShow = false;
-								
-								_self.searchList = res.data.rows;
-							}
-
-						}
-					);
+// 					_self.$qyc.interfaceRequest(
+// 						"/ebus/tsjb/unittype/getchildlistbyparentcode", {
+// 							keywords: _self.componyName,
+// 							parentCode: "0000"
+// 						},
+// 						function(res) {
+// 							console.log(res)
+// 							if (res.data.rows.length > 0) {
+// 								_self.historyShow = false;
+// 								
+// 								_self.searchList = res.data.rows;
+// 							}
+// 
+// 						}
+// 					);
 				}
 
 			},
@@ -126,8 +126,8 @@
 				this.searchNow();
 			},
 			searchNow: function() {
-				if (_self.searchKey.length >= 1) {
-					_self.show = true;
+				_self.show = true;
+				//if (_self.searchKey.length >= 1) {
 					// uni.showLoading({
 					// 	title: '搜索中...'
 					// });
@@ -150,7 +150,7 @@
 					// 		}
 					// 	}
 					// );
-				}
+				//}
 			},
 			//弹出层
 			closeBanner: function() {

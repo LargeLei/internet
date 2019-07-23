@@ -2,16 +2,16 @@
 	<view class="grace-padding">
 		<scroll-view class="grace-tab-title grace-center" scroll-x="true" id="grace-tab-title">
 			<view v-for="(tab, index) in tabs" :key="index" :class="[tabCurrentIndex == index ? 'grace-tab-current' : '']" :id="'tabTag-'+index+',tabId-'+tab.dictValue"
-			 @tap="tabChange">{{tab.dictLabel}}</view>
+			 @tap="tabChange">{{tab.resourcename}}</view>
 		</scroll-view>
 		<swiper class="grace-tab-swiper-full" :current="swiperCurrentIndex" @change="swiperChange" :style="{height:tabHeight+'px'}">
 			<!-- 循环新闻项目 -->
-			<swiper-item v-for="(news, newsIndex) in newsAll" :key="newsIndex">
+			<swiper-item v-for="(news, newsIndex) in infors" :key="newsIndex">
 				<scroll-view scroll-y="true" :data-scindex="newsIndex" @scrolltolower="scrollend">
 					<view class="light">
-						<view class="light-list" v-for="(item, index) in news" :key="index" @tap="goLighthouseDetail(item.id)">
-							<view class="grace-ellipsis-2">{{item.newsTitle}}</view>
-							<text>{{item.createDate}}</text>
+						<view class="light-list" v-for="(item, index) in news.resourcetitle" :key="index" @tap="goLighthouseDetail(item.titleid)">
+							<view class="grace-ellipsis-2">{{item.titletext}}</view>
+							<text>{{item.time}}</text>
 						</view>
 					</view>
 					<!-- <graceLoading :loadingType="tabs[newsIndex].loadingType"></graceLoading> -->
@@ -38,7 +38,8 @@
 				tabs: [],
 				newsAll: [
 					[]
-				]
+				],
+				infors:[]
 			}
 		},
 
@@ -105,8 +106,8 @@
 						siteid : 1
 					},
 					function(res) {
-						console.log(res)
-						_self.tabs = res.data;
+						//console.log(res)
+						_self.tabs = res.resource;
 						_self.getArticleList();
 					}
 				);
@@ -122,16 +123,9 @@
 					},
 					function(res) {
 						uni.hideLoading();
-						console.log(res)
-						//data = res.data.list;
-						// if (_self.tabs[0].dictValue == 1) {
-						// 	_self.newsAll = [data.slice(0, 5)];
-						// } else {
-						// 	_self.newsAll = [data.filter(function(e) {
-						// 		return e.typeLighthouse == _self.tabs[0].dictValue;
-						// 	})];
-						// }
-
+						//console.log(res)
+						_self.infors = res.resource;
+						
 					}
 				);
 			},

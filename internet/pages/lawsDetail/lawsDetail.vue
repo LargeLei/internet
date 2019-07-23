@@ -42,12 +42,16 @@
 		},
 		methods: {
 			getArticle:function(){
-				_self.$qyc.request(
-					"/f/mp/mplogin/getArticleById", {articleId:articleId},
+				_self.$qyc.selfRequest(
+					"/jmportal_server/interfaces/infocontent.do", {
+						titleid : articleId,
+						siteid : 1
+					},
 					function(res) {
-						_self.plaintsHead = res.data.newsTitle;
-						_self.plaintsTime = res.data.createDate;
-						_self.content = res.data.newsContent;
+						console.log(res)
+						_self.plaintsHead = res.titletext;
+						_self.plaintsTime = res.time;
+						_self.content = res.titlecontent;
 					}
 				);
 			},
