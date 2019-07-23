@@ -17,9 +17,10 @@ export default {
 				'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' //自定义请求头信息
 			},
 			success: (res) => {
-				if (res.data.result === "false" || res.data.result != "true") {
+				//console.log(res)
+				if (res.statusCode != 200) {
 					uni.showToast({
-						title: res.data.message,
+						title: res.errMsg,
 						duration: 2000,
 						icon: 'none'
 					});
@@ -61,6 +62,7 @@ export default {
 				'x-tif-nonce':nonce
 			},
 			success: (res) => {
+				//console.log(res)
 				if (res.data.result === "false") {
 					uni.showToast({
 						title: res.data.message,

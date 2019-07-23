@@ -159,15 +159,18 @@
 				uni.showLoading({
 					title: '加载中...'
 				});
-				_self.$qyc.request(
-					"/f/mp/mplogin/findArticleList", {
-						newsType: 0,
-					},
-					function(res) {
-						uni.hideLoading();
-						_self.laws = res.data.list.slice(0, 5);
-					}
-				);
+				// _self.$qyc.request(
+				// 	"/jmportal_server/interfaces/cates.do", {
+				// 		cateid : 31,
+				// 		siteid : 1
+				// 	},
+				// 	function(res) {
+				// 		console.log(1,res)
+				// 		uni.hideLoading();
+				// 		console.log(1,res)
+				// 		_self.laws = res.data.list.slice(0, 5);
+				// 	}
+				// );
 			},	
 			goMy: function() {
 				uni.navigateTo({

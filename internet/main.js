@@ -26,8 +26,8 @@ Vue.prototype.interfaceUrl = "http://121.52.221.201:80";
 // Vue.prototype.interfaceUrl = "http://172.16.16.177:9000";
 
 //本地后台地址
-// Vue.prototype.siteUrl = "http://xiaobei.j2eeall.com";
-Vue.prototype.siteUrl = "http://a256160g08.qicp.vip";
+// Vue.prototype.siteUrl = "http://a256160g08.qicp.vip";
+Vue.prototype.siteUrl = "http://121.52.221.197";
 
 
 //静态资源路径

@@ -64,10 +64,12 @@
 		methods: {
 			getHeadType: function() {
 				_self.$qyc.request(
-					"/f/mp/mplogin/findDiclable", {
-						dicType: 'wx_lighthouse_type'
+					"/jmportal_server/interfaces/cates.do", {
+						cateid : 31,
+						siteid : 1
 					},
 					function(res) {
+						console.log(res)
 						_self.tabs = res.data;
 						_self.getArticleList();
 					}
