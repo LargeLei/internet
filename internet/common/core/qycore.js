@@ -7,10 +7,9 @@ export default {
 		_self = Vue.prototype;
 		
 	},
-	
-	request(url, data, callback,errBack) {
+	selfRequest(url, data, callback,errBack) {
 		uni.request({
-			url: _self.siteUrl + url, //仅为示例，并非真实接口地址。
+			url: _self.selfUrl + url, //仅为示例，并非真实接口地址。
 			data: data,
 			method: "POST",
 			header: {
@@ -40,7 +39,62 @@ export default {
 		});
 	
 	},
+	request(url, data, callback,errBack) {
+		uni.request({
+			url: _self.siteUrl + url, //仅为示例，并非真实接口地址。
+			data: data,
+			method: "POST",
+			header: {
+				'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' //自定义请求头信息
+			},
+			success: (res) => {
+				//console.log(res)
+				if (res.data.result === "false") {
+					uni.showToast({
+						title: res.data.message,
+						duration: 2000,
+						icon: 'none'
+					});
+					return
+				}
+				callback(res.data);
+			},
+			fail:(err) => {
+				if (errBack){
+					errBack(res.data);
+				}
+			}
+		});
 	
+	},
+	getRequest(url, data, callback,errBack) {
+		uni.request({
+			url: _self.siteUrl + url, //仅为示例，并非真实接口地址。
+			data: data,
+			method: "GET",
+			header: {
+				'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' //自定义请求头信息
+			},
+			success: (res) => {
+				//console.log(res)
+				if (res.data.result === "false") {
+					uni.showToast({
+						title: res.data.message,
+						duration: 2000,
+						icon: 'none'
+					});
+					return
+				}
+				callback(res.data);
+			},
+			fail:(err) => {
+				if (errBack){
+					errBack(res.data);
+				}
+			}
+		});
+	
+	},
 	interfaceRequest(url, data, callback,errBack) {
 		const crypto = _self.$crypto;
 		const SHA256 = _self.$SHA256;

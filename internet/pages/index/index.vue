@@ -159,18 +159,18 @@
 				uni.showLoading({
 					title: '加载中...'
 				});
-				// _self.$qyc.request(
-				// 	"/jmportal_server/interfaces/cates.do", {
-				// 		cateid : 31,
-				// 		siteid : 1
-				// 	},
-				// 	function(res) {
-				// 		console.log(1,res)
-				// 		uni.hideLoading();
-				// 		console.log(1,res)
-				// 		_self.laws = res.data.list.slice(0, 5);
-				// 	}
-				// );
+				_self.$qyc.selfRequest(
+					"/jmportal_server/interfaces/infolist.do", {
+						resourceid : 33,
+						siteid : 1
+					},
+					function(res) {
+						uni.hideLoading();
+						console.log(res)
+					
+						//_self.laws = res.data.list.slice(0, 5);
+					}
+				);
 			},	
 			goMy: function() {
 				uni.navigateTo({

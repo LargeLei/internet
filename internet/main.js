@@ -22,12 +22,11 @@ Vue.prototype.AppSecret = "f4f5e4a4f514aca587ea4e307c6f7698";
 //投诉举报地址
 Vue.prototype.interfaceUrl = "http://121.52.221.201:80";
 
-//本地
-// Vue.prototype.interfaceUrl = "http://172.16.16.177:9000";
-
 //本地后台地址
-// Vue.prototype.siteUrl = "http://a256160g08.qicp.vip";
-Vue.prototype.siteUrl = "http://121.52.221.197";
+ Vue.prototype.siteUrl = "http://a256160g08.qicp.vip";
+
+//曝光台
+Vue.prototype.selfUrl = "http://121.52.221.197";
 
 
 //静态资源路径

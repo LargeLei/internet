@@ -37,18 +37,14 @@
 
 		methods: {
 			getParentList: function() {
-				// uni.request({
-				// 	url: _self.siteUrl+'/static/departments/000000.json',
-				// 	success: (res) => {
-				// 		_self.mainCate = res.data.splice(1, res.data.length);
-				// 		this.getallData();
-				// 	}
-				// });
-				_self.$qyc.request(
-					"/static/departments/000000.json", {},
+				_self.$qyc.getRequest(
+					"/static/departments/000000.json",{
+						
+					},
 					function(res) {
-						_self.mainCate = res.data.splice(1, res.data.length);
-						this.getallData();
+						console.log(res)
+						_self.mainCate = res.splice(1, res.length);
+						_self.getallData();
 					}
 				);
 			},
