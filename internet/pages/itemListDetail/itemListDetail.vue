@@ -45,12 +45,12 @@
 </template>
 <script>
 	var _self;
-	var cateId;
+	var sub_code;
 	export default {
 		onLoad: function(option) {
 			_self = this;
 			if (option.cateId) {
-				cateId = option.cateId;
+				sub_code = option.cateId;
 			}
 			this.getDataDetail();
 		},
@@ -75,18 +75,13 @@
 				uni.showLoading({
 					title: '加载中...'
 				});
-				// uni.request({
-				// 	url: _self.siteUrl+'/static/detail/' + cateId + '.json',
-				// 	success: (res) => {
-				// 		uni.hideLoading();
-				// 		_self.res = res.data;
-				// 	}
-				// });
-				_self.$qyc.request(
-					'/static/detail/' + cateId + '.json', {},
+				
+				_self.$qyc.getMatterUrl(
+					'/ebus/jgsxz/detail/' + sub_code + '.json', {},
 					function(res) {
 						uni.hideLoading();
-						_self.res = res.data;
+						console.log(res)
+						_self.res = res;
 					}
 				);
 			}

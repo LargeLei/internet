@@ -2,68 +2,182 @@
 	<view class="grace-padding">
 		<view class="grace-cate">
 			<scroll-view class="grace-cate-left" scroll-y="true">
-				<view v-for="(item, index) in mainCate" :id="index" :key="index" :class="[currentCateIndex == index ? 'current' : '']"
+				<view v-for="(item, index) in mainCate" :id="index" :data-departmentCode='item.code' :key="index" :class="[currentCateIndex == index ? 'current' : '']"
 				 @tap="changCate">{{item.name}}</view>
 			</scroll-view>
 			<scroll-view class="grace-cate-right" scroll-y="true">
 				<view class="grace-cate-sons" v-if="soncates.length > 0">
-					<view v-for="(itemSon, indexSon) in soncates[currentCateIndex].nodes" :key="indexSon">
+					<view v-for="(itemSon, indexSon) in soncates" :key="indexSon">
 						<view class="grace-cate-sons-title grace-ellipsis-2">{{itemSon.name}}</view>
 						<view class="grace-cate-sons-nav">
-							<view class="grace-ellipsis-2" v-for="(sonsNav, indexSonsNav) in itemSon.nodes" :id="sonsNav.code" @tap="selectCate" :key="indexSonsNav">{{sonsNav.name}}</view>
+							<view class="grace-ellipsis-2" v-for="(sonsNav, indexSonsNav) in childCates" v-if="sonsNav.code==itemSon.code" :id="sonsNav.childInfor.code" @tap="selectCate" :key="indexSonsNav">{{sonsNav.childInfor.name}}</view>
 						</view>
 					</view>
 				</view>
+				<view @tap="changePage">
+					<uni-load-more  :loadingType="loadingType"  :contentText="contentText" ></uni-load-more>
+				</view>
+				
 			</scroll-view>
 		</view>
 	</view>
 </template>
 <script>
+	import uniLoadMore from '../../components/uni-load-more.vue';
 	var _self;
 	export default {
+		components: {//注册组件
+			uniLoadMore
+		},
 		onLoad: function(option) {
 			_self = this;
 			this.getParentList();
 		},
+		
 		data() {
 			return {
 				currentCateIndex: 0,
-				//父级分类
+				//tabID
+				departmentCode:'00000011',
+				//页数
+				pageNum:1,
+				//单页条数
+				pageNo:'7',
+				//总数据
+				total:'',
+				//tab
 				mainCate: [],
 				//子分类
-				soncates: []
+				soncates: [],
+				childCates:[],
+				loadingType: '0',
+				contentText: {
+					contentdown:'点击加载更多',
+					contentrefresh: '正在加载...',
+					contentnomore: '没有更多数据了'
+				}
 			}
 		},
 
 		methods: {
 			getParentList: function() {
-				_self.$qyc.getRequest(
-					"/static/departments/000000.json",{
+				_self.$qyc.getMatterUrl(
+					"/ebus/jgsxz/departments/000000.json",{
 						
 					},
 					function(res) {
-						console.log(res)
-						_self.mainCate = res.splice(1, res.length);
+						_self.mainCate = res;
 						_self.getallData();
 					}
 				);
 			},
+			//首次加载数据
 			getallData: function() {
+				_self.pageNum = 1;
+				_self.loadingType = '0';
+				_self.childCates = [];
 				uni.showLoading({
 					title: '加载中...'
 				});
-				_self.$qyc.request(
-					"/f/mp/mplogin/findItemList", {},
+				_self.$qyc.getMatterUrl(
+					"/ebus/jgsxz/mainitem/"+_self.departmentCode+"/"+_self.pageNum+".json", {},
 					function(res) {
-						uni.hideLoading();
-						_self.soncates = res.data.splice(1, res.data.length);
+						//console.log(res)
+						_self.total = res.total;
+						_self.soncates = res.list;
+						//获取子类数据
+					  　for (var i = 0;i<res.list.length;i++) {
+							    let main_code = res.list[i].code,
+									childObject = {
+										childInfor : {
+										}
+									};
+								_self.$qyc.getMatterUrl(
+									"/ebus/jgsxz/subitem/"+main_code+".json", {},
+									function(res) {
+										console.log(res)
+										uni.hideLoading();
+										childObject.code = main_code;
+										for(var i = 0;i<res.length;i++){
+											childObject.childInfor.code = res[i].code;
+											childObject.childInfor.name = res[i].name;
+											_self.childCates.push(childObject);
+										}
+										//console.log(_self.childCates)
+									}
+								);
+			　　　　　　 }
+						if( _self.pageNum >= res.total/_self.pageNo){
+							_self.loadingType = '2'
+						}else{
+							_self.loadingType = '0'
+						}
 					}
 				);
 			},
+			//分页获取更多
+			getMoreData: function() {
+				_self.pageNum++;
+				_self.loadingType = '1';
+				uni.showLoading({
+					title: '加载中...'
+				});
+				_self.$qyc.getMatterUrl(
+					"/ebus/jgsxz/mainitem/"+_self.departmentCode+"/"+_self.pageNum+".json", {},
+					function(res) {
+						//console.log(res)
+						uni.hideLoading();
+						_self.total = res.total;
+						_self.soncates = _self.soncates.concat(res.list)
+						//console.log(_self.pageNum,res.total/_self.pageNo)
+						//获取子类数据
+					  　for (var i = 0;i<res.list.length;i++) {
+								let main_code = res.list[i].code,
+									childObject = {
+										childInfor : {
+										}
+									};
+								_self.$qyc.getMatterUrl(
+									"/ebus/jgsxz/subitem/"+main_code+".json", {},
+									function(res) {
+										//console.log(res)
+										uni.hideLoading();
+										childObject.code = main_code;
+										for(var i = 0;i<res.length;i++){
+											childObject.childInfor.code = res[i].code;
+											childObject.childInfor.name = res[i].name;
+											_self.childCates.push(childObject);
+										}
+										//console.log(_self.childCates)
+									}
+								);
+			　　　　　　 }
+						if( _self.pageNum >= res.total/_self.pageNo){
+							_self.loadingType = '2'
+						}else{
+							_self.loadingType = '0'
+						}
+						
+					}
+				);
+			},
+			//分页点击查看更多
+			changePage:function(e){
+				if( _self.loadingType == '0'){
+					_self.getMoreData()
+				}else{
+					return false
+				}
+			},
+			//tab切换
 			changCate: function(e) {
 				var index = e.currentTarget.id;
 				_self.currentCateIndex = index;
+				_self.departmentCode = e.currentTarget.dataset.departmentcode;
+				_self.getallData();
+				//console.log(e,_self.departmentCode)
 			},
+			//跳转详情
 			selectCate: function(e) {
 				var cateId = e.currentTarget.id;
 				uni.navigateTo({
@@ -84,9 +198,6 @@
 				// });
 			}
 		},
-		components: {
-
-		}
 	}
 </script>
 

@@ -1,12 +1,91 @@
 // 千叶核心文件
-var _self;
-
+var _self,crypto,SHA256,
+	timestamp = (Date.now() / 1000).toFixed(),
+	nonce = '123456789abcdefg';
 export default {
 	
 	install: function(Vue) {
 		_self = Vue.prototype;
-		
+		crypto = _self.$crypto;
+		SHA256 = _self.$SHA256;
 	},
+	//投诉举报
+	interfaceRequest(url, data, callback,errBack) {
+		const paasid = 'tsjb';
+		const token = 'UCefCo5ot4GtjOIyjJufwJeFw7Wlytlt';
+		const signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
+		uni.request({
+			url: _self.interfaceUrl + url, //仅为示例，并非真实接口地址。
+			data: data,
+			method: "POST",
+			header: {
+				'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' ,//自定义请求头信息
+				//'Content-Type':'application/json',
+				'x-tif-paasid':paasid,
+				'x-tif-timestamp':timestamp,
+				'x-tif-signature':signature,
+				'x-tif-nonce':nonce
+			},
+			success: (res) => {
+				//console.log(res)
+				if (res.data.result === "false") {
+					uni.showToast({
+						title: res.data.message,
+						duration: 2000,
+						icon: 'none'
+					});
+					return
+				}
+				callback(res.data);
+			},
+			fail:(err) => {
+				if (errBack){
+					errBack(res.data);
+				}
+			}
+		});
+	
+	},
+	//事项清单
+	getMatterUrl(url, data, callback,errBack) {
+		
+		const paasid = 'jgsxz';
+		const token = 'DNQt3AfnSPVMU1E097KZ15drsKCECbvt';
+				
+		const signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
+		uni.request({
+			url: _self.getMatterUrl + url, //仅为示例，并非真实接口地址。
+			data: data,
+			method: "GET",
+			header: {
+				'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' ,//自定义请求头信息
+				//'Content-Type':'application/json',
+				'x-tif-paasid':paasid,
+				'x-tif-timestamp':timestamp,
+				'x-tif-signature':signature,
+				'x-tif-nonce':nonce
+			},
+			success: (res) => {
+				if (res.statusCode != 200) {
+					uni.showToast({
+						title: "请求失败！",
+						duration: 2000,
+						icon: 'none'
+					});
+					return
+				}
+				callback(res.data);
+			},
+			fail:(err) => {
+				if (errBack){
+					errBack(res.data);
+				}
+			}
+		});
+	
+	},
+	
+	//曝光台
 	selfRequest(url, data, callback,errBack) {
 		uni.request({
 			url: _self.selfUrl + url, //仅为示例，并非真实接口地址。
@@ -39,6 +118,7 @@ export default {
 		});
 	
 	},
+	//本地POST
 	request(url, data, callback,errBack) {
 		uni.request({
 			url: _self.siteUrl + url, //仅为示例，并非真实接口地址。
@@ -67,6 +147,7 @@ export default {
 		});
 	
 	},
+	//本地GET
 	getRequest(url, data, callback,errBack) {
 		uni.request({
 			url: _self.siteUrl + url, //仅为示例，并非真实接口地址。
@@ -95,46 +176,7 @@ export default {
 		});
 	
 	},
-	interfaceRequest(url, data, callback,errBack) {
-		const crypto = _self.$crypto;
-		const SHA256 = _self.$SHA256;
-		const paasid = 'tsjb';
-		const token = 'UCefCo5ot4GtjOIyjJufwJeFw7Wlytlt';
-		const timestamp = (Date.now() / 1000).toFixed();
-		const nonce = '123456789abcdefg';
-		const signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
-		uni.request({
-			url: _self.interfaceUrl + url, //仅为示例，并非真实接口地址。
-			data: data,
-			method: "POST",
-			header: {
-				'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' ,//自定义请求头信息
-				//'Content-Type':'application/json',
-				'x-tif-paasid':paasid,
-				'x-tif-timestamp':timestamp,
-				'x-tif-signature':signature,
-				'x-tif-nonce':nonce
-			},
-			success: (res) => {
-				//console.log(res)
-				if (res.data.result === "false") {
-					uni.showToast({
-						title: res.data.message,
-						duration: 2000,
-						icon: 'none'
-					});
-					return
-				}
-				callback(res.data);
-			},
-			fail:(err) => {
-				if (errBack){
-					errBack(res.data);
-				}
-			}
-		});
-
-	},
+	
 	closeWin(reload){
 		if (reload){
 			var pages = getCurrentPages();//当前页
