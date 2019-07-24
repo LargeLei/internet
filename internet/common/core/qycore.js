@@ -9,7 +9,7 @@ export default {
 		crypto = _self.$crypto;
 		SHA256 = _self.$SHA256;
 	},
-	//投诉举报
+	//投诉举报post
 	interfaceRequest(url, data, callback,errBack) {
 		const paasid = 'tsjb';
 		const token = 'UCefCo5ot4GtjOIyjJufwJeFw7Wlytlt';
@@ -46,7 +46,7 @@ export default {
 		});
 	
 	},
-	//事项清单
+	//事项清单GET
 	getMatterUrl(url, data, callback,errBack) {
 		
 		const paasid = 'jgsxz';

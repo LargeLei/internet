@@ -24,7 +24,6 @@ Vue.prototype.interfaceUrl = "http://121.52.221.201:80";
 
 //事项清单地址
 Vue.prototype.getMatterUrl = "http://121.52.221.201:80";
-Vue.prototype.postMatterUrl = "http://121.52.221.201:80";
 
 //本地后台地址
  Vue.prototype.siteUrl = "http://a256160g08.qicp.vip";

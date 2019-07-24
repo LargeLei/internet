@@ -17,7 +17,6 @@
 				<view @tap="changePage">
 					<uni-load-more  :loadingType="loadingType"  :contentText="contentText" ></uni-load-more>
 				</view>
-				
 			</scroll-view>
 		</view>
 	</view>
@@ -125,11 +124,9 @@
 				_self.$qyc.getMatterUrl(
 					"/ebus/jgsxz/mainitem/"+_self.departmentCode+"/"+_self.pageNum+".json", {},
 					function(res) {
-						//console.log(res)
 						uni.hideLoading();
 						_self.total = res.total;
 						_self.soncates = _self.soncates.concat(res.list)
-						//console.log(_self.pageNum,res.total/_self.pageNo)
 						//获取子类数据
 					  　for (var i = 0;i<res.list.length;i++) {
 								let main_code = res.list[i].code,
@@ -140,7 +137,6 @@
 								_self.$qyc.getMatterUrl(
 									"/ebus/jgsxz/subitem/"+main_code+".json", {},
 									function(res) {
-										//console.log(res)
 										uni.hideLoading();
 										childObject.code = main_code;
 										for(var i = 0;i<res.length;i++){
@@ -148,7 +144,6 @@
 											childObject.childInfor.name = res[i].name;
 											_self.childCates.push(childObject);
 										}
-										//console.log(_self.childCates)
 									}
 								);
 			　　　　　　 }
@@ -175,7 +170,6 @@
 				_self.currentCateIndex = index;
 				_self.departmentCode = e.currentTarget.dataset.departmentcode;
 				_self.getallData();
-				//console.log(e,_self.departmentCode)
 			},
 			//跳转详情
 			selectCate: function(e) {

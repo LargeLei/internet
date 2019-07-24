@@ -80,7 +80,6 @@
 					'/ebus/jgsxz/detail/' + sub_code + '.json', {},
 					function(res) {
 						uni.hideLoading();
-						console.log(res)
 						_self.res = res;
 					}
 				);
