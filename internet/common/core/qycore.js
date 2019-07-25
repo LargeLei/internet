@@ -48,10 +48,8 @@ export default {
 	},
 	//事项清单GET
 	getMatterUrl(url, data, callback,errBack) {
-		
 		const paasid = 'jgsxz';
 		const token = 'DNQt3AfnSPVMU1E097KZ15drsKCECbvt';
-				
 		const signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
 		uni.request({
 			url: _self.getMatterUrl + url, //仅为示例，并非真实接口地址。

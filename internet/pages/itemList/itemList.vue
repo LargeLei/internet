@@ -81,7 +81,7 @@
 				_self.$qyc.getMatterUrl(
 					"/ebus/jgsxz/mainitem/"+_self.departmentCode+"/"+_self.pageNum+".json", {},
 					function(res) {
-						//console.log(res)
+						console.log(res)
 						_self.total = res.total;
 						_self.soncates = res.list;
 						//获取子类数据
@@ -94,7 +94,7 @@
 								_self.$qyc.getMatterUrl(
 									"/ebus/jgsxz/subitem/"+main_code+".json", {},
 									function(res) {
-										console.log(res)
+										//console.log(res)
 										uni.hideLoading();
 										childObject.code = main_code;
 										for(var i = 0;i<res.length;i++){

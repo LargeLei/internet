@@ -57,7 +57,8 @@
 		
 		<view class="suggest">
 			<view class="grace-space-between suggest-list" style="border-bottom:2upx solid #DDDDDD;">
-				<text>是否满意</text><image :src="suggestImg" mode='widthFix' @tap="satisfaction"></image>
+				<text>是否满意</text>
+				<image :src="suggestImg" mode='widthFix' @tap="satisfaction"></image>
 			</view>
 			<view class="grace-form">
 				<view class="grace-items">
@@ -137,12 +138,16 @@
 						if(res.success){
 							console.log(res.data)
 							_self.data = res.data;
-							//根据投诉举报编号获取处理进度
+							if(res.data.islike == 1){
+								_self.suggestImg = '../../static/imgs/dz_wd_icon.png'
+							}
+							_self.evaluateIndex = res.data.evaluation
 							_self.getInformationRelpy(res.data.complaintNumber,res.data.stateCode);
 						}
 					}
 				);
 			},
+			//查看回复信息
 			getInformationRelpy:function(complaintNumber,stateCode){   
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/informationstep/findstepbycomplaintnumberandstatecode", {complaintNumber:complaintNumber,stateCode:stateCode},
@@ -154,6 +159,7 @@
 					}
 				);
 			},
+			//点赞图标切换
 			satisfaction:function(){
 				if (this.suggestImg == "../../static/imgs/dz_yd_icon.png") {
 					_self.islike = 1;
