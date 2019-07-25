@@ -694,10 +694,11 @@
 					});
 					return;
 				}
-				//console.log(data)
+				console.log(data)
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/reportinformation/addreportinformation", data,
 					function(res) {
+						console.log(res)
 						if(res.success){
 							_self.successShow = true;
 							setTimeout(function(){

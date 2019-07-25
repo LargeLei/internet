@@ -110,10 +110,15 @@
 						console.log(res.data)
 						if(res.success){
 							_self.data = res.data;
+							if(res.data.islike == 1){
+								_self.suggestImg = '../../static/imgs/dz_wd_icon.png'
+							}
+							_self.evaluateIndex = res.data.evaluation
 						}
 					}
 				);
 			},
+			//点赞图标切换
 			satisfaction:function(){
 				if (this.suggestImg == "../../static/imgs/dz_yd_icon.png") {
 					_self.islike = 1;
