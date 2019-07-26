@@ -45,7 +45,7 @@
 		</view>
 		<!-- 搜索列表 -->
 		<view class="search-item">
-			<view class="search-list" v-for="(item, index) in searchList" :key="index" @tap="goComplaintTarget(item.id)">
+			<view class="search-list" v-for="(item, index) in searchList" :key="index" @tap="goCplRptTarget(item.id)">
 				<view><text>企业名称：</text><text>{{item.entName}}</text></view>
 				<view><text>统一社会信用代码：</text><text>{{item.uniscid}}</text></view>
 			</view>
@@ -160,9 +160,9 @@
 				this.show = true;
 			},
 
-			goComplaintTarget: function(id) {
+			goCplRptTarget: function(id) {
 				uni.navigateTo({
-					url: '/pages/complaintTarget/complaintTarget?id=' + id
+					url: '/pages/cplRptTarget/cplRptTarget?id=' + id
 				});
 			},
 			godAddServiceInfo: function() {

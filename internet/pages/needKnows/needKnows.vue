@@ -93,7 +93,7 @@
 			goComplaintsSearch: function() {
 				if (click_flag) {
 					uni.navigateTo({
-						url: '/pages/complaintSearch/complaintSearch'
+						url: '/pages/cplRptSearch/cplRptSearch'
 					});
 				}
 

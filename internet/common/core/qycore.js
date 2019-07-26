@@ -28,15 +28,25 @@ export default {
 			},
 			success: (res) => {
 				//console.log(res)
-				if (res.data.result === "false") {
+				if (res.statusCode != 200) {
 					uni.showToast({
-						title: res.data.message,
+						title: "请求失败！",
 						duration: 2000,
 						icon: 'none'
 					});
 					return
 				}
-				callback(res.data);
+				if(res.data.success == false){
+					uni.showToast({
+						title: "请求失败！",
+						duration: 2000,
+						icon: 'none'
+					});
+					return
+				}else{
+					callback(res.data);
+				}
+				
 			},
 			fail:(err) => {
 				if (errBack){
@@ -72,7 +82,16 @@ export default {
 					});
 					return
 				}
-				callback(res.data);
+				if(res.data.success == false){
+					uni.showToast({
+						title: "请求失败！",
+						duration: 2000,
+						icon: 'none'
+					});
+					return
+				}else{
+					callback(res.data);
+				}
 			},
 			fail:(err) => {
 				if (errBack){

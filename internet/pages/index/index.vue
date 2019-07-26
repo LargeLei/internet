@@ -204,7 +204,7 @@
 			},
 			goComplaintReporting: function() {
 				uni.navigateTo({
-					url: '/pages/complaintReporting/complaintReporting'
+					url: '/pages/cplRpt/cplRpt'
 				});
 			},
 			// golighthouseDetail: function() {

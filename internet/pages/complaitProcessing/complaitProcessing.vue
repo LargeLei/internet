@@ -138,10 +138,13 @@
 						if(res.success){
 							console.log(res.data)
 							_self.data = res.data;
+							_self.islike = res.data.islike
 							if(res.data.islike == 1){
 								_self.suggestImg = '../../static/imgs/dz_wd_icon.png'
 							}
-							_self.evaluateIndex = res.data.evaluation
+							if(res.data.evaluation != null){
+								_self.evaluateIndex = res.data.evaluation
+							}
 							_self.getInformationRelpy(res.data.complaintNumber,res.data.stateCode);
 						}
 					}
@@ -185,7 +188,7 @@
 							uni.showToast({
 								title: "感谢您的评价!",
 								duration: 2000,
-								icon: 'none'
+								icon: 'success'
 							});
 							setTimeout(function(){
 								_self.$qyc.closeWin(true);		

@@ -1,6 +1,15 @@
 <template>
 	<view class="grace-padding">
 		<form @submit="formSubmit">
+
+			<!-- 投诉举报对象切换 -->
+			<radio-group @change="radioChange" class="cpl-rpt-choose-radio">
+				<view>
+					<label v-for = "(item,index) in cplRpt" :key="item.value">
+						<radio color="#3691B7" :value="item.type"  :checked="index == cplRptCurrent" />{{item.label}}</label>
+				</view>
+			</radio-group>
+
 			<view class="target">
 				<view class="target-list grace-space-between">
 					<view class="target-list-title">投诉人</view>
@@ -12,7 +21,8 @@
 				</view>
 				<view class="target-list grace-space-between">
 					<view class="target-list-title" style="width:200upx;">联系地址</view>
-					<input type="text" class="input" maxlength="100" style="width:100%;text-align: right;" v-model="userAddress" placeholder="请输入联系地址(100字以内)"></input>
+					<input type="text" class="input" maxlength="100" style="width:100%;text-align: right;" v-model="userAddress"
+					 placeholder="请输入联系地址(100字以内)"></input>
 				</view>
 			</view>
 			<!-- 投诉对象 -->
@@ -63,8 +73,15 @@
 					</view>
 				</view>
 
-				<!-- 安全生产-->
-
+				<!-- 发生地点-->
+				<!-- 非必填 -->
+				<view class="target-info" v-show="safeShow1">
+					<view class="grace-items">
+						<view class="grace-label"><text>发生地点</text></view>
+						<input type="text" maxlength="200" class="input" v-model="place1" placeholder="请输入发生地点(200字以内)"></input>
+					</view>
+				</view>
+				<!-- 必填 -->
 				<view class="target-info" v-show="safeShow">
 					<view class="grace-items">
 						<view class="grace-label"><text>发生地点</text><text class="col-red">*</text></view>
@@ -115,52 +132,54 @@
 						<view class="grace-label"><text>品牌</text></view>
 						<input type="text" class="input" v-model="brand" placeholder="请输入品牌名称"></input>
 					</view>
-					<view class="grace-items">
-						<view class="grace-label"><text>购物方式</text><text class="col-red">*</text></view>
-						<view class="grace-form-r" v-if="pattern.length > 0">
-							<picker @change="bindPatternChange" :value="patternIndex" range-key="shoppingType" :range="pattern" name="pattern">
-								<text>{{pattern[patternIndex].shoppingType}}</text>
+					<view v-if="cplRptCurrent != 1">
+						<view class="grace-items">
+							<view class="grace-label"><text>购物方式</text><text class="col-red">*</text></view>
+							<view class="grace-form-r" v-if="pattern.length > 0">
+								<picker @change="bindPatternChange" :value="patternIndex" range-key="shoppingType" :range="pattern" name="pattern">
+									<text>{{pattern[patternIndex].shoppingType}}</text>
+								</picker>
+							</view>
+						</view>
+						<view class="grace-items">
+							<view class="grace-label"><text>订单号</text></view>
+							<input type="text" class="input" v-model="orderNum" placeholder="请输入订单号"></input>
+						</view>
+						<view class="grace-items">
+							<view class="grace-label"><text>型号规格</text><text class="col-red">*</text></view>
+							<input type="text" class="input" v-model="specification" placeholder="请输入型号规格"></input>
+						</view>
+						<view class="grace-items">
+							<view class="grace-label"><text>数量</text></view>
+							<input type="text" class="input" v-model="count" placeholder="请输入数量"></input>
+						</view>
+						<view class="grace-items">
+							<view class="grace-label"><text>计量单位</text></view>
+							<view class="grace-form-r" v-if="unit.length > 0">
+								<picker @change="bindUnitChange" :value="unitIndex" range-key="unitType" :range="unit" v-model="unit">
+									<text>{{unit[unitIndex].unitType}}</text>
+								</picker>
+							</view>
+						</view>
+						<view class="grace-items">
+							<view class="grace-label"><text>消费金额</text></view>
+							<input type="text" class="input" v-model="amount" placeholder="请输入消费金额"></input>
+						</view>
+						<view class="grace-items">
+							<view class="grace-label"><text>消费日期</text></view>
+							<view class="grace-form-r">
+								<picker @change="bindConsumedateChange" :value="consumedate" mode="date" end="today">
+									<text>{{consumedate}}</text>
+								</picker>
+							</view>
+						</view>
+						<view class="grace-items grace-noborder">
+							<view class="grace-label"><text>争议发生日期</text></view>
+							<picker @change="bindDisputeDateChange" :value="disputeDate" mode="date" end="today">
+								<text>{{disputeDate}}</text>
 							</picker>
 						</view>
-					</view>
-					<view class="grace-items">
-						<view class="grace-label"><text>订单号</text></view>
-						<input type="text" class="input" v-model="orderNum" placeholder="请输入订单号"></input>
-					</view>
-					<view class="grace-items">
-						<view class="grace-label"><text>型号规格</text><text class="col-red">*</text></view>
-						<input type="text" class="input" v-model="specification" placeholder="请输入型号规格"></input>
-					</view>
-					<view class="grace-items">
-						<view class="grace-label"><text>数量</text></view>
-						<input type="text" class="input" v-model="count" placeholder="请输入数量"></input>
-					</view>
-					<view class="grace-items">
-						<view class="grace-label"><text>计量单位</text></view>
-						<view class="grace-form-r" v-if="unit.length > 0">
-							<picker @change="bindUnitChange" :value="unitIndex" range-key="unitType" :range="unit" v-model="unit">
-								<text>{{unit[unitIndex].unitType}}</text>
-							</picker>
 						</view>
-					</view>
-					<view class="grace-items">
-						<view class="grace-label"><text>消费金额</text></view>
-						<input type="text" class="input" v-model="amount" placeholder="请输入消费金额"></input>
-					</view>
-					<view class="grace-items">
-						<view class="grace-label"><text>消费日期</text></view>
-						<view class="grace-form-r">
-							<picker @change="bindConsumedateChange" :value="consumedate" mode="date" end="today">
-								<text>{{consumedate}}</text>
-							</picker>
-						</view>
-					</view>
-					<view class="grace-items grace-noborder">
-						<view class="grace-label"><text>争议发生日期</text></view>
-						<picker @change="bindDisputeDateChange" :value="disputeDate" mode="date" end="today">
-							<text>{{disputeDate}}</text>
-						</picker>
-					</view>
 				</view>
 
 				<!-- 生态环境-->
@@ -241,17 +260,38 @@
 					</view>
 				</view>
 			</view>	
+			<!-- 匿名举报 -->
+			<view class="grace-form" v-if="cplRptCurrent == 1">
+				<view class="target-info">
+					<view class="grace-items grace-noborder">
+						<view class="grace-label"><text>匿名举报</text><text class="col-red">*</text></view>
+						<view class="grace-form-r">
+							<picker @change="bindAnonymousChange" :value="anonymousIndex" range-key="anonymousName" :range="anonymous" name="anonymous">
+								<text>{{anonymous[anonymousIndex].anonymousName}}</text>
+							</picker>
+						</view>
+					</view>
+				</view>
+			</view>	
 			<view class="target-btn">
 				<button @tap="goService">确定</button>
 			</view>
 		</form>
 		<graceMaskView :show="successShow">
 			<view class="pop-detail">
-				<view>
+				<view v-if="cplRptCurrent != 1">
 					<image src="../../static/imgs/cg_icon.png" mode="widthFix"></image>
 					<view class="pop-title success">投诉信息成功提交!</view>
 					<view class="pop-text">
 						<text>您提交的投诉信息已录入</text>
+						<text>系统，可在我的投诉举报信息中查看</text>
+					</view>
+				</view>
+				<view v-else>
+					<image src="../../static/imgs/cg_icon.png" mode="widthFix"></image>
+					<view class="pop-title success">举报信息成功提交!</view>
+					<view class="pop-text">
+						<text>您提交的举报信息已录入</text>
 						<text>系统，可在我的投诉举报信息中查看</text>
 					</view>
 				</view>
@@ -260,12 +300,20 @@
 		<!-- 弹出层失败 -->
 		<graceMaskView :show="errorshow">
 			<view class="pop-detail">
-				<view>
+				<view v-if="cplRptCurrent != 1">
 					<image src="../../static/imgs/sb_icon.png" mode="widthFix"></image>
 					<view class="pop-title danger">投诉信息提交失败！</view>
 					<view class="pop-text">
 						<text>您有一条相同投诉正在办理中，请勿重复提交</text>
 						<text class="danger">请勿多条重复、虚假投诉提交，请慎重对待投诉举报通道</text>
+					</view>
+				</view>
+				<view v-else>
+					<image src="../../static/imgs/sb_icon.png" mode="widthFix"></image>
+					<view class="pop-title danger">举报信息提交失败！</view>
+					<view class="pop-text">
+						<text>您有一条相同举报正在办理中，请勿重复提交</text>
+						<text class="danger">请勿多条重复、虚假举报提交，请慎重对待投诉举报通道</text>
 					</view>
 				</view>
 			</view>
@@ -307,10 +355,21 @@
 			this.getShoppingTypeList();
 			this.getUnitTypeList();
 			this.getProvinceList();
-			
 		},
 		data() {
 			return {
+				//投诉举报类型
+				cplRpt:[
+					{
+						label:'投诉',
+						type:0
+					},
+					{
+						label:'举报',
+						type:1
+					},
+				],
+				cplRptCurrent:0,
 				userName:'',
 				userCertificateNumber:'',
 				userAddress:'',
@@ -361,23 +420,32 @@
 				regulationMoney:'',
 				//上传
 				imgLists : [],
+				place1:'',
 				place:'',
 				complaintDetail:'',
 				imgShow:false,
 				tapeShow:false,
 				
-				//公开
+				//是否公开
 				openIndex:0,
 				open:[
 					{'publicCode':'0','publicName':'公开'},
 					{'publicCode':'1','publicName':'不公开'},
 				],
 				isPublic:0,
+				//是否匿名
+				anonymousIndex:0,
+				anonymous:[
+					{'anonymousCode':'0','anonymousName':'不匿名'},
+					{'anonymousCode':'1','anonymousName':'匿名'}
+				],
+				isanonymous:0,
 				//弹框
 				searchKey: "",
 				successShow : false,
 				errorshow: false,
 				//显示 隐藏
+				safeShow1:false,
 				safeShow:false,
 				regulationShow:false,
 				marketShow:false,
@@ -385,6 +453,31 @@
 			}
 		},
 		methods: {
+			
+			//投诉举报类型选择
+			 radioChange: function(evt) {
+				for (let i = 0; i < _self.cplRpt.length; i++) {
+					if (_self.cplRpt[i].type == evt.target.value) {
+						_self.cplRptCurrent = i;
+						console.log(_self.cplRptCurrent)
+						break;
+					}
+				}
+				if(_self.cplRptCurrent == 1){
+					if(_self.problemCode == '03'){//生态环境
+						this.safeShow1 = false;
+					}else if(_self.problemCode == '11'){//安全生产
+						this.safeShow1 = false;
+					}else if(_self.problemCode == '12'){//金融监管
+						this.safeShow1 = false;
+					}else{
+						this.safeShow1 = true;
+					}
+				}else{
+					_self.safeShow1 = false
+				}
+			},
+			
 			saveRecord: function(recordPath) {	
 				var numAudio = maxNum - _self.imgLists.length;
 				if(numAudio < 1){return false;}
@@ -494,6 +587,7 @@
 				this.cptTypeIndex = e.detail.value;
 				_self.problemCode = this.cptType[this.cptTypeIndex].problemCode;
 				if(_self.problemCode == '03'){//生态环境
+					this.safeShow1 = false;
 					this.safeShow = true;
 					this.regulationShow = false;
 					this.marketShow = false;
@@ -504,6 +598,7 @@
 					this.marketShow = true;
 					this.organShow = false;
 				}else if(_self.problemCode == '11'){//安全生产
+					this.safeShow1 = false;
 					this.safeShow = true;
 					this.regulationShow = false;
 					this.marketShow = false;
@@ -651,7 +746,16 @@
 				_self.isPublic = _self.open[e.detail.value].publicCode;
 				this.openIndex = e.detail.value;
 			},
-			
+			//是否匿名
+			bindAnonymousChange: function(e) {
+				_self.isanonymous = _self.anonymous[e.detail.value].anonymousCode;
+				if(_self.isanonymous == 0){
+					_self.userinfoShow = true;
+				}else{
+					_self.userinfoShow = false;
+				}
+				this.anonymousIndex = e.detail.value;
+			},
 			//调起手机相册
 			wakeupPhoto : function(){
 				var numImg = maxNum - _self.imgLists.length;
@@ -710,26 +814,18 @@
 				var index = e.currentTarget.id.replace('grace-items-img-', '');
 				_self.imgLists.splice(index, 1);
 				_self.imgLists = _self.imgLists;
-			
 			},	
 			//提交
 			goService : function(){
 				var data = {
-					"userName": 111,//_self.userName
-					//"userCertificateNumber": 312313,//_self.userCertificateNumber
-					"userAddress":312313 ,//_self.userAddress
-					"complaintObject":3242344 , //_self.complaintObject
-					"complaintTerritory":_self.complaintTerritory,
-					"complaintType": _self.cptType[_self.cptTypeIndex].problemCode,
+					"userName": _self.userName,
+					"userCertificateNumber": _self.userCertificateNumber,
+					"userAddress":_self.userAddress ,
 					"proviceCode":_self.province[_self.provinceIndex].cityCode,
 					"cityCode": _self.city[_self.cityIndex].cityCode,
 					"districtCode": _self.district[_self.districtIndex].cityCode,
-					"complaintDetail": _self.complaintDetail,
 					"ispublic": _self.isPublic
-					// appealSource: 2,
-					
 				};
-				
 				if(_self.cptTypeIndex == 0){
 					uni.showToast({
 						icon: 'none',
@@ -774,50 +870,8 @@
 						});
 						return;
 					}
-					
 					data.pollutionType = _self.pollution[_self.pollutionIndex].pollutionCode;
 					data.occurplace = _self.place;
-				}
-				if(_self.problemCode == '08'){
-					if(_self.classifyTwo[_self.classifyTwoIndex].serviceCode == "0"){
-						uni.showToast({
-							icon: 'none',
-							title: '请选择商品服务类型！'
-						});
-						return;
-					}
-					if(this.serveName == ""){
-						uni.showToast({
-							icon: 'none',
-							title: '请填写商品服务名称！'
-						});
-						return;
-					}
-					if(_self.pattern[_self.patternIndex].shoppingCode == "0"){
-						uni.showToast({
-							icon: 'none',
-							title: '请选择购物方式！'
-						});
-						return;
-					}
-					if(_self.specification == ""){
-						uni.showToast({
-							icon: 'none',
-							title: '请输入型号规格！'
-						});
-						return;
-					}
-					data.serviceType = _self.classifyTwo[_self.classifyTwoIndex].serviceCode;
-					data.serviceName = _self.serveName;
-					data.brand = _self.brand;
-					data.shoppingMode = _self.pattern[_self.patternIndex].shoppingCode;
-					data.orderNumber = _self.orderNum;
-					data.typeSpecification = _self.specification;
-					data.count = _self.count;
-					data.unit = _self.unit[_self.unitIndex].unitCode;
-					data.amount = _self.amount;
-				    data.productDate = _self.consumedate;
-					data.disputeDate = _self.disputeDate
 				}
 				if(_self.problemCode == '11'){
 					if(_self.place == ""){
@@ -829,15 +883,115 @@
 					}
 					data.occurplace = _self.place;
 				}
-				if(_self.problemCode == '12'){
-					if(_self.regulationMoney == ""){
-						uni.showToast({
-							icon: 'none',
-							title: '请输入涉嫌金额！'
-						});
-						return;
+				if(_self.cplRptCurrent == 1){
+					data.reportObject = _self.complaintObject;
+					data.reportType = _self.cptType[_self.cptTypeIndex].problemCode;
+					data.reportTerritory = _self.complaintTerritory;
+					data.occurplace = _self.place1;
+					data.reportDetail = _self.complaintDetail;
+					data.isanonymous = _self.isanonymous;
+					if(_self.problemCode == '08'){
+						if(_self.classifyTwo[_self.classifyTwoIndex].serviceCode == "0"){
+							uni.showToast({
+								icon: 'none',
+								title: '请选择商品服务类型！'
+							});
+							return;
+						}
+						if(this.serveName == ""){
+							uni.showToast({
+								icon: 'none',
+								title: '请填写商品服务名称！'
+							});
+							return;
+						}
+						data.serviceType = _self.classifyTwo[_self.classifyTwoIndex].serviceCode;
+						data.serviceName = _self.serveName;
+						data.brand = _self.brand;
 					}
-					data.involveAmount = _self.regulationMoney;
+					console.log(data)
+					// _self.$qyc.interfaceRequest(
+					// 	"/ebus/tsjb/reportinformation/addreportinformation", data,
+					// 	function(res) {
+					// 		//console.log(res)
+					// 		if(res.success){
+					// 			_self.successShow = true;
+					// 			setTimeout(function(){
+					// 				uni.navigateTo({ 
+					// 					url: '/pages/myComplaint/myComplaint'
+					// 				});
+					// 				var obj = _self.$options.data();
+					// 				obj.reportObject = _self.reportObject;
+					// 				Object.assign(_self.$data, obj);
+					// 			},2000);
+					// 		}
+					// 	}
+					// );
+				}else{
+					data.complaintObject = _self.complaintObject ;
+					data.complaintTerritory = _self.complaintTerritory;
+					data.complaintType = _self.cptType[_self.cptTypeIndex].problemCode;
+					data.complaintDetail = _self.complaintDetail;
+					if(_self.problemCode == '08'){
+						if(_self.classifyTwo[_self.classifyTwoIndex].serviceCode == "0"){
+							uni.showToast({
+								icon: 'none',
+								title: '请选择商品服务类型！'
+							});
+							return;
+						}
+						if(this.serveName == ""){
+							uni.showToast({
+								icon: 'none',
+								title: '请填写商品服务名称！'
+							});
+							return;
+						}
+						if(_self.pattern[_self.patternIndex].shoppingCode == "0"){
+							uni.showToast({
+								icon: 'none',
+								title: '请选择购物方式！'
+							});
+							return;
+						}
+						if(_self.specification == ""){
+							uni.showToast({
+								icon: 'none',
+								title: '请输入型号规格！'
+							});
+							return;
+						}
+						data.serviceType = _self.classifyTwo[_self.classifyTwoIndex].serviceCode;
+						data.serviceName = _self.serveName;
+						data.brand = _self.brand;
+						data.shoppingMode = _self.pattern[_self.patternIndex].shoppingCode;
+						data.orderNumber = _self.orderNum;
+						data.typeSpecification = _self.specification;
+						data.count = _self.count;
+						data.unit = _self.unit[_self.unitIndex].unitCode;
+						data.amount = _self.amount;
+					    data.productDate = _self.consumedate;
+						data.disputeDate = _self.disputeDate
+					}
+					console.log(data)
+					// _self.$qyc.interfaceRequest(
+					// 	"/ebus/tsjb/complaints/addcomplaintinformation", data,
+					// 	function(res) {
+					// 		console.log(res)
+					// 		if(res.success){
+					// 			_self.successShow = true;
+					// 			setTimeout(function(){
+					// 				uni.navigateTo({ 
+					// 					url: '/pages/myComplaint/myComplaint'
+					// 				});
+					// 				var obj = _self.$options.data();
+					// 				obj.complaintObject = _self.complaintObject;
+					// 				Object.assign(_self.$data, obj);
+					// 			},2000);
+					// 		}
+					// 		
+					// 	}
+					// );
 				}
 				if(this.complaintDetail == ""){
 					uni.showToast({
@@ -846,25 +1000,6 @@
 					});
 					return;
 				}
-				console.log(data)
-				_self.$qyc.interfaceRequest(
-					"/ebus/tsjb/complaints/addcomplaintinformation", data,
-					function(res) {
-						console.log(res)
-						if(res.success){
-							_self.successShow = true;
-							setTimeout(function(){
-								uni.navigateTo({ 
-									url: '/pages/myComplaint/myComplaint'
-								});
-								var obj = _self.$options.data();
-								obj.complaintObject = _self.complaintObject;
-								Object.assign(_self.$data, obj);
-							},2000);
-						}
-						
-					}
-				);
 			},
 		},
 		components: {
@@ -876,6 +1011,14 @@
 </script>
 <style>
 	page{background: #F8F9FC;}
+	.cpl-rpt-choose-radio{
+		background: #fff;
+		margin-top:20upx ;
+		padding:20upx 0;
+	}
+	.cpl-rpt-choose-radio label{
+		margin-left: 30upx;
+	}
 	.grace-padding{padding:0;width: 750upx;}
 	
 	.target{margin-top:20upx;background:#fff;padding:0 30upx;box-shadow: 0 1px 0 0 rgba(214,214,214,0.50), 0 2px 14px 0 rgba(9,63,127,0.05);}

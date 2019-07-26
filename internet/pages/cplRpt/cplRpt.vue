@@ -31,13 +31,11 @@
 		</view>
 		<view class="grace-padding home-menu">
 			<view class="grace-rows">
-				<view class="grace-items grace-rows-demo" style="width:50%;" @tap="goComplaints">
-					<image src="../../static/imgs/wyts_icon.png" mode='widthFix' alt=""></image><text>我要投诉</text>
+				
+				<view class="grace-items grace-rows-demo" style="width:100%;" @tap="goComplaints">
+					<image src="../../static/imgs/tsjb_icon.png" mode='widthFix' alt=""></image><text>我要投诉举报</text>
 				</view>
-				<view class="grace-items grace-rows-demo" style="width:50%;" @tap="goReport">
-					<image src="../../static/imgs/tsjb_icon.png" mode='widthFix' alt=""></image><text>我要举报</text>
-				</view>
-				<image src="../../static/imgs/line.png" mode='widthFix' class="line" alt=""></image>
+				
 			</view>
 		</view>
 
@@ -88,14 +86,10 @@
 			},
 			goComplaints: function() {
 				uni.navigateTo({
-					url: '/pages/complaints/complaints'
+					url: '/pages/needKnows/needKnows'
 				});
 			},
-			goReport:function(){
-				uni.navigateTo({
-					url: '/pages/report/report'
-				});
-			},
+			
 			goDigest:function(){
 				uni.navigateTo({
 					url: '/pages/digest/digest'
@@ -212,10 +206,13 @@
 	}
 
 	.home-menu {
+		position: fixed;
+		bottom: 0;
+		left: 0;
 		box-shadow: 0 1px 0 0 rgba(214, 214, 214, 0.50), 0 2px 14px 0 rgba(9, 63, 127, 0.05);
-		background: #fff;
-		padding: 50upx 0;
-		margin-top: 20upx;
+		background: #3691B7;
+		padding: 14upx 0;
+		z-index: 99;
 	}
 
 	.home-menu .grace-rows {
@@ -236,17 +233,7 @@
 
 	.home-menu .grace-items text {
 		font-size: 36upx;
-		color: #3691B7;
-	}
-
-	.home-menu .line {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		width: 2upx;
-		height: 116upx;
-		margin-left: -1upx;
-		margin-top: -56upx;
+		color: #fff;
 	}
 
 	.light {
