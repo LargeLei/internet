@@ -1,6 +1,6 @@
 // 千叶核心文件
 var _self,crypto,SHA256,
-	timestamp = (Date.now() / 1000).toFixed(),
+	
 	nonce = '123456789abcdefg';
 export default {
 	
@@ -12,6 +12,7 @@ export default {
 	//投诉举报post
 	interfaceRequest(url, data, callback,errBack) {
 		const paasid = 'tsjb';
+		const timestamp = (Date.now() / 1000).toFixed();
 		const token = 'UCefCo5ot4GtjOIyjJufwJeFw7Wlytlt';
 		const signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
 		uni.request({
@@ -59,6 +60,7 @@ export default {
 	//文件上传post
 	fileRequest(url, filePath, name, callback, errBack) {
 		const paasid = 'tsjb';
+		const timestamp = (Date.now() / 1000).toFixed();
 		const token = 'UCefCo5ot4GtjOIyjJufwJeFw7Wlytlt';
 		const signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
 		uni.uploadFile({
@@ -107,6 +109,7 @@ export default {
 	//事项清单GET
 	getMatterUrl(url, data, callback,errBack) {
 		const paasid = 'jgsxz';
+		const timestamp = (Date.now() / 1000).toFixed();
 		const token = 'DNQt3AfnSPVMU1E097KZ15drsKCECbvt';
 		const signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
 		uni.request({
