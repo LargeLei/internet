@@ -459,7 +459,7 @@
 				for (let i = 0; i < _self.cplRpt.length; i++) {
 					if (_self.cplRpt[i].type == evt.target.value) {
 						_self.cplRptCurrent = i;
-						console.log(_self.cplRptCurrent)
+						//console.log(_self.cplRptCurrent)
 						break;
 					}
 				}
@@ -480,13 +480,33 @@
 			
 			saveRecord: function(recordPath) {	
 				var numAudio = maxNum - _self.imgLists.length;
-				if(numAudio < 1){return false;}
+				if(numAudio < 1){
+					uni.showToast({
+						title: "超出上传数量！",
+						duration: 2000,
+						icon: 'none'
+					});
+					return false;
+					}
 				console.log("===音频文件地址："+recordPath+"===")
 				var upAudio ={
 					"url":recordPath,
 					"type":3
 				}
 				_self.imgLists = _self.imgLists.concat(upAudio);
+				console.log(_self.imgLists)
+				_self.$qyc.fileRequest(
+					"/ebus/tsjb/complaints/upload",
+					  recordPath,
+					  'file',
+					function(res) {
+						uni.showToast({
+							title: "上传成功！",
+							duration: 2000,
+							icon: 'none'
+						});
+					}
+				);
 			},
 			getUserinfo:function(){
 				_self.$qyc.request(
@@ -665,7 +685,9 @@
 					},
 					function(res) {
 						var a=[{'cityCode':'0','cityName':'请选择'}];
-						_self.city = a.concat(res.data);						
+						_self.city = a.concat(res.data);
+						_self.cityIndex = 0;
+						_self.districtIndex = 0
 					}
 				);
 			},
@@ -678,7 +700,8 @@
 					},
 					function(res) {
 						var a=[{'cityCode':'0','cityName':'请选择'}];
-						_self.district = a.concat(res.data);						
+						_self.district = a.concat(res.data);
+						_self.districtIndex = 0
 					}
 				);
 			},
@@ -759,7 +782,14 @@
 			//调起手机相册
 			wakeupPhoto : function(){
 				var numImg = maxNum - _self.imgLists.length;
-				if(numImg < 1){return false;}
+				if(numImg < 1){
+					uni.showToast({
+						title: "超出上传数量！",
+						duration: 2000,
+						icon: 'none'
+					});
+					return false;
+					}
 				uni.showLoading({
 					title:"加载中..."
 				});
@@ -773,6 +803,18 @@
 						}
 						_self.imgLists = _self.imgLists.concat(upPhoto);
 						uni.hideLoading();
+	 					_self.$qyc.fileRequest(
+	 						"/ebus/tsjb/complaints/upload",
+							  res.tempFilePaths[0],
+							  'file',
+	 						function(res) {
+	 							uni.showToast({
+	 								title: "上传成功！",
+	 								duration: 2000,
+	 								icon: 'none'
+	 							});
+	 						}
+						);
 					},
 					fail: function (res) {
 						uni.hideLoading();
@@ -782,7 +824,14 @@
 			//视频录制上传
 			wakeupVedio : function(){
 				var numVideo = maxNum - _self.imgLists.length;
-				if(numVideo < 1){return false;}
+				if(numVideo < 1){
+					uni.showToast({
+						title: "超出上传数量！",
+						duration: 2000,
+						icon: 'none'
+					});
+					return false;
+					}
 				uni.showLoading({
 					title:"加载中..."
 				});
@@ -795,9 +844,19 @@
 							"type":2
 						}
 						_self.imgLists = _self.imgLists.concat(upVedio);
-						console.log(res.tempFilePath);
-						console.log(_self.imgLists);
 						uni.hideLoading();
+						_self.$qyc.fileRequest(
+							"/ebus/tsjb/complaints/upload",
+							  res.tempFilePaths[0],
+							  'file',
+							function(res) {
+								uni.showToast({
+									title: "上传成功！",
+									duration: 2000,
+									icon: 'none'
+								});
+							}
+						);
 					},
 					fail: function (res) {
 						uni.hideLoading();
@@ -807,7 +866,6 @@
 			//音频录制上传
 			tapePop:function(){
 				this.tapeShow = true;
-				
 			},	
 			//删除上传文件
 			removeImg : function(e){
@@ -817,6 +875,7 @@
 			},	
 			//提交
 			goService : function(){
+				console.log(_self.imgLists)
 				var data = {
 					"userName": _self.userName,
 					"userCertificateNumber": _self.userCertificateNumber,
@@ -910,23 +969,23 @@
 						data.brand = _self.brand;
 					}
 					console.log(data)
-					// _self.$qyc.interfaceRequest(
-					// 	"/ebus/tsjb/reportinformation/addreportinformation", data,
-					// 	function(res) {
-					// 		//console.log(res)
-					// 		if(res.success){
-					// 			_self.successShow = true;
-					// 			setTimeout(function(){
-					// 				uni.navigateTo({ 
-					// 					url: '/pages/myComplaint/myComplaint'
-					// 				});
-					// 				var obj = _self.$options.data();
-					// 				obj.reportObject = _self.reportObject;
-					// 				Object.assign(_self.$data, obj);
-					// 			},2000);
-					// 		}
-					// 	}
-					// );
+					_self.$qyc.interfaceRequest(
+						"/ebus/tsjb/reportinformation/addreportinformation", data,
+						function(res) {
+							//console.log(res)
+							if(res.success){
+								_self.successShow = true;
+								setTimeout(function(){
+									uni.navigateTo({ 
+										url: '/pages/myComplaint/myComplaint'
+									});
+									var obj = _self.$options.data();
+									obj.reportObject = _self.reportObject;
+									Object.assign(_self.$data, obj);
+								},2000);
+							}
+						}
+					);
 				}else{
 					data.complaintObject = _self.complaintObject ;
 					data.complaintTerritory = _self.complaintTerritory;
@@ -974,24 +1033,24 @@
 						data.disputeDate = _self.disputeDate
 					}
 					console.log(data)
-					// _self.$qyc.interfaceRequest(
-					// 	"/ebus/tsjb/complaints/addcomplaintinformation", data,
-					// 	function(res) {
-					// 		console.log(res)
-					// 		if(res.success){
-					// 			_self.successShow = true;
-					// 			setTimeout(function(){
-					// 				uni.navigateTo({ 
-					// 					url: '/pages/myComplaint/myComplaint'
-					// 				});
-					// 				var obj = _self.$options.data();
-					// 				obj.complaintObject = _self.complaintObject;
-					// 				Object.assign(_self.$data, obj);
-					// 			},2000);
-					// 		}
-					// 		
-					// 	}
-					// );
+					_self.$qyc.interfaceRequest(
+						"/ebus/tsjb/complaints/addcomplaintinformation", data,
+						function(res) {
+							console.log(res)
+							if(res.success){
+								_self.successShow = true;
+								setTimeout(function(){
+									uni.navigateTo({ 
+										url: '/pages/myComplaint/myComplaint'
+									});
+									var obj = _self.$options.data();
+									obj.complaintObject = _self.complaintObject;
+									Object.assign(_self.$data, obj);
+								},2000);
+							}
+							
+						}
+					);
 				}
 				if(this.complaintDetail == ""){
 					uni.showToast({

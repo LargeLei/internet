@@ -56,13 +56,61 @@ export default {
 		});
 	
 	},
+	//文件上传post
+	fileRequest(url, filePath, name, callback, errBack) {
+		const paasid = 'tsjb';
+		const token = 'UCefCo5ot4GtjOIyjJufwJeFw7Wlytlt';
+		const signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
+		uni.uploadFile({
+			url: _self.interfaceUrl + url, //仅为示例，并非真实接口地址。
+			filePath:filePath,
+			name:name,
+			method: "POST",
+			header: {
+				'Content-Type': 'multipart/form-data' ,//文件上传
+				//'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' ,//自定义请求头信息
+				'x-tif-paasid':paasid,
+				'x-tif-timestamp':timestamp,
+				'x-tif-signature':signature,
+				'x-tif-nonce':nonce
+			},
+			success: (res) => {
+				//console.log(res)
+				if (res.statusCode != 200) {
+					uni.showToast({
+						title: "请求失败！",
+						duration: 2000,
+						icon: 'none'
+					});
+					return
+				}
+				if(res.data.success == false){
+					uni.showToast({
+						title: "请求失败！",
+						duration: 2000,
+						icon: 'none'
+					});
+					return
+				}else{
+					callback(res.data);
+				}
+				
+			},
+			fail:(err) => {
+				if (errBack){
+					errBack(res.data);
+				}
+			}
+		});
+	
+	},
 	//事项清单GET
 	getMatterUrl(url, data, callback,errBack) {
 		const paasid = 'jgsxz';
 		const token = 'DNQt3AfnSPVMU1E097KZ15drsKCECbvt';
 		const signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
 		uni.request({
-			url: _self.getMatterUrl + url, //仅为示例，并非真实接口地址。
+			url: _self.interfaceUrl + url, //仅为示例，并非真实接口地址。
 			data: data,
 			method: "GET",
 			header: {

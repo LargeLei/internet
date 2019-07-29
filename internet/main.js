@@ -19,11 +19,9 @@ Vue.prototype.Appid = "wxf155af1529928ccd";
 //小程序密钥
 Vue.prototype.AppSecret = "f4f5e4a4f514aca587ea4e307c6f7698";
 
-//投诉举报地址
+//网关api
 Vue.prototype.interfaceUrl = "http://121.52.221.201:80";
 
-//事项清单地址
-Vue.prototype.getMatterUrl = "http://121.52.221.201:80";
 
 //本地后台地址
  Vue.prototype.siteUrl = "http://a256160g08.qicp.vip";
