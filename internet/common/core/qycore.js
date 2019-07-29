@@ -1,9 +1,7 @@
 // 千叶核心文件
 var _self,crypto,SHA256,
-	
 	nonce = '123456789abcdefg';
 export default {
-	
 	install: function(Vue) {
 		_self = Vue.prototype;
 		crypto = _self.$crypto;
@@ -12,9 +10,9 @@ export default {
 	//投诉举报post
 	interfaceRequest(url, data, callback,errBack) {
 		const paasid = 'tsjb';
-		const timestamp = (Date.now() / 1000).toFixed();
 		const token = 'UCefCo5ot4GtjOIyjJufwJeFw7Wlytlt';
-		const signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
+		let timestamp = (Date.now() / 1000).toFixed();
+		let signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
 		uni.request({
 			url: _self.interfaceUrl + url, //仅为示例，并非真实接口地址。
 			data: data,
@@ -60,9 +58,9 @@ export default {
 	//文件上传post
 	fileRequest(url, filePath, name, callback, errBack) {
 		const paasid = 'tsjb';
-		const timestamp = (Date.now() / 1000).toFixed();
 		const token = 'UCefCo5ot4GtjOIyjJufwJeFw7Wlytlt';
-		const signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
+		let timestamp = (Date.now() / 1000).toFixed();
+		let signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
 		uni.uploadFile({
 			url: _self.interfaceUrl + url, //仅为示例，并非真实接口地址。
 			filePath:filePath,
@@ -109,9 +107,9 @@ export default {
 	//事项清单GET
 	getMatterUrl(url, data, callback,errBack) {
 		const paasid = 'jgsxz';
-		const timestamp = (Date.now() / 1000).toFixed();
 		const token = 'DNQt3AfnSPVMU1E097KZ15drsKCECbvt';
-		const signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
+		let timestamp = (Date.now() / 1000).toFixed();
+		let signature = crypto.SHA256(timestamp + token + nonce + timestamp).toString(crypto.enc.Hex).toUpperCase();
 		uni.request({
 			url: _self.interfaceUrl + url, //仅为示例，并非真实接口地址。
 			data: data,
