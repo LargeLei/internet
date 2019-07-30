@@ -7,7 +7,6 @@ import crypto from './node_modules/crypto-js/crypto-js.js'
 import SHA256 from './node_modules/js-sha256/build/sha256.min.js'
 
 Vue.config.productionTip = false
-
 Vue.prototype.$store = store
 Vue.prototype.$qyc = qycore
 Vue.prototype.$crypto = crypto
@@ -24,7 +23,7 @@ Vue.prototype.interfaceUrl = "http://121.52.221.201:80";
 
 
 //本地后台地址
- Vue.prototype.siteUrl = "http://a256160g08.qicp.vip";
+Vue.prototype.siteUrl = "http://a256160g08.qicp.vip";
 
 //曝光台
 Vue.prototype.selfUrl = "http://121.52.221.197";
@@ -38,7 +37,7 @@ Vue.use(qycore);
 App.mpType = 'app'
 
 const app = new Vue({
-    store,
-    ...App
+	store,
+	...App
 })
 app.$mount()

@@ -1,20 +1,23 @@
 <template>
 	<view class="grace-padding">
 		<scroll-view class="grace-tab-title grace-center" scroll-x="true" id="grace-tab-title">
-			<view v-for="(tab, index) in tabs" :key="index" :class="[tabCurrentIndex == index ? 'grace-tab-current' : '']" :id="'tabTag-'+index+',tabId-'+tab.dictValue"
+			<view v-for="(tab, index) in tabs" :key="index" :data-resourceid='tab.resourceid' :class="[tabCurrentIndex == index ? 'grace-tab-current' : '']" :id='index'
 			 @tap="tabChange">{{tab.resourcename}}</view>
 		</scroll-view>
+		<!-- 循环新闻项目 -->
 		<swiper class="grace-tab-swiper-full" :current="swiperCurrentIndex" @change="swiperChange" :style="{height:tabHeight+'px'}">
-			<!-- 循环新闻项目 -->
-			<swiper-item v-for="(news, newsIndex) in infors" :key="newsIndex">
-				<scroll-view scroll-y="true" :data-scindex="newsIndex" @scrolltolower="scrollend">
+			<swiper-item v-for="(tab, indexs) in tabs" :key="indexs"  >
+				<scroll-view  v-for="(news, newsIndex) in infors" :key="newsIndex" scroll-y="true"  :data-scindex="newsIndex" @scrolltolower="scrollend">
 					<view class="light">
-						<view class="light-list" v-for="(item, index) in news.resourcetitle" :key="index" @tap="goLighthouseDetail(item.titleid)">
-							<view class="grace-ellipsis-2">{{item.titletext}}</view>
-							<text>{{item.time}}</text>
+						<view class="no-infor" v-if="news.resourcetitle.length == 0">---暂无数据---</view>
+						<view v-else>
+							<view class="light-list" v-for="(item, index) in news.resourcetitle" :key="index" @tap="goLighthouseDetail(item.titleid)">
+								<view class="grace-ellipsis-2">{{item.titletext}}</view>
+								<text>{{item.time | formatDate }}</text>
+							</view>
 						</view>
+						
 					</view>
-					<!-- <graceLoading :loadingType="tabs[newsIndex].loadingType"></graceLoading> -->
 				</scroll-view>
 			</swiper-item>
 		</swiper>
@@ -24,7 +27,7 @@
 	var _self;
 	var data = [];
 	var currentDicvalue = 1;
-	import graceLoading from "../../graceUI/components/graceLoading.vue"
+	import graceLoading from "../../graceUI/components/graceLoading.vue";
 	export default {
 		onLoad: function(option) {
 			_self = this;
@@ -35,6 +38,7 @@
 				tabCurrentIndex: 0,
 				swiperCurrentIndex: 0,
 				tabHeight: 300,
+				resourceid:33,
 				tabs: [],
 				newsAll: [
 					[]
@@ -63,42 +67,6 @@
 			});
 		},
 		methods: {
-			// getHeadType: function() {
-			// 	_self.$qyc.request(
-			// 		"/f/mp/mplogin/findDiclable", {
-			// 			dicType: 'wx_lighthouse_type'
-			// 		},
-			// 		function(res) {
-			// 			console.log(res)
-			// 			_self.tabs = res.data;
-			// 			_self.getArticleList();
-			// 		}
-			// 	);
-			// },
-			// getArticleList: function() {
-			// 	uni.showLoading({
-			// 		title: '加载中...'
-			// 	});
-			// 	_self.$qyc.request(
-			// 		"/f/mp/mplogin/findArticleList", {
-			// 			newsType: 0
-			// 		},
-			// 		function(res) {
-			// 			uni.hideLoading();
-			// 			console.log(res)
-			// 			data = res.data.list;
-			// 			if (_self.tabs[0].dictValue == 1) {
-			// 				_self.newsAll = [data.slice(0, 5)];
-			// 			} else {
-			// 				_self.newsAll = [data.filter(function(e) {
-			// 					return e.typeLighthouse == _self.tabs[0].dictValue;
-			// 				})];
-			// 				console.log(_self.newsAll)
-			// 			}
-			// 
-			// 		}
-			// 	);
-			// },
 			getHeadType: function() {
 				_self.$qyc.selfRequest(
 					"/jmportal_server/interfaces/cates.do", {
@@ -118,12 +86,12 @@
 				});
 				_self.$qyc.selfRequest(
 					"/jmportal_server/interfaces/infolist.do", {
-						resourceid : 33,
+						resourceid : _self.resourceid,
 						siteid : 1
 					},
 					function(res) {
 						uni.hideLoading();
-						//console.log(res)
+						console.log(res.resource)
 						_self.infors = res.resource;
 						
 					}
@@ -136,29 +104,22 @@
 			},
 			// 切换
 			tabChange: function(e) {
-				var str = e.target.id;
-				var arr = str.split(",");
-				var index = arr[0].replace('tabTag-', '');
-				console.log(index)
-				currentDicvalue = arr[1].replace('tabId-', '');
-				console.log(currentDicvalue)
-				if (currentDicvalue == 1) {
-					_self.newsAll[index] = data.slice(0, 5);
-				} else {
-					_self.newsAll[index] = data.filter(function(val) {
-						
-						return val.typeLighthouse == currentDicvalue;
-						console.log(_self.newsAll)
-					});
-				}
+				console.log(e)
+				var index = e.currentTarget.id;
 				_self.swiperCurrentIndex = index;
 				_self.tabCurrentIndex = index;
+				_self.resourceid = e.currentTarget.dataset.resourceid;
+				_self.getArticleList();
 			},
 			swiperChange: function(e) {
-				
 				var index = e.detail.current;
-				console.log(e)
 				_self.tabCurrentIndex = index;
+				for(var i =0 ; i<_self.tabs.length; i++){
+					if(index == i){
+						_self.resourceid = _self.tabs[i].resourceid
+					}
+				}
+				_self.getArticleList();
 			},
 			//每个选项滚动到底部
 			scrollend: function(e) {
@@ -186,7 +147,11 @@
 	page {
 		background: #F8F9FC;
 	}
-
+	.no-infor{
+		text-align: center;
+		margin: 30upx 0;
+		color:#999;
+	}
 	.grace-ellipsis-2 {
 		display: -webkit-box;
 		overflow: hidden;
