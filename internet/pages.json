@@ -91,36 +91,6 @@
 		// 	}
 		// },
 		
-		// {
-		// 	"path": "pages/report/report",
-		// 	"style": {
-		// 		"navigationBarTitleText": "我要举报"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/reportSearch/reportSearch",
-		// 	"style": {
-		// 		"navigationBarTitleText": "我要举报"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/reportTarget/reportTarget",
-		// 	"style": {
-		// 		"navigationBarTitleText": "选择举报对象"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/addReportServiceInfo/addReportServiceInfo",
-		// 	"style": {
-		// 		"navigationBarTitleText": "填写业务信息"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/addRestsServiceInfo/addRestsServiceInfo",
-		// 	"style": {
-		// 		"navigationBarTitleText": "填写业务信息"
-		// 	}
-		// },
 		{
 			"path": "pages/digest/digest",
 			"style": {

@@ -797,12 +797,12 @@
 					count: numImg,
 					sizeType: ['compressed'],
 					success: function(res) {
+						console.log(res)
 						var upPhoto ={
 							"url":res.tempFilePaths,
 							"type":1
 						}
 						_self.imgLists = _self.imgLists.concat(upPhoto);
-						uni.hideLoading();
 	 					_self.$qyc.fileRequest(
 	 						"/ebus/tsjb/complaints/upload",
 							  res.tempFilePaths[0],
@@ -839,15 +839,17 @@
 					count: numVideo,
 					sourceType: ['camera', 'album'],
 					success: function (res) {
+						console.log(res)
 						var upVedio ={
-							"url":res.tempFilePaths,
+							"url":res.tempFilePath,
 							"type":2
 						}
 						_self.imgLists = _self.imgLists.concat(upVedio);
-						uni.hideLoading();
+						console.log(_self.imgLists)
+						
 						_self.$qyc.fileRequest(
 							"/ebus/tsjb/complaints/upload",
-							  res.tempFilePaths[0],
+							  res.tempFilePath,
 							  'file',
 							function(res) {
 								uni.showToast({
@@ -875,7 +877,6 @@
 			},	
 			//提交
 			goService : function(){
-				console.log(_self.imgLists)
 				var data = {
 					"userName": _self.userName,
 					"userCertificateNumber": _self.userCertificateNumber,
@@ -914,18 +915,17 @@
 					return;
 				}
 				if(_self.problemCode == '03'){
-					
-					if(_self.pollution[_self.pollutionIndex].pollutionCode == "0"){
-						uni.showToast({
-							icon: 'none',
-							title: '请选择污染类型！'
-						});
-						return;
-					}
 					if(_self.place == ""){
 						uni.showToast({
 							icon: 'none',
 							title: '请输入发生地点！'
+						});
+						return;
+					}
+					if(_self.pollution[_self.pollutionIndex].pollutionCode == "0"){
+						uni.showToast({
+							icon: 'none',
+							title: '请选择污染类型！'
 						});
 						return;
 					}
@@ -967,6 +967,13 @@
 						data.serviceType = _self.classifyTwo[_self.classifyTwoIndex].serviceCode;
 						data.serviceName = _self.serveName;
 						data.brand = _self.brand;
+					}
+					if(this.complaintDetail == ""){
+						uni.showToast({
+							icon: 'none',
+							title: '请填写投诉内容！'
+						});
+						return;
 					}
 					console.log(data)
 					_self.$qyc.interfaceRequest(
@@ -1032,6 +1039,13 @@
 					    data.productDate = _self.consumedate;
 						data.disputeDate = _self.disputeDate
 					}
+					if(this.complaintDetail == ""){
+						uni.showToast({
+							icon: 'none',
+							title: '请填写投诉内容！'
+						});
+						return;
+					}
 					console.log(data)
 					_self.$qyc.interfaceRequest(
 						"/ebus/tsjb/complaints/addcomplaintinformation", data,
@@ -1052,13 +1066,7 @@
 						}
 					);
 				}
-				if(this.complaintDetail == ""){
-					uni.showToast({
-						icon: 'none',
-						title: '请填写投诉内容！'
-					});
-					return;
-				}
+				
 			},
 		},
 		components: {

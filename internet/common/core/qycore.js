@@ -75,7 +75,8 @@ export default {
 				'x-tif-nonce':nonce
 			},
 			success: (res) => {
-				//console.log(res)
+				console.log(res)
+				uni.hideLoading();
 				if (res.statusCode != 200) {
 					uni.showToast({
 						title: "请求失败！",
