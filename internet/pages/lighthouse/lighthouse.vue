@@ -91,7 +91,7 @@
 					},
 					function(res) {
 						uni.hideLoading();
-						console.log(res.resource)
+						//console.log(res.resource)
 						_self.infors = res.resource;
 						
 					}
@@ -104,7 +104,6 @@
 			},
 			// 切换
 			tabChange: function(e) {
-				console.log(e)
 				var index = e.currentTarget.id;
 				_self.swiperCurrentIndex = index;
 				_self.tabCurrentIndex = index;

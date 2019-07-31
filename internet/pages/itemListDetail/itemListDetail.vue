@@ -77,7 +77,9 @@
 				});
 				
 				_self.$qyc.getMatterUrl(
-					'/ebus/jgsxz/detail/' + sub_code + '.json', {},
+					'/ebus/jgsxz/hlwjgxtfw/catalog/detail.do', {
+						subCode:sub_code
+					},
 					function(res) {
 						uni.hideLoading();
 						_self.res = res;

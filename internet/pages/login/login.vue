@@ -82,6 +82,7 @@
 											url: '/pages/index/index'
 										});
 										var obj = JSON.parse(res.data);
+										//console.log(res,_self.openid)
 										_self.openid = obj.openid;
 										uni.setStorageSync('openid', _self.openid);
 									}

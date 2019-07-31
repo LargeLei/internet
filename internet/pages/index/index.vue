@@ -85,6 +85,7 @@
 	export default {
 		onLoad: function(option) {
 			_self = this;
+			console.log()
 			//登录
 			if (uni.getStorageSync('nickName') == null || uni.getStorageSync('nickName') == "") {
 				_self.loginShow = true;
@@ -125,6 +126,7 @@
 							provider: 'weixin',
 							success: function(infoRes) {
 								//获取用户信息后向调用信息更新方法
+								//console.log(infoRes)
 								_self.nickName = infoRes.userInfo.nickName; //昵称
 								_self.avatarUrl = infoRes.userInfo.avatarUrl; //头像
 								_self.portraitImg = infoRes.userInfo.avatarUrl;
@@ -165,7 +167,6 @@
 						siteid : 1
 					},
 					function(res) {
-						uni.hideLoading();
 						console.log(res)
 					
 						//_self.laws = res.data.list.slice(0, 5);

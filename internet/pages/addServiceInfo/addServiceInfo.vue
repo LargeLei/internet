@@ -790,9 +790,6 @@
 					});
 					return false;
 					}
-				uni.showLoading({
-					title:"加载中..."
-				});
 				uni.chooseImage({
 					count: numImg,
 					sizeType: ['compressed'],
@@ -832,9 +829,6 @@
 					});
 					return false;
 					}
-				uni.showLoading({
-					title:"加载中..."
-				});
 				uni.chooseVideo({
 					count: numVideo,
 					sourceType: ['camera', 'album'],
@@ -975,6 +969,9 @@
 						});
 						return;
 					}
+					uni.showLoading({
+						title: '正在提交...'
+					});
 					console.log(data)
 					_self.$qyc.interfaceRequest(
 						"/ebus/tsjb/reportinformation/addreportinformation", data,
@@ -1046,6 +1043,9 @@
 						});
 						return;
 					}
+					uni.showLoading({
+						title: '正在提交...'
+					});
 					console.log(data)
 					_self.$qyc.interfaceRequest(
 						"/ebus/tsjb/complaints/addcomplaintinformation", data,

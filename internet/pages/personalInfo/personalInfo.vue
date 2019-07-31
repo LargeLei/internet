@@ -153,6 +153,7 @@
 						openid: uni.getStorageSync('openid')
 					},
 					function(res) {
+						console.log(res)
 						if(res.data != undefined && res.data != 'undefined'){
 							var users = res.data;
 							_self.userid=users.id;

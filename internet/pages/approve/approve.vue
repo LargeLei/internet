@@ -47,11 +47,12 @@
 		data() {
 			return {
 				//身份证信息
-				username:"",
-				idCard: '',
+				username:"雷清云",
+				idCard: '610527199106215651',
 				//绑定/验证手机号码
-				mobile:'13571882415',
-				code:''
+				mobile:'17348697420',
+				code:'',
+				cretKey:''
 			}
 		},
 		methods: {
@@ -84,8 +85,10 @@
 			
 			},
 			addApprove: function(e) {
-				
 				if (_self.mobile.length == 11) {
+					uni.showLoading({
+						title: '正在提交...'
+					});
 					_self.$qyc.request(
 						"/f/wx/wxUser/addApprove", {
 							username: _self.username,
@@ -95,17 +98,20 @@
 							code:_self.code
 						},
 						function(res) {
+							console.log(res)
 							if(res.result){
+								//_self.cretKey = obj.openid;
+								//uni.setStorageSync('openid', _self.cretKey);
 								uni.showToast({							
 									title: "认证成功",
 									duration: 2000,
 									icon: 'none'
 								});
-								setTimeout(function()  {
-									uni.navigateTo({
-										url: '/pages/my/my'
-									});							 
-								}, 2000);
+								// setTimeout(function()  {
+								// 	uni.navigateTo({
+								// 		url: '/pages/my/my'
+								// 	});							 
+								// }, 2000);
 							}else{
 								uni.showToast({
 									type: 'warning',

@@ -26,6 +26,7 @@ export default {
 				'x-tif-nonce': nonce
 			},
 			success: (res) => {
+				uni.hideLoading();
 				//console.log(res)
 				if (res.statusCode != 200) {
 					uni.showToast({
@@ -124,6 +125,8 @@ export default {
 				'x-tif-nonce': nonce
 			},
 			success: (res) => {
+				uni.hideLoading();
+				console.log(res)
 				if (res.statusCode != 200) {
 					uni.showToast({
 						title: "请求失败！",
@@ -163,6 +166,7 @@ export default {
 			},
 			success: (res) => {
 				//console.log(res)
+				uni.hideLoading();
 				if (res.statusCode != 200) {
 					uni.showToast({
 						title: res.errMsg,
@@ -195,6 +199,7 @@ export default {
 				'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' //自定义请求头信息
 			},
 			success: (res) => {
+				uni.hideLoading();
 				//console.log(res)
 				if (res.data.result === "false") {
 					uni.showToast({
@@ -224,6 +229,7 @@ export default {
 				'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' //自定义请求头信息
 			},
 			success: (res) => {
+				uni.hideLoading();
 				//console.log(res)
 				if (res.data.result === "false") {
 					uni.showToast({

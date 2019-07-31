@@ -61,8 +61,8 @@
 		methods: {
 			getParentList: function() {
 				_self.$qyc.getMatterUrl(
-					"/ebus/jgsxz/departments/000000.json",{
-						
+					"/ebus/jgsxz/hlwjgxtfw/catalog/department.do",{
+						provinceCode:'000000'
 					},
 					function(res) {
 						_self.mainCate = res;
@@ -79,9 +79,13 @@
 					title: '加载中...'
 				});
 				_self.$qyc.getMatterUrl(
-					"/ebus/jgsxz/mainitem/"+_self.departmentCode+"/"+_self.pageNum+".json", {},
+					"/ebus/jgsxz/hlwjgxtfw/catalog/mainitem.do", {
+						departmentCode:_self.departmentCode,
+						pageNum:_self.pageNum,
+						pageSize:_self.pageNo
+					},
 					function(res) {
-						console.log(res)
+						//console.log(res)
 						_self.total = res.total;
 						_self.soncates = res.list;
 						//获取子类数据
@@ -91,8 +95,11 @@
 										childInfor : {
 										}
 									};
+									//console.log(main_code)
 								_self.$qyc.getMatterUrl(
-									"/ebus/jgsxz/subitem/"+main_code+".json", {},
+									"/ebus/jgsxz/hlwjgxtfw/catalog/subitem.dom", {
+										mainCode:main_code
+									},
 									function(res) {
 										//console.log(res)
 										uni.hideLoading();
@@ -122,7 +129,11 @@
 					title: '加载中...'
 				});
 				_self.$qyc.getMatterUrl(
-					"/ebus/jgsxz/mainitem/"+_self.departmentCode+"/"+_self.pageNum+".json", {},
+					"/ebus/jgsxz/hlwjgxtfw/catalog/mainitem.do", {
+						departmentCode:_self.departmentCode,
+						pageNum:_self.pageNum,
+						pageSize:_self.pageNo
+					},
 					function(res) {
 						uni.hideLoading();
 						_self.total = res.total;
@@ -135,7 +146,9 @@
 										}
 									};
 								_self.$qyc.getMatterUrl(
-									"/ebus/jgsxz/subitem/"+main_code+".json", {},
+									"/ebus/jgsxz/hlwjgxtfw/catalog/subitem.dom", {
+										mainCode:main_code
+									},
 									function(res) {
 										uni.hideLoading();
 										childObject.code = main_code;
