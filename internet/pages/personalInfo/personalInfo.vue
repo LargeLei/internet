@@ -31,69 +31,70 @@
 						<input type="text" class="input" v-model="location" name="location" placeholder="请输入收件地址"></input>
 					</view>
 					<view class="grace-items">
-						<view class="grace-label">手机号</view>
-						<input type="text" class="input" v-model="mobile" name="mobile" placeholder="请输入手机号"></input>
-					</view>
-					<view class="grace-items">
 						<view class="grace-label">电子邮件</view>
 						<input type="text" class="input" v-model="email" name="email" placeholder="请输入电子邮件"></input>
 					</view>
 					<view class="grace-items">
 						<view class="grace-label">紧急联系人</view>
-						<input type="text" class="input" v-model="emergency" name="emergency" placeholder="请输入紧急联系人"></input>
+						<input type="text" class="input" v-model="emergencyName" name="emergencyName" placeholder="请输入紧急联系人"></input>
+					</view>
+					<view class="grace-items">
+						<view class="grace-label">紧急联系人手机号</view>
+						<input type="text" class="input" v-model="emergencyMobile" name="emergencyMobile" placeholder="请输入紧急联系人手机号"></input>
 					</view>
 					<!-- <view class="grace-items grace-noborder">
 						<view class="grace-label" style="width:200upx;line-height:60upx;height:60upx;">自动填写信息</view>
 						<switch color="#3691B7" @change="switchChange"></switch>
 					</view>
 					<view class="hint">办理业务时将自动为您填入个人信息</view> -->
-					
+
 				</view>
-				
+
 				<view style="padding:40upx 0;">
 					<button formType="submit" @tap="saveUsersBase" type="" style="width:96%;">保存</button>
 				</view>
 			</form>
 		</view>
-		<mpvue-city-picker :themeColor="themeColor" ref="mpvueCityPicker1" :pickerValueDefault="cityPickerValueDefault1" @onCancel="onCancel1" @onConfirm="onConfirm1"></mpvue-city-picker>
+		<mpvue-city-picker :themeColor="themeColor" ref="mpvueCityPicker1" :pickerValueDefault="cityPickerValueDefault1"
+		 @onCancel="onCancel1" @onConfirm="onConfirm1"></mpvue-city-picker>
 	</view>
 </template>
 <script>
 	import mpvuePicker from '../../threeComponents/mpvuePicker.vue';
 	import mpvueCityPicker from '../../threeComponents/mpvueCityPicker.vue';
-	var  graceChecker = require("../../graceUI/graceChecker.js");
-	
+	var graceChecker = require("../../graceUI/graceChecker.js");
+
 	var _self;
 	export default {
-		
-		onLoad:function(option) {
+
+		onLoad: function(option) {
 			_self = this;
 			this.getUsers();
 		},
 		data() {
 			return {
 				//基本信息
-				username:"",
+				username: "",
 				gender: '',
 				birth: "",
-				cellPhone:"",				
+				cellPhone: "",
 				//常用信息
-					//户籍所在地
+				//户籍所在地
 				themeColor: '#3691B7', //颜色
-				cityText1 : "请选择户籍所在地", //文本
-				cityPickerValueDefault1 : [0,0,1], //默认选项
+				cityText1: "请选择户籍所在地", //文本
+				cityPickerValueDefault1: [0, 0, 1], //默认选项
 				//记录全部信息用于表单提交
-				city1 : null,
+				city1: null,
 				//民族
 				nationIndex: 0,
-				nation: ['汉族', '回族','维吾尔族','傣族'],
-				location:"",
-				mobile:"",
-				email:"",
-				emergency:"",	
-				userid:"",
-				cityValue:"",
-				autofill:true
+				nation: ['汉族', '回族', '维吾尔族', '傣族'],
+				location: "",
+				emergencyMobile: "",
+				email: "",
+				emergencyName: "",
+				userid: "",
+				cityValue: "",
+				autofill: true
 			}
 		},
 		methods: {
@@ -103,18 +104,18 @@
 				this.nationIndex = e.detail.value;
 			},
 			//地区选择
-			cityPicker1 : function(){
+			cityPicker1: function() {
 				this.$refs.mpvueCityPicker1.show();
 			},
 			// switchChange: function (e){	
 			// 	this.autofill =  e.target.value;	
 			// },
-			
+
 			onConfirm1(e) {
-				var cityText1  = e.label;
+				var cityText1 = e.label;
 				var cityValue1 = e.value;
-				var cityCode1  = e.cityCode;
-				
+				var cityCode1 = e.cityCode;
+
 				this.cityText1 = cityText1;
 				this.cityPickerValueDefault1 = cityValue1;
 				this.city1 = e;
@@ -126,25 +127,19 @@
 				this.dateValue = e.detail.value;
 			},
 			formSubmit: function(e) {
-				//定义表单规则
-				// var rule = [
-				// 	{name:"nickname", checkType : "string", checkRule:"1,3",  errorMsg:"姓名应为1-3个字符"},
-				// 	{name:"gender", checkType : "in", checkRule:"男,女",  errorMsg:"请选择性别"},
-				// 	{name:"bd", checkType : "notsame", checkRule:"请选择",  errorMsg:"请选择生日"},
-				// 	{name:"phone", checkType : "phoneno", checkRule:"1,11",  errorMsg:"手机号应为11个数字"},
-				// 	{name:"email", checkType : "email", checkRule:"",  errorMsg:"请填写您的邮箱"}
-				// ];
-				// if(this.city1 == null || this.city2 == null){
-				// 	uni.showToast({title : "请选择城市", icon:"none"});
-				// 	return ;
-				// }
 				//进行表单检查
 				var formData = e.detail.value;
 				var checkRes = graceChecker.check(formData);
-				if(checkRes){
-					uni.showToast({title:"验证通过!", icon:"none"});
-				}else{
-					uni.showToast({ title: graceChecker.error, icon: "none" });
+				if (checkRes) {
+					uni.showToast({
+						title: "验证通过!",
+						icon: "none"
+					});
+				} else {
+					uni.showToast({
+						title: graceChecker.error,
+						icon: "none"
+					});
 				}
 			},
 			getUsers: function(e) {
@@ -154,46 +149,90 @@
 					},
 					function(res) {
 						console.log(res)
-						if(res.data != undefined && res.data != 'undefined'){
+						if (res.data != undefined && res.data != 'undefined') {
 							var users = res.data;
-							_self.userid=users.id;
+							_self.userid = users.id;
 							_self.username = users.trueName;
-							if(users.sex == 0){
+							if (users.sex == 0) {
 								_self.gender = "女";
-							}else{
+							} else {
 								_self.gender = "男";
-							}			
-							_self.birth = users.birth != null ? users.birth:'1997-02-12';
+							}
+							var year = users.idcard.slice(6,10),
+								month = users.idcard.slice(10,12),
+								day = users.idcard.slice(12,14),
+								idcard = year+"-"+month+"-"+day;
+							_self.birth = idcard;
 							_self.cellPhone = users.mobile;
-							if(users.address.indexOf(",")!=-1){
+							if (users.address.indexOf(",") != -1) {
 								_self.cityPickerValueDefault1 = users.address.split(",");
 							}
 							_self.cityText1 = users.remarks;
-							if(users.nation != null && users.nation !=""){				
+							if (users.nation != null && users.nation != "") {
 								_self.nationIndex = users.nation;
 							}
 							_self.location = users.userAddress;
-							_self.mobile = users.mobile;
 							_self.email = users.email;
-							_self.emergency = users.userLationMobile;
+							_self.emergencyName = users.emergencyName;
+							_self.emergencyMobile = users.emergencyMobile;
 						}
 					}
 				);
 			},
-			
-			saveUsersBase:function(e){
-				console.log("==="+_self.autofill)
+
+			saveUsersBase: function(e) {
+				if (_self.cityPickerValueDefault1.length == 0) {
+					uni.showToast({
+						icon: 'none',
+						title: '请选择户籍所在地！'
+					});
+					return;
+				}
+				if (_self.location == '') {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入收件地址！'
+					});
+					return;
+				}
+				if (_self.email == '') {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入电子邮件！'
+					});
+					return;
+				}
+				if (_self.emergencyName == '' || _self.emergencyName == undefined) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入紧急联系人！'
+					});
+					return;
+				}
+				if (_self.emergencyMobile == '' || _self.emergencyMobile == undefined || !/^1[3456789]\d{9}$/.test(_self.emergencyMobile)) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入紧急联系人手机号！'
+					});
+					return;
+				}
+				let data = {
+					id: _self.userid,
+					openid: uni.getStorageSync('openid'),
+					address: _self.cityPickerValueDefault1,
+					nation: _self.nationIndex,
+					userAddress: _self.location,
+					email: _self.email,
+					emergencyName: _self.emergencyName,
+					emergencyMobile: _self.emergencyMobile,
+					remarks: _self.cityText1,
+				}
+				//console.log(data)
+				uni.showLoading({
+					title: '正在提交...'
+				});
 				_self.$qyc.request(
-					"/f/wx/wxUser/saveUsersBase", {
-						id:_self.userid,
-						openid: uni.getStorageSync('openid'),
-						address:_self.cityPickerValueDefault1,
-						nation:_self.nationIndex,
-						userAddress:_self.location,
-						email:_self.email,
-						userLationMobile:_self.emergency,	
-						remarks :_self.cityText1,
-					},
+					"/f/wx/wxUser/saveUsersBase", data,
 					function(res) {
 						uni.showToast({							
 							title: res.message,
@@ -220,19 +259,86 @@
 </script>
 
 <style>
-	page{background: #F8F9FC;}
-	.grace-padding{padding:0;width: 100%;}
-	.basic-head{height:80upx;font-weight:bold; line-height: 80upx;font-size: 32upx;color: #000000;padding-left:30upx;}
-	.basicInfo{background:#fff;padding:20upx 30upx;box-shadow: 0 1px 0 0 rgba(214,214,214,0.50), 0 2px 14px 0 rgba(9,63,127,0.05);}
-	.basicInfo>view{line-height: 52upx;display: flex;}
-	.basicInfo-title{opacity: 0.5;font-size: 28upx;color: #000000;margin-right:8upx;}
-	.basicInfo-text{opacity: 0.8;font-size: 28upx;color: #000000;flex: 1;}
-	.common{background:#fff;padding:0 30upx;padding-bottom:30upx;box-shadow: 0 1px 0 0 rgba(214,214,214,0.50), 0 2px 14px 0 rgba(9,63,127,0.05);}
-	.common .grace-items{padding:0;}
-	.common .grace-items .grace-label{opacity: 0.5;font-size:28upx;color: #000000;width:200upx;}
-	.grace-form-r{line-height: 100upx;padding:0;}
-	.hint{font-size:24upx;color: #F0474A;text-align: justify;line-height:52upx;}
-	button{background:#3691B7;color:#fff;}
-	button:active{background:#3691B7;color:#fff;}
-	
+	page {
+		background: #F8F9FC;
+	}
+
+	.grace-padding {
+		padding: 0;
+		width: 100%;
+	}
+
+	.basic-head {
+		height: 80upx;
+		font-weight: bold;
+		line-height: 80upx;
+		font-size: 32upx;
+		color: #000000;
+		padding-left: 30upx;
+	}
+
+	.basicInfo {
+		background: #fff;
+		padding: 20upx 30upx;
+		box-shadow: 0 1px 0 0 rgba(214, 214, 214, 0.50), 0 2px 14px 0 rgba(9, 63, 127, 0.05);
+	}
+
+	.basicInfo>view {
+		line-height: 52upx;
+		display: flex;
+	}
+
+	.basicInfo-title {
+		opacity: 0.5;
+		font-size: 28upx;
+		color: #000000;
+		margin-right: 8upx;
+	}
+
+	.basicInfo-text {
+		opacity: 0.8;
+		font-size: 28upx;
+		color: #000000;
+		flex: 1;
+	}
+
+	.common {
+		background: #fff;
+		padding: 0 30upx;
+		padding-bottom: 30upx;
+		box-shadow: 0 1px 0 0 rgba(214, 214, 214, 0.50), 0 2px 14px 0 rgba(9, 63, 127, 0.05);
+	}
+
+	.common .grace-items {
+		padding: 0;
+	}
+
+	.common .grace-items .grace-label {
+		opacity: 0.5;
+		font-size: 28upx;
+		color: #000000;
+		width: 200upx;
+	}
+
+	.grace-form-r {
+		line-height: 100upx;
+		padding: 0;
+	}
+
+	.hint {
+		font-size: 24upx;
+		color: #F0474A;
+		text-align: justify;
+		line-height: 52upx;
+	}
+
+	button {
+		background: #3691B7;
+		color: #fff;
+	}
+
+	button:active {
+		background: #3691B7;
+		color: #fff;
+	}
 </style>

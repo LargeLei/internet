@@ -13,7 +13,7 @@
 						<view v-else>
 							<view class="light-list" v-for="(item, index) in news.resourcetitle" :key="index" @tap="goLighthouseDetail(item.titleid)">
 								<view class="grace-ellipsis-2">{{item.titletext}}</view>
-								<text>{{item.time | formatDate }}</text>
+								<text>{{item.time }}</text>
 							</view>
 						</view>
 						
@@ -29,6 +29,7 @@
 	var currentDicvalue = 1;
 	import graceLoading from "../../graceUI/components/graceLoading.vue";
 	export default {
+		
 		onLoad: function(option) {
 			_self = this;
 			this.getHeadType();
@@ -91,9 +92,7 @@
 					},
 					function(res) {
 						uni.hideLoading();
-						//console.log(res.resource)
 						_self.infors = res.resource;
-						
 					}
 				);
 			},

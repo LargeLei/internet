@@ -67,12 +67,15 @@
 <script>
 	import graceMaskView from "../../graceUI/components/graceMaskView.vue";
 	import graceLoading from '../../graceUI/components/graceLoading.vue';
-	var _self;
-	var page;
-	var rows = 15;
+	var _self,page,certKey,rows = 15;
 	export default {
 		onLoad: function(option) {
 			_self = this;
+			certKey="";
+			if(option.certKey){
+				certKey = option.certKey;
+			}
+			console.log(certKey)
 			page = 1;
 			this.loadDataList();
 		},
@@ -109,7 +112,8 @@
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/complaintreportpublic/findcomplaintreportpubliclist", {
 						page: page,
-						rows: rows
+						rows: rows,
+						certKey:certKey
 					},
 					function(res) {
 						if (res.success) {
@@ -153,7 +157,8 @@
 				});
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/complaintreportpublic/findcomplaintreportpubliclist", {
-						publicNumber: _self.searchKey
+						publicNumber: _self.searchKey,
+						certKey:certKey
 					},
 					function(res) {
 						if (res.success) {

@@ -125,7 +125,6 @@ export default {
 				'x-tif-nonce': nonce
 			},
 			success: (res) => {
-				uni.hideLoading();
 				console.log(res)
 				if (res.statusCode != 200) {
 					uni.showToast({
@@ -200,7 +199,6 @@ export default {
 			},
 			success: (res) => {
 				uni.hideLoading();
-				//console.log(res)
 				if (res.data.result === "false") {
 					uni.showToast({
 						title: res.data.message,

@@ -69,15 +69,18 @@
 				);
 			},
 			favoriteChange:function(){
+				uni.showLoading({
+					title: '正在收藏...'
+				});
 				if(is_colect == 0){
 					_self.$qyc.request(
-						"/f/mp/mplogin/colectAction", {articleId:articleId,openid:openid},
+						"/f/mp/mplogin/colectAction", {articleId:articleId,openid:openid,plaintsHead:_self.plaintsHead},
 						function(res) {
 							_self.getColect();
 							uni.showToast({
 								title: "已收藏",
 								duration: 2000,
-								icon: 'none'
+								icon: 'success'
 							});
 						}
 					);
@@ -85,6 +88,7 @@
 					_self.$qyc.request(
 						"/f/mp/mplogin/cancelColect", {articleId:articleId,openid:openid},
 						function(res) {
+							console.log(res)
 							_self.getColect();
 							uni.showToast({
 								title: "已取消收藏",

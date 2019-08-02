@@ -1,17 +1,18 @@
 <template>
 	<view class="grace-padding">
 		<view>
-			<view class="grace-scroll-do">
-				<scroll-view class="grace-scroll-x" scroll-x v-for="(item, index) in msg" :scroll-left="scrollIndex == index ? 180 : 0"
-				 @touchstart='touchStart' @touchend='touchEnd' :data-id="index" scroll-with-animation="true" :key="index" >
-					<view class="grace-items" @tap.stop="goDetail(item.id)">
-						<view class="contents">
-							<view class="grace-h5 grace-ellipsis-2 favorite-title">{{item.newsTitle}}</view>
-							<view class="favorite-time">{{item.createDate}}</view>
+			<view class="no-infor" v-if="msg.length == 0">---暂无数据---</view>
+			<view  v-else class="grace-scroll-do">
+					<scroll-view  class="grace-scroll-x" scroll-x v-for="(item, index) in msg" :scroll-left="scrollIndex == index ? 180 : 0"
+					 @touchstart='touchStart' @touchend='touchEnd' :data-id="index" scroll-with-animation="true" :key="index" >
+						<view class="grace-items" @tap.stop="goDetail(item.actileId)">
+							<view class="contents">
+								<view class="grace-h5 grace-ellipsis-2 favorite-title">{{item.plaintsHead}}</view>
+								<view class="favorite-time">{{item.createDate}}</view>
+							</view>
 						</view>
-					</view>
-					<view class="grace-items btn" :data-id="index" @tap="removeMsg(item.id)" :style="{width : index == deleteIndex ? deleteBtnWidth + 'px' : btn2Width+'px'}">删除</view>
-				</scroll-view>
+						<view class="grace-items btn" :data-id="index" @tap="removeMsg(item.actileId)" :style="{width : index == deleteIndex ? deleteBtnWidth + 'px' : btn2Width+'px'}">删除</view>
+					</scroll-view>
 			</view>
 		</view>
 	</view>
@@ -43,7 +44,7 @@
 				_self.$qyc.request(
 					"/f/mp/mplogin/findMycollection", {openid:openid},
 					function(res) {
-						console.log(JSON.stringify(res));
+						console.log(res);
 						_self.msg = res.data;
 					}
 				);
@@ -57,6 +58,12 @@
 				_self.$qyc.request(
 					"/f/mp/mplogin/cancelColect", {articleId:articleId,openid:openid},
 					function(res) {
+						uni.showToast({							
+							title: res.message,
+							duration: 2000,
+							icon: 'none'
+						});
+						_self.scrollIndex = -1;
 						_self.getCollectList();
 					}
 				);
@@ -107,7 +114,11 @@
 	page {
 		background: #F8F9FC;
 	}
-
+	.no-infor{
+		text-align: center;
+		margin: 30upx 0;
+		color:#999;
+	}
 	.grace-ellipsis-2 {
 		display: -webkit-box;
 		overflow: hidden;

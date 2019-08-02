@@ -449,7 +449,8 @@
 				safeShow:false,
 				regulationShow:false,
 				marketShow:false,
-				organShow:false
+				organShow:false,
+				certKey:''
 			}
 		},
 		methods: {
@@ -514,8 +515,10 @@
 						openid:uni.getStorageSync('openid')
 					},
 					function(res) {
+						console.log(res)
 						_self.userName = res.data.trueName;
 						_self.userCertificateNumber = res.data.idcard;
+						_self.certKey =res.data.certKey
 					}
 				);
 			},
@@ -878,7 +881,8 @@
 					"proviceCode":_self.province[_self.provinceIndex].cityCode,
 					"cityCode": _self.city[_self.cityIndex].cityCode,
 					"districtCode": _self.district[_self.districtIndex].cityCode,
-					"ispublic": _self.isPublic
+					"ispublic": _self.isPublic,
+					"certKey":_self.certKey
 				};
 				if(_self.cptTypeIndex == 0){
 					uni.showToast({
@@ -981,7 +985,7 @@
 								_self.successShow = true;
 								setTimeout(function(){
 									uni.navigateTo({ 
-										url: '/pages/myComplaint/myComplaint'
+										url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
 									});
 									var obj = _self.$options.data();
 									obj.reportObject = _self.reportObject;
@@ -1055,7 +1059,7 @@
 								_self.successShow = true;
 								setTimeout(function(){
 									uni.navigateTo({ 
-										url: '/pages/myComplaint/myComplaint'
+										url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
 									});
 									var obj = _self.$options.data();
 									obj.complaintObject = _self.complaintObject;

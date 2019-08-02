@@ -14,7 +14,7 @@
 		<view class="grace-padding">
 			<view class="my-item">
 				<block v-for="(item, index) in lists" :key="index">
-					<navigator class="grace-list" :url="'../'+item.path+'/'+item.path">
+					<navigator class="grace-list" :url="'../'+item.path+'/'+item.path+'?certKey='+certKey">
 						<image :src="item.img" mode="widthFix" style=""></image><text class="grace-list-text">{{item.title}}</text>
 						<text class="text-right">{{item.desc}}</text>
 						<text class="grace-list-imgs-arrow grace-iconfont icon-arrow-right"></text>
@@ -56,6 +56,7 @@
 				portraitName: "",
 				isNotOpen:true,
 				isshow: false,
+				certKey:'',
 				lists: [{
 						img: '../../static/imgs/wdtsjb_icon.png',
 						title: '我的投诉举报',
@@ -115,6 +116,7 @@
 							_self.lists[1].desc= "已认证";
 							_self.isNotOpen = false;
 							_self.portraitName = res.data.trueName;
+							_self.certKey = res.data.certKey;
 							uni.setStorageSync('trueName',_self.portraitName);
 							uni.setStorageSync('wxUsers',res.data);
 						}else{
