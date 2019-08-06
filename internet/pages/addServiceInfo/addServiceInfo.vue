@@ -843,7 +843,6 @@
 						}
 						_self.imgLists = _self.imgLists.concat(upVedio);
 						console.log(_self.imgLists)
-						
 						_self.$qyc.fileRequest(
 							"/ebus/tsjb/complaints/upload",
 							  res.tempFilePath,
@@ -973,6 +972,7 @@
 						});
 						return;
 					}
+					
 					uni.showLoading({
 						title: '正在提交...'
 					});

@@ -111,7 +111,9 @@
 				portraitImg: '',
 				light: [],
 				laws: [],
-				inventory:[]
+				inventory:[],
+				Appid:'wx04bb4da39331cbbb',
+				AppSecret:'c1e26aff8afaa4ac907a7aa02ff7c2c0'
 			}
 		},
 		methods: {
@@ -167,7 +169,7 @@
 						siteid : 1
 					},
 					function(res) {
-						console.log(res)
+						console.log(res,1111)
 					
 						//_self.laws = res.data.list.slice(0, 5);
 					}

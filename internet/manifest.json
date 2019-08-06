@@ -1,5 +1,5 @@
 {
-    "name" : "template",
+    "name" : "internet",
     "appid" : "__UNI__B9DDA22",
     "description" : "登录模板",
     "versionName" : "1.0.0",
@@ -48,7 +48,7 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-        "appid" : "wxf155af1529928ccd",
+        "appid" : "wx04bb4da39331cbbb",
         "setting" : {
             "urlCheck" : false
         }

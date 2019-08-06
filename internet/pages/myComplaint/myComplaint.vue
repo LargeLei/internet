@@ -155,10 +155,10 @@
 				uni.showLoading({
 					title: '搜索中...'
 				});
+				console.log(_self.searchKey,certKey)
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/complaintreportpublic/findcomplaintreportpubliclist", {
-						publicNumber: _self.searchKey,
-						certKey:certKey
+						publicNumber: _self.searchKey
 					},
 					function(res) {
 						if (res.success) {

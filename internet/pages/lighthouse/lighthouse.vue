@@ -13,7 +13,7 @@
 						<view v-else>
 							<view class="light-list" v-for="(item, index) in news.resourcetitle" :key="index" @tap="goLighthouseDetail(item.titleid)">
 								<view class="grace-ellipsis-2">{{item.titletext}}</view>
-								<text>{{item.time }}</text>
+								<text>{{ item.time }}</text>
 							</view>
 						</view>
 						
@@ -29,7 +29,6 @@
 	var currentDicvalue = 1;
 	import graceLoading from "../../graceUI/components/graceLoading.vue";
 	export default {
-		
 		onLoad: function(option) {
 			_self = this;
 			this.getHeadType();
@@ -68,6 +67,17 @@
 			});
 		},
 		methods: {
+			 formTime:function (cjsj) {
+					var date = new Date(cjsj) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+					var Y = date.getFullYear() + '-'
+					var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-'
+					var D = date.getDate() + ' '
+					var h = date.getHours() + ':'
+					var m = date.getMinutes() + ':'
+					var s = date.getSeconds()
+					return Y+M+D+h+m+s
+				},
+				
 			getHeadType: function() {
 				_self.$qyc.selfRequest(
 					"/jmportal_server/interfaces/cates.do", {

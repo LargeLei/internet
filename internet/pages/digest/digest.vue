@@ -73,8 +73,16 @@
 	</view>
 </template>
 <script>	
-	var _self;
+	var _self,titleId;
 	export default {
+		onLoad: function(option) {
+			_self = this;
+			titleId="";
+			if(option.titleId){
+				titleId = option.titleId;
+			}
+			this.getComplaintList();
+		},
 		data() {
 			return {
 				//进度
@@ -111,9 +119,7 @@
 				suggestImg:'../../static/imgs/dz_yd_icon.png'
 			}
 		},
-		onLoad() {
-			
-		},
+		
 		methods: {
 			satisfaction:function(){
 				if (this.suggestImg == "../../static/imgs/dz_yd_icon.png") {
@@ -121,6 +127,20 @@
 				} else{
 					this.suggestImg = "../../static/imgs/dz_yd_icon.png"
 				}
+			},
+			
+			
+			getComplaintList: function() {
+				_self.$qyc.selfRequest(
+					"/jmportal_server/interfaces/infocontent.do", {
+						titleid:titleId,
+						siteid:1
+					},
+					function(res) {
+							console.log(res)
+							//_self.light = res.resource;
+					}
+				);
 			},
 			
 			//提交

@@ -45,10 +45,13 @@
 				<text class="grace-list-text">投诉举报选登</text>
 			</view>
 			<view class="light">
-				<view class="light-list" v-for="(item, index) in light" :key="index" @tap="goDigest">
-					<view class="grace-space-between"><text class="light-head">{{item.updateDate}}</text><text class="light-title">网友：{{item.unitCode}}</text></view>
-					<view class="grace-ellipsis-2 light-text">{{item.unitType}}</view>
-					<text class="light-state">已回复</text>
+				<view class="light-list" v-for="(item1, index1) in light" :key="index1" >
+					<view v-for="(item, index) in item1.resourcetitle" :key="index" @tap="goDigest(item.titleid)">
+						<view class="grace-space-between"><text class="light-head">{{item.createtime}}</text><text class="light-title">{{item.sectitle}}</text></view>
+						<view class="grace-ellipsis-2 light-text">{{item.titletext}}</view>
+						<text class="light-state">{{item.leadtitle}}</text>
+					</view>
+					
 				</view>
 			</view>
 		</view>
@@ -72,15 +75,14 @@
 		methods: {
 			//加载投诉信息列表
 			loadComplaintList: function() {
-				_self.$qyc.interfaceRequest(
-					"/ebus/tsjb/unittype/getchildlistbyparentcode", {
-						parentCode:'0000'
+				_self.$qyc.selfRequest(
+					"/jmportal_server/interfaces/infolist.do", {
+						resourceid:48,
+						siteid:1
 					},
 					function(res) {
-						console.log(res)
-						if(res.success){
-							_self.light = res.data;
-						}
+							console.log(res)
+							_self.light = res.resource;
 					}
 				);
 			},
@@ -90,9 +92,9 @@
 				});
 			},
 			
-			goDigest:function(){
+			goDigest:function(titleId){
 				uni.navigateTo({
-					url: '/pages/digest/digest'
+					url: '/pages/digest/digest?titleId='+titleId
 				});
 			},
 			noticeDown:function(){
@@ -285,7 +287,7 @@
 
 	.laws {
 		background: #fff;
-		margin-top: 20upx;
+		margin: 20upx 0 92upx 0;
 	}
 
 	.laws-header {
