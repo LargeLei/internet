@@ -76,7 +76,7 @@ export default {
 				'x-tif-nonce': nonce
 			},
 			success: (res) => {
-				console.log(res,RegExp("false").test(res.data.success))
+				//console.log(res,RegExp("false").test(res.data.success))
 				uni.hideLoading();
 				if (res.statusCode != 200) {
 					uni.showToast({
@@ -86,7 +86,7 @@ export default {
 					});
 					return
 				}
-				if (RegExp("false").test(res.data.success) == false) {
+				if (RegExp("").test(res.data.success) == false) {
 					uni.showToast({
 						title: "上传失败！",
 						duration: 2000,

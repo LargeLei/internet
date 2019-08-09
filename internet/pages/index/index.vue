@@ -111,9 +111,7 @@
 				portraitImg: '',
 				light: [],
 				laws: [],
-				inventory:[],
-				Appid:'wx04bb4da39331cbbb',
-				AppSecret:'c1e26aff8afaa4ac907a7aa02ff7c2c0'
+				inventory:[]
 			}
 		},
 		methods: {
@@ -141,6 +139,7 @@
 										code: _self.code
 									},
 									function(res) {
+										console.log(res)
 										_self.loginShow = false;
 										_self.indexShow = true;
 										var obj = JSON.parse(res.data);

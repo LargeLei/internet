@@ -5,8 +5,8 @@
 			<!-- 投诉举报对象切换 -->
 			<radio-group @change="radioChange" class="cpl-rpt-choose-radio">
 				<view>
-					<label v-for = "(item,index) in cplRpt" :key="item.value">
-						<radio color="#3691B7" :value="item.type"  :checked="index == cplRptCurrent" />{{item.label}}</label>
+					<label v-for="(item,index) in cplRpt" :key="item.value">
+						<radio color="#3691B7" :value="item.type" :checked="index == cplRptCurrent" />{{item.label}}</label>
 				</view>
 			</radio-group>
 
@@ -179,7 +179,7 @@
 								<text>{{disputeDate}}</text>
 							</picker>
 						</view>
-						</view>
+					</view>
 				</view>
 
 				<!-- 生态环境-->
@@ -235,11 +235,11 @@
 					<view class="garce-items" v-for="(item, index) in imgLists" :key="index">
 						<view class="file-box">
 							<!-- 图片 -->
-							<image :src="item.url" class="file-image" :data-imgurl="item.url" v-if="item.type==1"></image>
+							<image :src="item.path" class="file-image" :data-imgurl="item.path" v-if="item.type==1"></image>
 							<!-- 视频 -->
-							<video :src="item.url" v-if="item.type==2"></video>
+							<video :src="item.path" v-if="item.type==2"></video>
 							<!-- 音频 -->
-							<audio :src="item.url" v-if="item.type==3"></audio>
+							<audio :src="item.path" v-if="item.type==3"></audio>
 							<image src="../../static/imgs/bf_icon.png" class="file-bf" v-if="item.type == 2"></image>
 							<image src="../../static/imgs/yy_icon.png" class="file-bf" v-if="item.type == 3"></image>
 						</view>
@@ -490,24 +490,18 @@
 					return false;
 					}
 				console.log("===音频文件地址："+recordPath+"===")
-				var upAudio ={
-					"url":recordPath,
-					"type":3
-				}
-				_self.imgLists = _self.imgLists.concat(upAudio);
-				console.log(_self.imgLists)
-				_self.$qyc.fileRequest(
-					"/ebus/tsjb/complaints/upload",
-					  recordPath,
-					  'file',
-					function(res) {
-						uni.showToast({
-							title: "上传成功！",
-							duration: 2000,
-							icon: 'none'
-						});
+				var tempFiles = [
+					{
+						path:recordPath
 					}
-				);
+				];
+				for (let i = 0; i < tempFiles.length; i++) {
+					tempFiles[i]['upload_percent'] = 0
+					tempFiles[i]['type'] = 3
+					_self.imgLists = _self.imgLists.concat(tempFiles[i])
+				}
+				console.log(_self.imgLists)
+				
 			},
 			getUserinfo:function(){
 				_self.$qyc.request(
@@ -798,23 +792,12 @@
 					sizeType: ['compressed'],
 					success: function(res) {
 						console.log(res)
-						var upPhoto ={
-							"url":res.tempFilePaths,
-							"type":1
+						var tempFiles = res.tempFiles
+						for (let i = 0; i < tempFiles.length; i++) {
+							tempFiles[i]['upload_percent'] = 0
+							tempFiles[i]['type'] = 1
+							_self.imgLists = _self.imgLists.concat(tempFiles[i])
 						}
-						_self.imgLists = _self.imgLists.concat(upPhoto);
-	 					_self.$qyc.fileRequest(
-	 						"/ebus/tsjb/complaints/upload",
-							  res.tempFilePaths[0],
-							  'file',
-	 						function(res) {
-	 							uni.showToast({
-	 								title: "上传成功！",
-	 								duration: 2000,
-	 								icon: 'none'
-	 							});
-	 						}
-						);
 					},
 					fail: function (res) {
 						uni.hideLoading();
@@ -837,24 +820,13 @@
 					sourceType: ['camera', 'album'],
 					success: function (res) {
 						console.log(res)
-						var upVedio ={
-							"url":res.tempFilePath,
-							"type":2
+						var tempFiles = res.tempFiles
+						for (let i = 0; i < tempFiles.length; i++) {
+							tempFiles[i]['upload_percent'] = 0
+							tempFiles[i]['type'] = 2
+							_self.imgLists = _self.imgLists.concat(tempFiles[i])
 						}
-						_self.imgLists = _self.imgLists.concat(upVedio);
-						console.log(_self.imgLists)
-						_self.$qyc.fileRequest(
-							"/ebus/tsjb/complaints/upload",
-							  res.tempFilePath,
-							  'file',
-							function(res) {
-								uni.showToast({
-									title: "上传成功！",
-									duration: 2000,
-									icon: 'none'
-								});
-							}
-						);
+						
 					},
 					fail: function (res) {
 						uni.hideLoading();
@@ -939,6 +911,7 @@
 					}
 					data.occurplace = _self.place;
 				}
+				
 				if(_self.cplRptCurrent == 1){
 					data.reportObject = _self.complaintObject;
 					data.reportType = _self.cptType[_self.cptTypeIndex].problemCode;
@@ -972,28 +945,44 @@
 						});
 						return;
 					}
-					
-					uni.showLoading({
-						title: '正在提交...'
-					});
-					console.log(data)
-					_self.$qyc.interfaceRequest(
-						"/ebus/tsjb/reportinformation/addreportinformation", data,
-						function(res) {
-							//console.log(res)
-							if(res.success){
-								_self.successShow = true;
-								setTimeout(function(){
-									uni.navigateTo({ 
-										url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
-									});
-									var obj = _self.$options.data();
-									obj.reportObject = _self.reportObject;
-									Object.assign(_self.$data, obj);
-								},2000);
-							}
+					if(_self.imgLists.length != 0){
+						for (let i = 0; i < _self.imgLists.length; i++) {
+							if ( _self.imgLists[i]['upload_percent'] == 0) {
+								 _self.$qyc.fileRequest(
+									"/ebus/tsjb/complaints/upload",
+									  _self.imgLists[i].path,
+									  'file',
+									function(res) {
+										if(i>=_self.imgLists.length-1){
+											console.log(i)
+											uni.showLoading({
+												title: '正在提交...'
+											});
+											console.log(data)
+											_self.$qyc.interfaceRequest(
+												"/ebus/tsjb/reportinformation/addreportinformation", data,
+												function(res) {
+													//console.log(res)
+													if(res.success){
+														_self.successShow = true;
+														setTimeout(function(){
+															uni.navigateTo({ 
+																url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
+															});
+															var obj = _self.$options.data();
+															obj.reportObject = _self.reportObject;
+															Object.assign(_self.$data, obj);
+														},2000);
+													}
+												}
+											);
+										}
+									}
+								 );
+							   }
 						}
-					);
+					}
+					
 				}else{
 					data.complaintObject = _self.complaintObject ;
 					data.complaintTerritory = _self.complaintTerritory;
@@ -1047,28 +1036,45 @@
 						});
 						return;
 					}
-					uni.showLoading({
-						title: '正在提交...'
-					});
-					console.log(data)
-					_self.$qyc.interfaceRequest(
-						"/ebus/tsjb/complaints/addcomplaintinformation", data,
-						function(res) {
-							console.log(res)
-							if(res.success){
-								_self.successShow = true;
-								setTimeout(function(){
-									uni.navigateTo({ 
-										url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
-									});
-									var obj = _self.$options.data();
-									obj.complaintObject = _self.complaintObject;
-									Object.assign(_self.$data, obj);
-								},2000);
-							}
-							
+					
+					if(_self.imgLists.length != 0){
+						for (let i = 0; i < _self.imgLists.length; i++) {
+							if ( _self.imgLists[i]['upload_percent'] == 0) {
+								 _self.$qyc.fileRequest(
+									"/ebus/tsjb/complaints/upload",
+									  _self.imgLists[i].path,
+									  'file',
+									function(res) {
+										if(i>=_self.imgLists.length-1){
+											console.log(i)
+											uni.showLoading({
+												title: '正在提交...'
+											});
+											console.log(data)
+											_self.$qyc.interfaceRequest(
+												"/ebus/tsjb/complaints/addcomplaintinformation", data,
+												function(res) {
+													console.log(res)
+													if(res.success){
+														_self.successShow = true;
+														setTimeout(function(){
+															uni.navigateTo({ 
+																url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
+															});
+															var obj = _self.$options.data();
+															obj.complaintObject = _self.complaintObject;
+															Object.assign(_self.$data, obj);
+														},2000);
+													}
+													
+												}
+											);
+										}
+									}
+								 );
+							   }
 						}
-					);
+					}
 				}
 				
 			},

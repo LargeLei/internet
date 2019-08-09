@@ -3,10 +3,15 @@
 		<view class="grace-form">
 			<form @submit="formSubmit">
 				<view class="approve">
-					<view style="padding:20upx 0;border-bottom:2upx solid rgba(214,214,214,0.50);">
-						<view class="approve-head">身份证信息</view>
-						<view class="approve-title">信息将与当前微信绑定（用于身份验证）</view>
-					</view>
+					<dl class='approve-dl'>
+						<dt>
+							<image src="../../static/imgs/face-check.png" mode=""></image>
+						</dt>
+						<dd>
+							<p>当前业务需要人脸识别验证</p>
+							<p>信息将于当前微信绑定（用于身份验证）</p>
+						</dd>
+					</dl>
 					<view class="grace-items">
 						<view class="grace-label">姓名</view>
 						<input type="text" class="input" v-model="username" placeholder="请输入真实姓名" :value="username"></input>
@@ -15,23 +20,32 @@
 						<view class="grace-label">身份证</view>
 						<input type="text" class="input" v-model="idCard" placeholder="请输入身份证号码" :value="idCard"></input>
 					</view>
-				</view>
-				<view class="approve">
-					<view style="padding:20upx 0;border-bottom:2upx solid rgba(214,214,214,0.50);">
-						<view class="approve-head">绑定/验证手机号码</view>
-						<view class="approve-title">信息将与当前微信绑定（用于身份验证）</view>
+					<view class="grace-items">
+						<view class="grace-label">手机号</view>
+						<input type="text" class="input" v-model="mobile" placeholder="请输入手机号" :value="mobile"></input>
 					</view>
 					<view class="grace-items">
-						<input type="tel" class="input" v-model="mobile" name="mobile" placeholder="" style="margin:0;text-align: left;"></input>
-						<view class="gain" @tap="sendMessage()">获取验证码</view>
+						<radio-group @change="radioChange" class='approve-ul'>
+							<li v-for="(item, index) in radioType" :key="item.value">
+								<label class="radio">
+									<radio style="transform:scale(.7)" color="#3691B7" :checked="index === current" :value="item.value" />{{item.name}}
+								</label>
+							</li>
+						</radio-group>
 					</view>
-					<view class="grace-items grace-noborder">
-						<input type="text" class="input" v-model="code" name="code" placeholder="请输入验证码" style="margin:0;text-align: left;"></input>
+					<view class="grace-items">
+						<checkbox-group @change="checkboxChange" class="approve-agree">
+							<view>
+								<input style="transform:scale(.7)" color='#3691B7' :checked='isAgree' type="checkbox" value="1" />
+							</view>
+							<p>我同意国办电子政务办公室使用我所提交的信息用于快捷登录</p>
+						</checkbox-group>
+					</view>
+					<view style="padding:40upx 0;">
+						<button formType="submit" :disabled="disable" type="" style="width:96%;" @tap="faceCheck">开始验证</button>
 					</view>
 				</view>
-				<view style="padding:40upx 0;">
-					<button formType="submit" type="" style="width:96%;" @tap="addApprove">确认</button>
-				</view>
+
 			</form>
 		</view>
 	</view>
@@ -39,117 +53,269 @@
 <script>
 	var _self;
 	export default {
-		
-		onLoad:function(option) {
+
+		onLoad: function(option) {
 			_self = this;
-			this.getPhoneNumber();
 		},
 		data() {
 			return {
+				//按钮禁用
+				disable: false,
+				//是否同意
+				isAgree: true,
 				//身份证信息
-				username:"雷清云",
+				username: "雷清云",
 				idCard: '610527199106215651',
 				//绑定/验证手机号码
-				mobile:'17348697420',
-				code:'',
-				cretKey:''
+				mobile: '17348697420',
+				checkAliveType: '1',
+				//识别方式
+				radioType: [{
+					value: "1",
+					name: "反光识别"
+				}, {
+					value: "0",
+					name: "读数识别"
+				}, ],
+				current: 0,
+				cretKey: ''
 			}
 		},
 		methods: {
-			getPhoneNumber: function(e) {  
-                console.log(e);   
-            }, 	
-			sendMessage: function(e) {
-				if (_self.mobile.length == 11) {
-					_self.$qyc.request(
-						"/f/wx/wxUser/sendMessage", {
-							mobile: _self.mobile
-						},
-						function(res) {					
-							_self.code = res.data;
-							uni.showToast({							
-								title: "发送成功",
-								duration: 2000,
-								icon: 'none'
-							});
-						}
-					);
-				}else{
-					uni.showToast({
-						type: 'warning',
-						title: "输入正确手机号码",
-						duration: 2000,
-						icon: 'none'
-					});
+			//切换识别方式
+			radioChange: function(evt) {
+				for (let i = 0; i < _self.radioType.length; i++) {
+					if (_self.radioType[i].value === evt.target.value) {
+						_self.current = i;
+						_self.checkAliveType = _self.radioType[i].value
+						break;
+					}
 				}
-			
 			},
-			addApprove: function(e) {
-				if (_self.mobile.length == 11) {
-					uni.showLoading({
-						title: '正在提交...'
-					});
-					_self.$qyc.request(
-						"/f/wx/wxUser/addApprove", {
-							username: _self.username,
-							mobile: _self.mobile,
-							openid: uni.getStorageSync('openid'),
-							idCard: _self.idCard,
-							code:_self.code
-						},
-						function(res) {
-							console.log(res)
-							if(res.result){
-								//_self.cretKey = obj.openid;
-								//uni.setStorageSync('openid', _self.cretKey);
-								uni.showToast({							
-									title: "认证成功",
-									duration: 2000,
-									icon: 'none'
-								});
-								// setTimeout(function()  {
-								// 	uni.navigateTo({
-								// 		url: '/pages/my/my'
-								// 	});							 
-								// }, 2000);
-							}else{
-								uni.showToast({
-									type: 'warning',
-									title: res.message,
-									duration: 2000,
-									icon: 'none'
-								});
-							}
-						}
-					);
-				}else{
+			//是否同意
+			checkboxChange: function(evt) {
+				if (evt.detail.value == '') {
+					_self.isAgree = false
+				} else {
+					_self.isAgree = true
+				}
+			},
+			faceCheck: function(e) {
+				if (_self.username == '') {
 					uni.showToast({
 						type: 'warning',
-						title: "输入正确手机号码",
+						title: "请输入真实姓名",
 						duration: 2000,
 						icon: 'none'
 					});
+					return;
 				}
-			
+				let regCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; 
+				if (!regCard.test(_self.idCard)) {
+					uni.showToast({
+						type: 'warning',
+						title: "请输入合法身份证号",
+						duration: 2000,
+						icon: 'none'
+					});
+					return;
+				}
+				if (!(/^1[3456789]\d{9}$/.test(_self.mobile))) {
+					uni.showToast({
+						type: 'warning',
+						title: "请输入有效手机号",
+						duration: 2000,
+						icon: 'none'
+					});
+					return;
+				}
+				if (_self.isAgree == false) {
+					uni.showToast({
+						type: 'warning',
+						title: "请同意认证协议",
+						duration: 2000,
+						icon: 'none'
+					});
+					return;
+				}
+				console.log(_self.username, _self.idCard, _self.mobile, _self.checkAliveType)
+				// wx.checkIsSupportFacialRecognition({
+				// 	complete(res) {
+				// 		console.log(res)
+				// 	}
+				// })
+				//获取本次认证结果凭据verifyResult
+				wx.startFacialRecognitionVerify({
+					name : _self.username,
+					idCardNumber : _self.idCard,
+					checkAliveType : _self.checkAliveType,
+					success(res){
+						console.log(res)
+						let verifyResult = res.verifyResult;
+						
+						
+						
+						
+						
+					}
+				})
+
+				// _self.$qyc.request(
+				// 	"/f/wx/wxUser/addApprove", {
+				// 		username: _self.username,
+				// 		mobile: _self.mobile,
+				// 		openid: uni.getStorageSync('openid'),
+				// 		idCard: _self.idCard,
+				// 		code: _self.code
+				// 	},
+				// 	function(res) {
+				// 		console.log(res)
+				// 		if (res.result) {
+				// 			//_self.cretKey = obj.openid;
+				// 			//uni.setStorageSync('openid', _self.cretKey);
+				// 			uni.showToast({
+				// 				title: "认证成功",
+				// 				duration: 2000,
+				// 				icon: 'none'
+				// 			});
+				// 			// setTimeout(function()  {
+				// 			// 	uni.navigateTo({
+				// 			// 		url: '/pages/my/my'
+				// 			// 	});							 
+				// 			// }, 2000);
+				// 		} else {
+				// 			uni.showToast({
+				// 				type: 'warning',
+				// 				title: res.message,
+				// 				duration: 2000,
+				// 				icon: 'none'
+				// 			});
+				// 		}
+				// 	}
+				//);
+
+
 			},
 		}
-		
+
 	}
 </script>
 
 <style>
-	page{background: #F8F9FC;}
-	.grace-padding{padding:0;width: 100%;}
-	.approve{background:#fff;padding:0 30upx;box-shadow: 0 1px 0 0 rgba(214,214,214,0.50), 0 2px 14px 0 rgba(9,63,127,0.05);margin-top:20upx;}
-	.approve-head{font-weight:bold;font-size: 40upx;color: #000000;line-height: 65upx;margin-top:20upx;}
-	.approve-title{opacity: 0.5;font-size: 24upx;color: #000000;line-height: 52upx;margin-bottom:20upx;}
-	.approve{background:#fff;padding:0 30upx;box-shadow: 0 1px 0 0 rgba(214,214,214,0.50), 0 2px 14px 0 rgba(9,63,127,0.05);}
-	.approve .grace-items{padding:0;}
-	.approve .grace-items .grace-label{opacity: 0.8;font-size:28upx;color: #000000;width:200upx;}
-	.approve .grace-form-r{line-height: 100upx;padding:0;}
-	.grace-form picker{height:100upx;line-height: 100upx;}
-	.hint{font-size:24upx;color: #F0474A;text-align: justify;line-height:52upx;}
-	.gain{font-size: 28px;color: #3691B7;line-height:100upx;text-align: right;width:60%;}
-	button{background:#3691B7;color:#fff;}
-	button:active{background:#3691B7;color:#fff;}
+	page {
+		background: #F8F9FC;
+	}
+
+	input[type="radio"] {
+		display: none;
+	}
+
+	.grace-padding {
+		padding: 0;
+		width: 100%;
+	}
+
+	.approve {
+		background: #fff;
+		padding: 0 30upx;
+		box-shadow: 0 1px 0 0 rgba(214, 214, 214, 0.50), 0 2px 14px 0 rgba(9, 63, 127, 0.05);
+		margin-top: 20upx;
+	}
+
+	.approve-dl {
+		width: 100%;
+		padding: 20upx 0 40upx 0;
+		text-align: center;
+	}
+
+	.approve-dl dt image {
+		width: 260upx;
+		height: 180upx;
+		padding: 20upx 0;
+	}
+
+	.approve-dl dd p:last-child {
+		color: #858585;
+		font-size: 18upx;
+	}
+
+	.approve {
+		background: #fff;
+		padding: 0 30upx;
+		box-shadow: 0 1px 0 0 rgba(214, 214, 214, 0.50), 0 2px 14px 0 rgba(9, 63, 127, 0.05);
+	}
+
+	.approve .grace-items {
+		padding: 0;
+	}
+
+	.approve-ul {
+		width: 100%;
+		display: -webkit-box !important;
+		padding: 20upx 0;
+	}
+
+	.approve-ul li {
+		-webkit-box-flex: 1;
+		text-align: center;
+		font-size: 34upx;
+	}
+
+	.approve-ul li:first-child {
+		border-right: 1px solid #e2e2e2;
+	}
+
+	.approve-agree {
+		display: -webkit-box;
+		display: -webkit-flex;
+		padding: 20upx 0;
+		-webkit-flex-wrap: nowrap !important
+	}
+
+	.approve-agree p {
+		padding: 0 10upx;
+		color: #858585;
+	}
+
+	.approve .grace-items .grace-label {
+		opacity: 0.8;
+		font-size: 28upx;
+		color: #000000;
+		width: 200upx;
+	}
+
+	.approve .grace-form-r {
+		line-height: 100upx;
+		padding: 0;
+	}
+
+	.grace-form picker {
+		height: 100upx;
+		line-height: 100upx;
+	}
+
+	.hint {
+		font-size: 24upx;
+		color: #F0474A;
+		text-align: justify;
+		line-height: 52upx;
+	}
+
+	.gain {
+		font-size: 28px;
+		color: #3691B7;
+		line-height: 100upx;
+		text-align: right;
+		width: 60%;
+	}
+
+	button {
+		background: #3691B7;
+		color: #fff;
+	}
+
+	button:active {
+		background: #3691B7;
+		color: #fff;
+	}
 </style>

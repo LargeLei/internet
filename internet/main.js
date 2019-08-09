@@ -13,10 +13,10 @@ Vue.prototype.$crypto = crypto
 Vue.prototype.$SHA256 = SHA256
 
 //小程序APPID
-Vue.prototype.Appid = "wxf155af1529928ccd";
+Vue.prototype.Appid = "wx04bb4da39331cbbb ";
 
 //小程序密钥
-Vue.prototype.AppSecret = "f4f5e4a4f514aca587ea4e307c6f7698";
+Vue.prototype.AppSecret = "c1e26aff8afaa4ac907a7aa02ff7c2c0";
 
 //网关---(投诉举报,事项清单，我的投诉举报)
 Vue.prototype.interfaceUrl = "http://121.52.221.201:80";
@@ -26,7 +26,6 @@ Vue.prototype.siteUrl = "http://a256160g08.qicp.vip";
 
 //曝光台
 Vue.prototype.selfUrl = "http://121.52.221.197";
-
 
 //静态资源路径
 Vue.prototype.staticUrl = "https://staticimgs.oss-cn-beijing.aliyuncs.com/";

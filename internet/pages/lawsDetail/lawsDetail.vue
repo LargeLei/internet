@@ -22,6 +22,8 @@
 	var articleId;
 	var openid = uni.getStorageSync('openid');
 	var is_colect = 0;
+	
+	
 	export default {
 		onLoad: function(option) {
 			_self = this;
@@ -31,6 +33,9 @@
 			}
 			this.getArticle();
 			this.getColect();
+			uni.setNavigationBarTitle({
+　				title:"曝光台详情"
+			})
 		},
 		data() {
 			return {
@@ -40,6 +45,7 @@
 				favorite:'../../static/imgs/wsc_icon.png'
 			}
 		},
+		
 		methods: {
 			getArticle:function(){
 				_self.$qyc.selfRequest(
@@ -68,6 +74,7 @@
 					}
 				);
 			},
+			
 			favoriteChange:function(){
 				uni.showLoading({
 					title: '正在收藏...'

@@ -31,11 +31,9 @@
 		</view>
 		<view class="grace-padding home-menu">
 			<view class="grace-rows">
-				
 				<view class="grace-items grace-rows-demo" style="width:100%;" @tap="goComplaints">
 					<image src="../../static/imgs/tsjb_icon.png" mode='widthFix' alt=""></image><text>我要投诉举报</text>
 				</view>
-				
 			</view>
 		</view>
 
@@ -46,7 +44,7 @@
 			</view>
 			<view class="light">
 				<view class="light-list" v-for="(item1, index1) in light" :key="index1" >
-					<view v-for="(item, index) in item1.resourcetitle" :key="index" @tap="goDigest(item.titleid)">
+					<view class="light-list-only" v-for="(item, index) in item1.resourcetitle" :key="index" @tap="goDigest(item.titleid)">
 						<view class="grace-space-between"><text class="light-head">{{item.createtime}}</text><text class="light-title">{{item.sectitle}}</text></view>
 						<view class="grace-ellipsis-2 light-text">{{item.titletext}}</view>
 						<text class="light-state">{{item.leadtitle}}</text>
@@ -208,9 +206,6 @@
 	}
 
 	.home-menu {
-		position: fixed;
-		bottom: 0;
-		left: 0;
 		box-shadow: 0 1px 0 0 rgba(214, 214, 214, 0.50), 0 2px 14px 0 rgba(9, 63, 127, 0.05);
 		background: #3691B7;
 		padding: 14upx 0;
@@ -247,7 +242,9 @@
 		border-bottom: 2upx solid rgba(214, 214, 214, 0.50);
 		padding: 20upx 0;
 	}
-
+	.light .light-list .light-list-only{
+		margin-bottom: 20upx;
+	}
 	.light .light-list:last-child {
 		border: none;
 	}
