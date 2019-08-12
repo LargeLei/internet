@@ -76,7 +76,7 @@ export default {
 				'x-tif-nonce': nonce
 			},
 			success: (res) => {
-				//console.log(res,RegExp("false").test(res.data.success))
+				console.log(res)
 				uni.hideLoading();
 				if (res.statusCode != 200) {
 					uni.showToast({
@@ -198,16 +198,31 @@ export default {
 				'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' //自定义请求头信息
 			},
 			success: (res) => {
+				console.log(res)
 				uni.hideLoading();
-				if (res.data.result === "false") {
+				if (res.statusCode != 200) {
 					uni.showToast({
-						title: res.data.message,
+						title: res.errMsg,
 						duration: 2000,
 						icon: 'none'
 					});
+					if (errBack) {
+						errBack(res.data);
+					}
 					return
+				}else{
+					if(res.data.code == 0){
+						callback(res.data);
+					}else{
+						uni.showToast({
+							title: res.data.msg,
+							duration: 2000,
+							icon: 'none'
+						});
+						return
+					}
 				}
-				callback(res.data);
+				
 			},
 			fail: (err) => {
 				if (errBack) {

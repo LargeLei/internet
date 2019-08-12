@@ -27,7 +27,7 @@
 				</view>
 			</view>
 			<view class="grace-padding home-menu">
-				<view class="home-menu-boxs" @tap="goComplaintReporting">
+				<view class="home-menu-boxs" @tap="goCplRpt">
 					<image src="../../static/imgs/tsjb_icon.png" mode='widthFix' alt=""></image><text>投诉举报</text>
 				</view>
 			</view>
@@ -85,7 +85,7 @@
 	export default {
 		onLoad: function(option) {
 			_self = this;
-			console.log()
+			_self.token = uni.getStorageSync('token');
 			//登录
 			if (uni.getStorageSync('nickName') == null || uni.getStorageSync('nickName') == "") {
 				_self.loginShow = true;
@@ -115,6 +115,43 @@
 			}
 		},
 		methods: {
+			//更新token
+			updateToken:function(selfState){
+				_self.$qyc.request(
+					"/f/wx/wxUser/tokenLogin", {
+						openid: uni.getStorageSync('openid')
+					},
+					function(res) {
+						if(res.data.status != 2){
+							_self.token = res.data.tokenNo
+							if(selfState == 1){
+								uni.navigateTo({
+									url: '/pages/my/my'
+								});
+							}else{
+								uni.navigateTo({
+									url: '/pages/cplRpt/cplRpt'
+								});
+							}
+							
+						}else{
+							uni.showModal({
+								title: '提示',
+								content: '认证失效，请先认证！',
+								success: function (res) {
+									if (res.confirm) {
+										uni.navigateTo({
+											url: '/pages/approve/approve'
+										});
+									} else if (res.cancel) {
+										return;
+									}
+								}
+							});
+						}
+					}
+				);
+			},
 			//登录
 			login: function() {
 				uni.login({
@@ -139,7 +176,6 @@
 										code: _self.code
 									},
 									function(res) {
-										console.log(res)
 										_self.loginShow = false;
 										_self.indexShow = true;
 										var obj = JSON.parse(res.data);
@@ -169,15 +205,29 @@
 					},
 					function(res) {
 						console.log(res,1111)
-					
 						//_self.laws = res.data.list.slice(0, 5);
 					}
 				);
 			},	
 			goMy: function() {
-				uni.navigateTo({
-					url: '/pages/my/my'
-				});
+				console.log(_self.token)
+				if(_self.token != ''){
+					this.updateToken(1);
+				}else{
+					uni.showModal({
+						title: '提示',
+						content: '请先认证！',
+						success: function (res) {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '/pages/approve/approve'
+								});
+							} else if (res.cancel) {
+								return;
+							}
+						}
+					});
+				}
 			},
 			// gosuper: function() {
 			// 	uni.navigateTo({
@@ -204,10 +254,26 @@
 					url: '/pages/itemList/itemList'
 				});
 			},
-			goComplaintReporting: function() {
-				uni.navigateTo({
-					url: '/pages/cplRpt/cplRpt'
-				});
+			goCplRpt: function() {
+				console.log(_self.token)
+				if(_self.token != ''){
+					this.updateToken(2);
+				}else{
+					uni.showModal({
+						title: '提示',
+						content: '请先认证！',
+						success: function (res) {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '/pages/approve/approve'
+								});
+							} else if (res.cancel) {
+								return;
+							}
+						}
+					});
+				}
+				
 			},
 			// golighthouseDetail: function() {
 			// 	uni.navigateTo({

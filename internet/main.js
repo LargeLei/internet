@@ -13,15 +13,19 @@ Vue.prototype.$crypto = crypto
 Vue.prototype.$SHA256 = SHA256
 
 //小程序APPID
-Vue.prototype.Appid = "wx04bb4da39331cbbb ";
+Vue.prototype.Appid = "wx04bb4da39331cbbb";
 
 //小程序密钥
 Vue.prototype.AppSecret = "c1e26aff8afaa4ac907a7aa02ff7c2c0";
+
+//token存储
+Vue.prototype.token = "";
 
 //网关---(投诉举报,事项清单，我的投诉举报)
 Vue.prototype.interfaceUrl = "http://121.52.221.201:80";
 
 //本地后台地址
+// Vue.prototype.siteUrl = "http://a256160g08.qicp.vip";
 Vue.prototype.siteUrl = "http://a256160g08.qicp.vip";
 
 //曝光台

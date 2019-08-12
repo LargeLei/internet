@@ -959,23 +959,23 @@
 												title: '正在提交...'
 											});
 											console.log(data)
-											_self.$qyc.interfaceRequest(
-												"/ebus/tsjb/reportinformation/addreportinformation", data,
-												function(res) {
-													//console.log(res)
-													if(res.success){
-														_self.successShow = true;
-														setTimeout(function(){
-															uni.navigateTo({ 
-																url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
-															});
-															var obj = _self.$options.data();
-															obj.reportObject = _self.reportObject;
-															Object.assign(_self.$data, obj);
-														},2000);
-													}
-												}
-											);
+											// _self.$qyc.interfaceRequest(
+											// 	"/ebus/tsjb/reportinformation/addreportinformation", data,
+											// 	function(res) {
+											// 		//console.log(res)
+											// 		if(res.success){
+											// 			_self.successShow = true;
+											// 			setTimeout(function(){
+											// 				uni.navigateTo({ 
+											// 					url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
+											// 				});
+											// 				var obj = _self.$options.data();
+											// 				obj.reportObject = _self.reportObject;
+											// 				Object.assign(_self.$data, obj);
+											// 			},2000);
+											// 		}
+											// 	}
+											// );
 										}
 									}
 								 );
@@ -1051,24 +1051,24 @@
 												title: '正在提交...'
 											});
 											console.log(data)
-											_self.$qyc.interfaceRequest(
-												"/ebus/tsjb/complaints/addcomplaintinformation", data,
-												function(res) {
-													console.log(res)
-													if(res.success){
-														_self.successShow = true;
-														setTimeout(function(){
-															uni.navigateTo({ 
-																url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
-															});
-															var obj = _self.$options.data();
-															obj.complaintObject = _self.complaintObject;
-															Object.assign(_self.$data, obj);
-														},2000);
-													}
-													
-												}
-											);
+											// _self.$qyc.interfaceRequest(
+											// 	"/ebus/tsjb/complaints/addcomplaintinformation", data,
+											// 	function(res) {
+											// 		console.log(res)
+											// 		if(res.success){
+											// 			_self.successShow = true;
+											// 			setTimeout(function(){
+											// 				uni.navigateTo({ 
+											// 					url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
+											// 				});
+											// 				var obj = _self.$options.data();
+											// 				obj.complaintObject = _self.complaintObject;
+											// 				Object.assign(_self.$data, obj);
+											// 			},2000);
+											// 		}
+											// 		
+											// 	}
+											// );
 										}
 									}
 								 );

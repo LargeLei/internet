@@ -44,7 +44,7 @@
 				_self.$qyc.request(
 					"/f/mp/mplogin/findMycollection", {openid:openid},
 					function(res) {
-						console.log(res);
+						//console.log(res);
 						_self.msg = res.data;
 					}
 				);

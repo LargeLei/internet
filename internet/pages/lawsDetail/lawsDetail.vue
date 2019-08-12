@@ -54,7 +54,7 @@
 						siteid : 1
 					},
 					function(res) {
-						console.log(res)
+						//console.log(res)
 						_self.plaintsHead = res.titletext;
 						_self.plaintsTime = res.time;
 						_self.content = res.titlecontent;

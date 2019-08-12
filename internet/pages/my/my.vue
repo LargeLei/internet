@@ -130,7 +130,10 @@
 					"/f/wx/wxUser/deleteApproveStatus", {
 						openid: uni.getStorageSync('openid')
 					},
-					function(res) {									
+					function(res) {	
+						  uni.removeStorageSync('token');
+						  wx.clearStorage('token')
+						 _self.token = '';
 						_self.isNotOpen = true;	
 						_self.isshow = false;
 						_self.lists[1].desc= "未认证";						

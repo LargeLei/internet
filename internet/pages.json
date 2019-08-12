@@ -1,12 +1,7 @@
 {
 	"pages": [
 		//pages数组中第一项表示应用启动页
-			{
-			"path": "pages/addServiceInfo/addServiceInfo",
-			"style": {
-				"navigationBarTitleText": "填写业务信息"
-			}
-		},
+			
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -90,7 +85,12 @@
 		// 		"navigationBarTitleText": "填写投诉人信息"
 		// 	}
 		// },
-		
+		{
+			"path": "pages/addServiceInfo/addServiceInfo",
+			"style": {
+				"navigationBarTitleText": "填写业务信息"
+			}
+		},
 		{
 			"path": "pages/digest/digest",
 			"style": {

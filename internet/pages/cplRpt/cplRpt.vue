@@ -284,7 +284,7 @@
 
 	.laws {
 		background: #fff;
-		margin: 20upx 0 92upx 0;
+		margin: 20upx 0 20upx 0;
 	}
 
 	.laws-header {

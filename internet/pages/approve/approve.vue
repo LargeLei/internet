@@ -2,7 +2,7 @@
 	<view class="grace-padding">
 		<view class="grace-form">
 			<form @submit="formSubmit">
-				<view class="approve">
+				<view class="approve" v-show="faceState">
 					<dl class='approve-dl'>
 						<dt>
 							<image src="../../static/imgs/face-check.png" mode=""></image>
@@ -45,8 +45,25 @@
 						<button formType="submit" :disabled="disable" type="" style="width:96%;" @tap="faceCheck">开始验证</button>
 					</view>
 				</view>
-
+				<view class="approve" v-show="subState">
+					<view class="grace-items">
+						<view class="grace-label">姓名</view>
+						<input type="text" disabled class="input" v-model="username1" placeholder="请输入真实姓名" :value="username1"></input>
+					</view>
+					<view class="grace-items">
+						<view class="grace-label">身份证</view>
+						<input type="text" disabled class="input" v-model="idCard1" placeholder="请输入身份证号码" :value="idCard1"></input>
+					</view>
+					<view class="grace-items">
+						<view class="grace-label">手机号</view>
+						<input type="text" disabled class="input" v-model="mobile1" placeholder="请输入手机号" :value="mobile1"></input>
+					</view>
+					<view style="padding:40upx 0;">
+						<button formType="submit" :disabled="disable" type="" style="width:96%;" @tap="subInfor">提交信息</button>
+					</view>
+				</view>
 			</form>
+			<view style="height:100upx;line-height: 100upx;text-align: center;opacity: 0.3; font-size: 24upx;color: #000000;">国务院办公厅主办</view>
 		</view>
 	</view>
 </template>
@@ -59,15 +76,22 @@
 		},
 		data() {
 			return {
+				//认证状态
+				faceState: true,
+				//提交状态
+				subState: false,
 				//按钮禁用
 				disable: false,
 				//是否同意
 				isAgree: true,
 				//身份证信息
 				username: "雷清云",
+				username1: '',
 				idCard: '610527199106215651',
+				idCard1: '',
 				//绑定/验证手机号码
 				mobile: '17348697420',
+				mobile1: '',
 				checkAliveType: '1',
 				//识别方式
 				radioType: [{
@@ -100,6 +124,14 @@
 					_self.isAgree = true
 				}
 			},
+			wordHidden: function(str, beforeLen, endLen) {
+				var len = str.length - beforeLen - endLen;
+				var word = '';
+				for (var i = 0; i < len; i++) {
+					word += '*';
+				}
+				return str.substring(0, beforeLen) + word + str.substring(str.length - endLen);
+			},
 			faceCheck: function(e) {
 				if (_self.username == '') {
 					uni.showToast({
@@ -110,7 +142,7 @@
 					});
 					return;
 				}
-				let regCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; 
+				let regCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
 				if (!regCard.test(_self.idCard)) {
 					uni.showToast({
 						type: 'warning',
@@ -146,56 +178,54 @@
 				// })
 				//获取本次认证结果凭据verifyResult
 				wx.startFacialRecognitionVerify({
-					name : _self.username,
-					idCardNumber : _self.idCard,
-					checkAliveType : _self.checkAliveType,
-					success(res){
+					name: _self.username,
+					idCardNumber: _self.idCard,
+					checkAliveType: _self.checkAliveType,
+					success(res) {
 						console.log(res)
 						let verifyResult = res.verifyResult;
-						
-						
-						
-						
-						
+						if (verifyResult) {
+							_self.faceState = false;
+							_self.subState = true;
+							_self.username1 = _self.wordHidden(_self.username, 1, 0);
+							_self.mobile1 = _self.wordHidden(_self.mobile, 3, 4);
+							_self.idCard1 = _self.wordHidden(_self.idCard, 6, 4);
+						}
 					}
 				})
-
-				// _self.$qyc.request(
-				// 	"/f/wx/wxUser/addApprove", {
-				// 		username: _self.username,
-				// 		mobile: _self.mobile,
-				// 		openid: uni.getStorageSync('openid'),
-				// 		idCard: _self.idCard,
-				// 		code: _self.code
-				// 	},
-				// 	function(res) {
-				// 		console.log(res)
-				// 		if (res.result) {
-				// 			//_self.cretKey = obj.openid;
-				// 			//uni.setStorageSync('openid', _self.cretKey);
-				// 			uni.showToast({
-				// 				title: "认证成功",
-				// 				duration: 2000,
-				// 				icon: 'none'
-				// 			});
-				// 			// setTimeout(function()  {
-				// 			// 	uni.navigateTo({
-				// 			// 		url: '/pages/my/my'
-				// 			// 	});							 
-				// 			// }, 2000);
-				// 		} else {
-				// 			uni.showToast({
-				// 				type: 'warning',
-				// 				title: res.message,
-				// 				duration: 2000,
-				// 				icon: 'none'
-				// 			});
-				// 		}
-				// 	}
-				//);
-
-
 			},
+
+			subInfor: function() {
+				uni.showLoading({
+					title: '正在提交...'
+				});
+				_self.$qyc.request(
+					"/f/wx/wxUser/addApprove", {
+						username: _self.username,
+						mobile: _self.mobile,
+						openid: uni.getStorageSync('openid'),
+						idCard: _self.idCard
+					},
+					function(res) {
+						console.log(res)
+						if (res.data) {
+							_self.token = res.data;
+							uni.setStorageSync('token', res.data);
+							uni.showToast({
+								title: "认证成功",
+								duration: 2000,
+								icon: 'none'
+							});
+							setTimeout(function() {
+								uni.navigateTo({
+									url: '/pages/index/index'
+								});
+							}, 2000);
+						}
+
+					}
+				);
+			}
 		}
 
 	}

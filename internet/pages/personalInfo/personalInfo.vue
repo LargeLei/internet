@@ -234,12 +234,13 @@
 				_self.$qyc.request(
 					"/f/wx/wxUser/saveUsersBase", data,
 					function(res) {
+						console.log(res)
 						uni.showToast({							
-							title: res.message,
+							title: '保存成功！',
 							duration: 2000,
 							icon: 'none'
 						});
-						if(res.result){
+						if(res.data){
 							setTimeout(function()  {
 								uni.navigateTo({
 									url: '/pages/my/my'
