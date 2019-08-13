@@ -135,7 +135,6 @@
 						pageSize:_self.pageNo
 					},
 					function(res) {
-						uni.hideLoading();
 						_self.total = res.total;
 						_self.soncates = _self.soncates.concat(res.list)
 						//获取子类数据

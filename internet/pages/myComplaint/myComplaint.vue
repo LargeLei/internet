@@ -109,6 +109,9 @@
 				this.loadDataList();
 			},
 			loadDataList: function() {
+				uni.showLoading({
+					title: '加载中...'
+				});
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/complaintreportpublic/findcomplaintreportpubliclist", {
 						page: page,
@@ -116,6 +119,7 @@
 						certKey:certKey
 					},
 					function(res) {
+						uni.hideLoading();
 						if (res.success) {
 							console.log(res)
 							//展示loading
@@ -161,8 +165,8 @@
 						publicNumber: _self.searchKey
 					},
 					function(res) {
+						uni.hideLoading();
 						if (res.success) {
-							uni.hideLoading();
 							_self.rightData = res.data.rows;
 						}
 					}

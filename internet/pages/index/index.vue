@@ -198,20 +198,22 @@
 				uni.showLoading({
 					title: '加载中...'
 				});
+			
 				_self.$qyc.selfRequest(
 					"/jmportal_server/interfaces/infolist.do", {
 						resourceid : 33,
 						siteid : 1
 					},
 					function(res) {
+						uni.hideLoading();
 						console.log(res,1111)
 						//_self.laws = res.data.list.slice(0, 5);
 					}
 				);
 			},	
 			goMy: function() {
-				console.log(_self.token)
-				if(_self.token != ''){
+				//console.log(_self.token)
+				if(_self.token){
 					this.updateToken(1);
 				}else{
 					uni.showModal({
@@ -255,8 +257,8 @@
 				});
 			},
 			goCplRpt: function() {
-				console.log(_self.token)
-				if(_self.token != ''){
+				//console.log(_self.token)
+				if(_self.token){
 					this.updateToken(2);
 				}else{
 					uni.showModal({

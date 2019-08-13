@@ -70,7 +70,6 @@
 <script>
 	var _self;
 	export default {
-
 		onLoad: function(option) {
 			_self = this;
 		},
@@ -207,10 +206,11 @@
 						idCard: _self.idCard
 					},
 					function(res) {
+						uni.hideLoading();
 						console.log(res)
 						if (res.data) {
-							_self.token = res.data;
-							uni.setStorageSync('token', res.data);
+							let token = res.data;
+							uni.setStorageSync('token',token);
 							uni.showToast({
 								title: "认证成功",
 								duration: 2000,

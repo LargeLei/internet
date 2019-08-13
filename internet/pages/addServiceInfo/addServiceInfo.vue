@@ -347,15 +347,15 @@
 			this.getProvinceList();
 			
 		},
-		onShow:function(option){
-			this.getUserinfo();
-			this.getPollutionList();
-			this.getProblemTypeList();
-			this.getServiceTypeList();
-			this.getShoppingTypeList();
-			this.getUnitTypeList();
-			this.getProvinceList();
-		},
+		// onShow:function(option){
+		// 	this.getUserinfo();
+		// 	this.getPollutionList();
+		// 	this.getProblemTypeList();
+		// 	this.getServiceTypeList();
+		// 	this.getShoppingTypeList();
+		// 	this.getUnitTypeList();
+		// 	this.getProvinceList();
+		// },
 		data() {
 			return {
 				//投诉举报类型
@@ -544,6 +544,9 @@
 			
 			//获取投诉问题类型
 			getProblemTypeList:function(){
+				uni.showLoading({
+					title: '加载中...'
+				});
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/admin/problemtype/getchildlistbyparentcode", {
 						"parentCode":"0000"
@@ -954,34 +957,35 @@
 									  'file',
 									function(res) {
 										if(i>=_self.imgLists.length-1){
-											console.log(i)
-											uni.showLoading({
-												title: '正在提交...'
-											});
-											console.log(data)
-											// _self.$qyc.interfaceRequest(
-											// 	"/ebus/tsjb/reportinformation/addreportinformation", data,
-											// 	function(res) {
-											// 		//console.log(res)
-											// 		if(res.success){
-											// 			_self.successShow = true;
-											// 			setTimeout(function(){
-											// 				uni.navigateTo({ 
-											// 					url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
-											// 				});
-											// 				var obj = _self.$options.data();
-											// 				obj.reportObject = _self.reportObject;
-											// 				Object.assign(_self.$data, obj);
-											// 			},2000);
-											// 		}
-											// 	}
-											// );
+											//console.log(i)
 										}
 									}
 								 );
 							   }
 						}
 					}
+					console.log(data)
+					uni.showLoading({
+						title: '正在提交...'
+					});
+					_self.$qyc.interfaceRequest(
+						"/ebus/tsjb/reportinformation/addreportinformation", data,
+						function(res) {
+							//console.log(res)
+							uni.hideLoading();
+							if(res.success){
+								_self.successShow = true;
+								setTimeout(function(){
+									uni.navigateTo({ 
+										url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
+									});
+									var obj = _self.$options.data();
+									obj.reportObject = _self.reportObject;
+									Object.assign(_self.$data, obj);
+								},2000);
+							}
+						}
+					);
 					
 				}else{
 					data.complaintObject = _self.complaintObject ;
@@ -1046,35 +1050,36 @@
 									  'file',
 									function(res) {
 										if(i>=_self.imgLists.length-1){
-											console.log(i)
-											uni.showLoading({
-												title: '正在提交...'
-											});
-											console.log(data)
-											// _self.$qyc.interfaceRequest(
-											// 	"/ebus/tsjb/complaints/addcomplaintinformation", data,
-											// 	function(res) {
-											// 		console.log(res)
-											// 		if(res.success){
-											// 			_self.successShow = true;
-											// 			setTimeout(function(){
-											// 				uni.navigateTo({ 
-											// 					url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
-											// 				});
-											// 				var obj = _self.$options.data();
-											// 				obj.complaintObject = _self.complaintObject;
-											// 				Object.assign(_self.$data, obj);
-											// 			},2000);
-											// 		}
-											// 		
-											// 	}
-											// );
+											//console.log(i)
 										}
 									}
 								 );
 							   }
 						}
 					}
+					console.log(data)
+					uni.showLoading({
+						title: '正在提交...'
+					});
+					_self.$qyc.interfaceRequest(
+						"/ebus/tsjb/complaints/addcomplaintinformation", data,
+						function(res) {
+							console.log(res)
+							uni.hideLoading();
+							if(res.success){
+								_self.successShow = true;
+								setTimeout(function(){
+									uni.navigateTo({ 
+										url: '/pages/myComplaint/myComplaint?certKey='+_self.certKey
+									});
+									var obj = _self.$options.data();
+									obj.complaintObject = _self.complaintObject;
+									Object.assign(_self.$data, obj);
+								},2000);
+							}
+							
+						}
+					);
 				}
 				
 			},

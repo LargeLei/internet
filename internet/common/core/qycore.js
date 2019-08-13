@@ -26,8 +26,7 @@ export default {
 				'x-tif-nonce': nonce
 			},
 			success: (res) => {
-				uni.hideLoading();
-				//console.log(res)
+				console.log(res)
 				if (res.statusCode != 200) {
 					uni.showToast({
 						title: "请求失败！",
@@ -134,16 +133,7 @@ export default {
 					});
 					return
 				}
-				if (res.data.success == false) {
-					uni.showToast({
-						title: "请求失败！",
-						duration: 2000,
-						icon: 'none'
-					});
-					return
-				} else {
-					callback(res.data);
-				}
+				callback(res.data);
 			},
 			fail: (err) => {
 				if (errBack) {
@@ -165,8 +155,8 @@ export default {
 			},
 			success: (res) => {
 				//console.log(res)
-				uni.hideLoading();
 				if (res.statusCode != 200) {
+					uni.hideLoading();
 					uni.showToast({
 						title: res.errMsg,
 						duration: 2000,
@@ -177,7 +167,6 @@ export default {
 					}
 					return
 				}
-
 				callback(res.data);
 			},
 			fail: (err) => {
@@ -199,8 +188,9 @@ export default {
 			},
 			success: (res) => {
 				console.log(res)
-				uni.hideLoading();
+				
 				if (res.statusCode != 200) {
+					uni.hideLoading();
 					uni.showToast({
 						title: res.errMsg,
 						duration: 2000,

@@ -132,9 +132,13 @@
 				this.evaluateIndex = e.detail.value;
 			},
 			loadComplaitData:function(){
+				uni.showLoading({
+					title: '加载中...'
+				});
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/complaints/getcomplaintinformationbyid", {id:complaintId},
 					function(res) {
+						uni.hideLoading();
 						if(res.success){
 							console.log(res.data)
 							_self.data = res.data;
@@ -175,6 +179,9 @@
 			
 			//提交
 			saveSuggest :function(){
+				uni.showLoading({
+					title: '正在提交...'
+				});
 				//console.log(_self.suggest,_self.islike)
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/complaints/updatecomplaintinformationevaluation", {
@@ -183,7 +190,8 @@
 						islike:_self.islike
 						},
 					function(res) {
-						console.log(res)
+						uni.hideLoading();
+						//console.log(res)
 						if(res.success){
 							uni.showToast({
 								title: "感谢您的评价!",

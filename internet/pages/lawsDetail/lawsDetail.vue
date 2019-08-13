@@ -54,7 +54,6 @@
 						siteid : 1
 					},
 					function(res) {
-						//console.log(res)
 						_self.plaintsHead = res.titletext;
 						_self.plaintsTime = res.time;
 						_self.content = res.titlecontent;
@@ -95,7 +94,6 @@
 					_self.$qyc.request(
 						"/f/mp/mplogin/cancelColect", {articleId:articleId,openid:openid},
 						function(res) {
-							console.log(res)
 							_self.getColect();
 							uni.showToast({
 								title: "已取消收藏",

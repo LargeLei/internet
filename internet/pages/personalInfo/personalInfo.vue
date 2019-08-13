@@ -212,7 +212,7 @@
 				if (_self.emergencyMobile == '' || _self.emergencyMobile == undefined || !/^1[3456789]\d{9}$/.test(_self.emergencyMobile)) {
 					uni.showToast({
 						icon: 'none',
-						title: '请输入紧急联系人手机号！'
+						title: '请输入正确手机号！'
 					});
 					return;
 				}
@@ -234,6 +234,7 @@
 				_self.$qyc.request(
 					"/f/wx/wxUser/saveUsersBase", data,
 					function(res) {
+						uni.hideLoading();
 						console.log(res)
 						uni.showToast({							
 							title: '保存成功！',

@@ -77,7 +77,6 @@
 					var s = date.getSeconds()
 					return Y+M+D+h+m+s
 				},
-				
 			getHeadType: function() {
 				_self.$qyc.selfRequest(
 					"/jmportal_server/interfaces/cates.do", {
@@ -85,7 +84,6 @@
 						siteid : 1
 					},
 					function(res) {
-						//console.log(res)
 						_self.tabs = res.resource;
 						_self.getArticleList();
 					}

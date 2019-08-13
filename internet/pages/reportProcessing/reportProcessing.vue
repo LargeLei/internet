@@ -104,9 +104,13 @@
 			},
 			
 			loadReportData:function(){
+				uni.showLoading({
+					title: '加载中...'
+				});
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/reportinformation/getreportinformationbyid", {id:reportId},
 					function(res) {
+						uni.hideLoading();
 						console.log(res.data)
 						if(res.success){
 							_self.data = res.data;
@@ -135,6 +139,9 @@
 			
 			//提交
 			saveSuggest :function(){
+				uni.showLoading({
+					title: '正在提交...'
+				});
 				//console.log(_self.suggest,_self.islike)
 				_self.$qyc.interfaceRequest(
 					"/ebus/tsjb/reportinformation/updatereportinformation", {
@@ -143,6 +150,7 @@
 						islike:_self.islike
 						},
 					function(res) {
+						uni.hideLoading();
 						if(res.success){
 							uni.showToast({
 								title: "感谢您的评价!",
