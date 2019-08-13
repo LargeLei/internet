@@ -132,67 +132,67 @@
 				return str.substring(0, beforeLen) + word + str.substring(str.length - endLen);
 			},
 			faceCheck: function(e) {
-				wx.checkIsSupportFacialRecognition({
-					complete(res) {
-						console.log(res)
-					}
-				})
-				// if (_self.username == '') {
-				// 	uni.showToast({
-				// 		type: 'warning',
-				// 		title: "请输入真实姓名",
-				// 		duration: 2000,
-				// 		icon: 'none'
-				// 	});
-				// 	return;
-				// }
-				// let regCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-				// if (!regCard.test(_self.idCard)) {
-				// 	uni.showToast({
-				// 		type: 'warning',
-				// 		title: "请输入合法身份证号",
-				// 		duration: 2000,
-				// 		icon: 'none'
-				// 	});
-				// 	return;
-				// }
-				// if (!(/^1[3456789]\d{9}$/.test(_self.mobile))) {
-				// 	uni.showToast({
-				// 		type: 'warning',
-				// 		title: "请输入有效手机号",
-				// 		duration: 2000,
-				// 		icon: 'none'
-				// 	});
-				// 	return;
-				// }
-				// if (_self.isAgree == false) {
-				// 	uni.showToast({
-				// 		type: 'warning',
-				// 		title: "请同意认证协议",
-				// 		duration: 2000,
-				// 		icon: 'none'
-				// 	});
-				// 	return;
-				// }
-				// console.log(_self.username, _self.idCard, _self.mobile, _self.checkAliveType)
-				// 
-				// //获取本次认证结果凭据verifyResult
-				// wx.startFacialRecognitionVerify({
-				// 	name: _self.username,
-				// 	idCardNumber: _self.idCard,
-				// 	checkAliveType: _self.checkAliveType,
-				// 	success(res) {
+				// wx.checkIsSupportFacialRecognition({
+				// 	complete(res) {
 				// 		console.log(res)
-				// 		let verifyResult = res.verifyResult;
-				// 		if (verifyResult) {
-				// 			_self.faceState = false;
-				// 			_self.subState = true;
-				// 			_self.username1 = _self.wordHidden(_self.username, 1, 0);
-				// 			_self.mobile1 = _self.wordHidden(_self.mobile, 3, 4);
-				// 			_self.idCard1 = _self.wordHidden(_self.idCard, 6, 4);
-				// 		}
 				// 	}
 				// })
+				if (_self.username == '') {
+					uni.showToast({
+						type: 'warning',
+						title: "请输入真实姓名",
+						duration: 2000,
+						icon: 'none'
+					});
+					return;
+				}
+				let regCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+				if (!regCard.test(_self.idCard)) {
+					uni.showToast({
+						type: 'warning',
+						title: "请输入合法身份证号",
+						duration: 2000,
+						icon: 'none'
+					});
+					return;
+				}
+				if (!(/^1[3456789]\d{9}$/.test(_self.mobile))) {
+					uni.showToast({
+						type: 'warning',
+						title: "请输入有效手机号",
+						duration: 2000,
+						icon: 'none'
+					});
+					return;
+				}
+				if (_self.isAgree == false) {
+					uni.showToast({
+						type: 'warning',
+						title: "请同意认证协议",
+						duration: 2000,
+						icon: 'none'
+					});
+					return;
+				}
+				console.log(_self.username, _self.idCard, _self.mobile, _self.checkAliveType)
+				
+				//获取本次认证结果凭据verifyResult
+				wx.startFacialRecognitionVerify({
+					name: _self.username,
+					idCardNumber: _self.idCard,
+					checkAliveType: _self.checkAliveType,
+					success(res) {
+						console.log(res)
+						let verifyResult = res.verifyResult;
+						if (verifyResult) {
+							_self.faceState = false;
+							_self.subState = true;
+							_self.username1 = _self.wordHidden(_self.username, 1, 0);
+							_self.mobile1 = _self.wordHidden(_self.mobile, 3, 4);
+							_self.idCard1 = _self.wordHidden(_self.idCard, 6, 4);
+						}
+					}
+				})
 			},
 
 			subInfor: function() {

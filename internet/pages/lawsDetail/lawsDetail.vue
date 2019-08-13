@@ -64,8 +64,9 @@
 				_self.$qyc.request(
 					"/f/mp/mplogin/findColectList", {articleId:articleId,openid:openid},
 					function(res) {
-						is_colect = res.data.length;
-						if(is_colect <= 0){
+						console.log(is_colect)
+						//is_colect = res.data.length;
+						if(is_colect == 0){
 							_self.favorite = "../../static/imgs/wsc_icon.png"
 						}else{
 							_self.favorite = "../../static/imgs/ysc_icon.png"
@@ -75,14 +76,18 @@
 			},
 			
 			favoriteChange:function(){
-				uni.showLoading({
-					title: '正在收藏...'
-				});
+				
 				if(is_colect == 0){
+					wx.showLoading({
+					  title: '正在收藏...',
+					  mask: true
+					});
+
 					_self.$qyc.request(
 						"/f/mp/mplogin/colectAction", {articleId:articleId,openid:openid,plaintsHead:_self.plaintsHead},
 						function(res) {
 							_self.getColect();
+							is_colect = 1;
 							uni.showToast({
 								title: "已收藏",
 								duration: 2000,
@@ -90,11 +95,17 @@
 							});
 						}
 					);
-				}else{
+				}
+				if(is_colect == 1){
+					wx.showLoading({
+					  title: '取消收藏...',
+					  mask: true
+					});
 					_self.$qyc.request(
 						"/f/mp/mplogin/cancelColect", {articleId:articleId,openid:openid},
 						function(res) {
 							_self.getColect();
+							is_colect = 0;
 							uni.showToast({
 								title: "已取消收藏",
 								duration: 2000,

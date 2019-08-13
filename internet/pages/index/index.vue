@@ -212,7 +212,7 @@
 				);
 			},	
 			goMy: function() {
-				//console.log(_self.token)
+				console.log(_self.token)
 				if(_self.token){
 					this.updateToken(1);
 				}else{
@@ -257,7 +257,7 @@
 				});
 			},
 			goCplRpt: function() {
-				//console.log(_self.token)
+				console.log(_self.token)
 				if(_self.token){
 					this.updateToken(2);
 				}else{

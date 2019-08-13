@@ -128,7 +128,8 @@
 			outApprove: function(e) {
 				_self.$qyc.request(
 					"/f/wx/wxUser/deleteApproveStatus", {
-						openid: uni.getStorageSync('openid')
+						openid: uni.getStorageSync('openid'),
+						token:uni.getStorageSync('token')
 					},
 					function(res) {
 						uni.removeStorageSync('token');

@@ -19,7 +19,7 @@ Vue.prototype.Appid = "wx04bb4da39331cbbb";
 Vue.prototype.AppSecret = "c1e26aff8afaa4ac907a7aa02ff7c2c0";
 
 //token存储
-Vue.prototype.token = "ff96ac167e83e27e1b38393f7651d16d43a32c22494f1121a4c059bdf7f32b7a";
+Vue.prototype.token = "";
 
 //网关---(投诉举报,事项清单，我的投诉举报)
 Vue.prototype.interfaceUrl = "http://121.52.221.201:80";

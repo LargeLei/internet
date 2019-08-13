@@ -158,6 +158,12 @@
 			}
 		},
 		{
+			"path": "pages/changeTel/changeTel",
+			"style": {
+				"navigationBarTitleText": "更换手机号"
+			}
+		},
+		{
 			"path": "pages/messageCenter/messageCenter",
 			"style": {
 				"navigationBarTitleText": "消息中心"

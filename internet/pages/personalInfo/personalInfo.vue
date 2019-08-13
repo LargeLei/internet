@@ -91,6 +91,7 @@
 				location: "",
 				emergencyMobile: "",
 				email: "",
+				idCard:'',
 				emergencyName: "",
 				userid: "",
 				cityValue: "",
@@ -152,6 +153,7 @@
 						if (res.data != undefined && res.data != 'undefined') {
 							var users = res.data;
 							_self.userid = users.id;
+							_self.idCard = users.idcard;
 							_self.username = users.trueName;
 							if (users.sex == 0) {
 								_self.gender = "女";
@@ -223,11 +225,13 @@
 					nation: _self.nationIndex,
 					userAddress: _self.location,
 					email: _self.email,
+					trueName:_self.username,
+					idcard:_self.idCard,
 					emergencyName: _self.emergencyName,
 					emergencyMobile: _self.emergencyMobile,
 					remarks: _self.cityText1,
 				}
-				//console.log(data)
+				console.log(data)
 				uni.showLoading({
 					title: '正在提交...'
 				});
