@@ -157,6 +157,7 @@
 				uni.login({
 					provider: 'weixin',
 					success: function(loginRes) {
+						console.log(loginRes.code)
 						_self.code = loginRes.code;
 						//非第一次授权获取用户信息
 						uni.getUserInfo({

@@ -188,7 +188,6 @@ export default {
 			},
 			success: (res) => {
 				console.log(res)
-				
 				if (res.statusCode != 200) {
 					uni.hideLoading();
 					uni.showToast({

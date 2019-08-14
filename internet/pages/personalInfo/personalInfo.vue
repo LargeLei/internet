@@ -7,7 +7,11 @@
 					<view><text class="basicInfo-title">姓名：</text><text class="basicInfo-text">{{username}}</text></view>
 					<view><text class="basicInfo-title">性别：</text><text class="basicInfo-text">{{gender}}</text></view>
 					<view><text class="basicInfo-title">出生日期：</text><text class="basicInfo-text">{{birth}}</text></view>
-					<view><text class="basicInfo-title">绑定手机号：</text><text class="basicInfo-text">{{cellPhone}}</text></view>
+					<view>
+						<text class="basicInfo-title">绑定手机号：</text>
+						<text class="basicInfo-text">{{cellPhone}}</text> 
+						<button style="background: #3691B7;" @tap="changeTel"  size="mini">更换</button>
+					</view>
 				</view>
 				<view class="basic-head">常用信息</view>
 				<view class="common">
@@ -143,6 +147,13 @@
 					});
 				}
 			},
+			// trueName:_self.username,
+			// idcard:_self.idCard,_self.cellPhone
+			changeTel:function(){
+				uni.navigateTo({
+					url: '/pages/changeTel/changeTel?mobile='+_self.cellPhone+'&truename='+_self.username+'&idCard='+_self.idCard+'&id='+_self.userid
+				});	
+			},
 			getUsers: function(e) {
 				_self.$qyc.request(
 					"/f/wx/wxUser/getApproveStatus", {
@@ -225,8 +236,6 @@
 					nation: _self.nationIndex,
 					userAddress: _self.location,
 					email: _self.email,
-					trueName:_self.username,
-					idcard:_self.idCard,
 					emergencyName: _self.emergencyName,
 					emergencyMobile: _self.emergencyMobile,
 					remarks: _self.cityText1,
@@ -240,12 +249,12 @@
 					function(res) {
 						uni.hideLoading();
 						console.log(res)
-						uni.showToast({							
-							title: '保存成功！',
-							duration: 2000,
-							icon: 'none'
-						});
 						if(res.data){
+							uni.showToast({							
+								title: '保存成功！',
+								duration: 2000,
+								icon: 'none'
+							});
 							setTimeout(function()  {
 								uni.navigateTo({
 									url: '/pages/my/my'
