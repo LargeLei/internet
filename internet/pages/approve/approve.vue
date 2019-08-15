@@ -218,8 +218,8 @@
 								icon: 'none'
 							});
 							setTimeout(function() {
-								uni.navigateTo({
-									url: '/pages/index/index'
+								uni.redirectTo({
+									url: '/pages/my/my'
 								});
 							}, 2000);
 						}

@@ -150,7 +150,7 @@
 			// trueName:_self.username,
 			// idcard:_self.idCard,_self.cellPhone
 			changeTel:function(){
-				uni.navigateTo({
+				uni.redirectTo({
 					url: '/pages/changeTel/changeTel?mobile='+_self.cellPhone+'&truename='+_self.username+'&idCard='+_self.idCard+'&id='+_self.userid
 				});	
 			},
@@ -208,7 +208,8 @@
 					});
 					return;
 				}
-				if (_self.email == '') {
+				//允许汉字、字母、数字，域名只允许英文域名
+				if (_self.email == '' || !/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(_self.email)) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入电子邮件！'
@@ -249,15 +250,15 @@
 					function(res) {
 						uni.hideLoading();
 						console.log(res)
-						if(res.data){
+						if(res.code == 0){
 							uni.showToast({							
 								title: '保存成功！',
 								duration: 2000,
 								icon: 'none'
 							});
 							setTimeout(function()  {
-								uni.navigateTo({
-									url: '/pages/my/my'
+								uni.navigateBack({
+									delta:1
 								});							 
 							}, 2000);
 						}

@@ -68,7 +68,7 @@
 								icon: 'none'
 							});
 							setTimeout(function()  {
-								uni.navigateTo({
+								uni.redirectTo({
 									url: '/pages/personalInfo/personalInfo'
 								});							 
 							}, 2000);

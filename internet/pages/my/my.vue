@@ -47,6 +47,15 @@
 	export default {
 		onLoad: function(option) {
 			_self = this;
+			_self.token = uni.getStorageSync('token');
+			console.log(_self.token,'getoken')
+			if(_self.token){
+				_self.lists[1].desc = "已认证";
+				_self.isNotOpen = false;
+			}else{
+				_self.lists[1].desc = "未认证";
+				_self.isNotOpen = true;
+			}
 			this.getUserinfo();
 			this.getApproveStatus();
 		},
@@ -101,7 +110,7 @@
 				}
 			},
 			goApprove: function() {
-				uni.navigateTo({
+				uni.redirectTo({
 					url: '/pages/approve/approve'
 				});
 			},
@@ -111,10 +120,10 @@
 						openid: uni.getStorageSync('openid')
 					},
 					function(res) {
-						console.log("-----" + JSON.stringify(res));
+						//console.log("-----" + JSON.stringify(res));
 						if (res.data != null) {
-							_self.lists[1].desc = "已认证";
-							_self.isNotOpen = false;
+							// _self.lists[1].desc = "已认证";
+							// _self.isNotOpen = false;
 							_self.portraitName = res.data.trueName;
 							_self.certKey = res.data.certKey;
 							uni.setStorageSync('trueName', _self.portraitName);
@@ -133,14 +142,11 @@
 					},
 					function(res) {
 						uni.removeStorageSync('token');
-						console.log(_self.token);
-						_self.isNotOpen = true;
+						uni.removeStorageSync('trueName');
+						console.log(_self.token,'notoken');
 						_self.isshow = false;
-						_self.lists[1].desc = "未认证";
-						_self.portraitName = uni.getStorageSync('nickName');
-						uni.setStorageSync('trueName', '');
-						uni.navigateTo({
-							url: '/pages/index/index'
+						uni.redirectTo({
+							url: '/pages/my/my'
 						});
 					}
 				);

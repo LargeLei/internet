@@ -93,9 +93,15 @@
 			} else {
 				_self.loginShow = false;
 				_self.indexShow = true;
-				this.login();
+				_self.login();
 			};
 			this.lightArticle();
+			if(!_self.token){
+				return;
+			}else{
+				_self.updateToken();
+			}
+			
 		},
 		data() {
 			return {
@@ -116,38 +122,16 @@
 		},
 		methods: {
 			//更新token
-			updateToken:function(selfState){
+			updateToken:function(){
 				_self.$qyc.request(
 					"/f/wx/wxUser/tokenLogin", {
 						openid: uni.getStorageSync('openid')
 					},
 					function(res) {
 						if(res.data.status != 2){
-							_self.token = res.data.tokenNo
-							if(selfState == 1){
-								uni.navigateTo({
-									url: '/pages/my/my'
-								});
-							}else{
-								uni.navigateTo({
-									url: '/pages/cplRpt/cplRpt'
-								});
-							}
-							
+							_self.token = res.data.tokenNo;
 						}else{
-							uni.showModal({
-								title: '提示',
-								content: '认证失效，请先认证！',
-								success: function (res) {
-									if (res.confirm) {
-										uni.navigateTo({
-											url: '/pages/approve/approve'
-										});
-									} else if (res.cancel) {
-										return;
-									}
-								}
-							});
+							uni.removeStorageSync('token');
 						}
 					}
 				);
@@ -172,8 +156,6 @@
 								uni.setStorageSync('avatarUrl', _self.avatarUrl);
 								_self.$qyc.request(
 									"/f/mp/mplogin/getOpenId", {
-										appid: _self.Appid,
-										appSecret: _self.AppSecret,
 										code: _self.code
 									},
 									function(res) {
@@ -192,14 +174,11 @@
 					},
 				});
 			},
-
-
 			//首页
 			lightArticle: function() {
 				uni.showLoading({
 					title: '加载中...'
 				});
-			
 				_self.$qyc.selfRequest(
 					"/jmportal_server/interfaces/infolist.do", {
 						resourceid : 33,
@@ -213,24 +192,9 @@
 				);
 			},	
 			goMy: function() {
-				console.log(_self.token)
-				if(_self.token){
-					this.updateToken(1);
-				}else{
-					uni.showModal({
-						title: '提示',
-						content: '请先认证！',
-						success: function (res) {
-							if (res.confirm) {
-								uni.navigateTo({
-									url: '/pages/approve/approve'
-								});
-							} else if (res.cancel) {
-								return;
-							}
-						}
-					});
-				}
+				uni.navigateTo({
+					url: '/pages/my/my'
+				});
 			},
 			// gosuper: function() {
 			// 	uni.navigateTo({
@@ -258,25 +222,9 @@
 				});
 			},
 			goCplRpt: function() {
-				console.log(_self.token)
-				if(_self.token){
-					this.updateToken(2);
-				}else{
-					uni.showModal({
-						title: '提示',
-						content: '请先认证！',
-						success: function (res) {
-							if (res.confirm) {
-								uni.navigateTo({
-									url: '/pages/approve/approve'
-								});
-							} else if (res.cancel) {
-								return;
-							}
-						}
-					});
-				}
-				
+				uni.navigateTo({
+					url: '/pages/cplRpt/cplRpt'
+				});
 			},
 			// golighthouseDetail: function() {
 			// 	uni.navigateTo({
