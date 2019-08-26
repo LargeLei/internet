@@ -20,30 +20,43 @@
 			<view class="home-header">
 				<image src="../../static/imgs/bg.png"></image>
 				<view class="internet-my">
-					<view class="internet-my-title">国家 “互联网+监管”系统</view>
 					<view class="internet-my-center" @tap="goMy">
-						<image :src="portraitImg" mode='widthFix' alt=""></image><text>个人中心</text>
+						<text>个人中心</text><image :src="portraitImg" mode='widthFix' alt=""></image>
 					</view>
 				</view>
 			</view>
-			<view class="grace-padding home-menu">
+			<!-- <view class="grace-padding home-menu">
 				<view class="home-menu-boxs" @tap="goCplRpt">
 					<image src="../../static/imgs/tsjb_icon.png" mode='widthFix' alt=""></image><text>投诉举报</text>
 				</view>
-			</view>
+			</view> -->
 			<view class="grace-padding home-option">
 				<view class="grace-rows">
-					<view class="grace-items grace-rows-demo" style="width:50%;">
+					<view class="grace-items grace-rows-demo">
+						<view class="option-boxs" @tap="gosuper">
+							<view class="option-btn">
+								<image src="../../static/imgs/jgxx_icon.png" mode='widthFix' alt=""></image><text>监管信息查询</text>
+							</view>
+						</view>
+					</view>
+					<view class="grace-items grace-rows-demo">
+						<view class="option-boxs" @tap="goCplRpt">
+							<view class="option-btn">
+								<image src="../../static/imgs/tsjb_icon.png" mode='widthFix' alt=""></image><text>投诉举报</text>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="grace-rows">
+					<view class="grace-items grace-rows-demo">
 						<view class="option-boxs" @tap="goLighthouse">
-							<image src="../../static/imgs/sxqd_bg.png" class="option-bg"></image>
 							<view class="option-btn">
 								<image src="../../static/imgs/bgt_btn.png" mode='widthFix' alt=""></image><text>曝光台</text>
 							</view>
 						</view>
 					</view>
-					<view class="grace-items grace-rows-demo" style="width:50%;">
+					<view class="grace-items grace-rows-demo">
 						<view class="option-boxs" @tap="goitemList">
-							<image src="../../static/imgs/sxqd_bg.png" class="option-bg"></image>
 							<view class="option-btn">
 								<image src="../../static/imgs/sxqd_btn.png" mode='widthFix' alt=""></image><text>事项清单</text>
 							</view>
@@ -51,10 +64,10 @@
 					</view>
 				</view>
 			</view>
-			<view class="grace-padding laws">
+			<view class="laws">
 				<view class="grace-list laws-header" @tap="goLighthouse">
-					<image src="../../static/imgs/bgt_icon.png" class="grace-list-imgs-l" mode="widthFix"></image>
-					<text class="grace-list-text">曝光台</text>
+					<image src="../../static/imgs/jgdt_icon@2x.png" class="grace-list-imgs-l" mode="widthFix"></image>
+					<text class="grace-list-text">监管动态</text>
 					<text class="grace-list-imgs-arrow grace-iconfont icon-arrow-right"></text>
 				</view>
 				<view class="light">
@@ -64,18 +77,6 @@
 					</view>
 				</view>
 			</view>
-			<!-- <view class="grace-padding laws">
-				<view class="grace-list laws-header" @tap="goitemList">
-					<image src="../../static/imgs/sxqd_icon.png" class="grace-list-imgs-l" mode="widthFix"></image>
-					<text class="grace-list-text">事项清单</text>
-					<text class="grace-list-imgs-arrow grace-iconfont icon-arrow-right"></text>
-				</view>
-				<view class="light">
-					<view class="light-list" v-for="(item, index) in inventory" :key="index" @tap="goDetail(item.id)">
-						<view class="grace-ellipsis-2">{{item.newsTitle}}</view>
-					</view>
-				</view>
-			</view> -->
 			<view style="height:100upx;line-height: 100upx;text-align: center;opacity: 0.3; font-size: 24upx;color: #000000;">国务院办公厅主办</view>
 		</view>
 	</view>
@@ -93,7 +94,7 @@
 			} else {
 				_self.loginShow = false;
 				_self.indexShow = true;
-				_self.login();
+				// _self.login();
 			};
 			this.lightArticle();
 			if(!_self.token){
@@ -116,7 +117,14 @@
 				//首页
 				portraitImg: '',
 				light: [],
-				laws: [],
+				laws: [{
+						createDate:'23232',
+						newsTitle:'算的地方的烦烦烦士大夫发生发生发射点发生的发射点发射点发射点发生得上是'
+					},{
+						createDate:'23232',
+						newsTitle:'算得上是'
+					}
+				],
 				inventory:[]
 			}
 		},
@@ -141,7 +149,7 @@
 				uni.login({
 					provider: 'weixin',
 					success: function(loginRes) {
-						console.log(loginRes.code)
+						//console.log(loginRes.code)
 						_self.code = loginRes.code;
 						//非第一次授权获取用户信息
 						uni.getUserInfo({
@@ -154,11 +162,16 @@
 								_self.portraitImg = infoRes.userInfo.avatarUrl;
 								uni.setStorageSync('nickName', _self.nickName);
 								uni.setStorageSync('avatarUrl', _self.avatarUrl);
+								uni.showLoading({
+									title: '登录中...'
+								});
 								_self.$qyc.request(
 									"/f/mp/mplogin/getOpenId", {
 										code: _self.code
 									},
 									function(res) {
+										uni.hideLoading();
+										//console.log(res)
 										_self.loginShow = false;
 										_self.indexShow = true;
 										var obj = JSON.parse(res.data);
@@ -174,7 +187,7 @@
 					},
 				});
 			},
-			//首页
+			//首页监管动态
 			lightArticle: function() {
 				uni.showLoading({
 					title: '加载中...'
@@ -196,11 +209,11 @@
 					url: '/pages/my/my'
 				});
 			},
-			// gosuper: function() {
-			// 	uni.navigateTo({
-			// 		url: '/pages/supervisionInfoQuery/supervisionInfoQuery'
-			// 	});
-			// },
+			gosuper: function() {
+				uni.navigateTo({
+					url: '/pages/supervisionInfoQuery/supervisionInfoQuery'
+				});
+			},
 			// goregulatory: function(index) {
 			// 	uni.navigateTo({
 			// 		url: '/pages/regulatory/regulatory?index=' + index
@@ -273,7 +286,7 @@
 
 	.home-header {
 		width: 100%;
-		height: 310upx;
+		height: 230upx;
 		position: relative;
 	}
 
@@ -284,104 +297,54 @@
 
 	.internet-my {
 		position: absolute;
-		top: 40upx;
-		left: 30upx;
-		right: 30upx;
+		top: 67upx;
+		right: 34upx;
 		color: #fff;
 	}
-
-	.internet-my-title {
-		font-size: 36upx;
-		color: #FFFFFF;
-	}
-
+	
 	.internet-my-center {
 		display: flex;
 		align-items: center;
-		margin-top:30px;
 	}
 
 	.internet-my-center image {
-		width: 90upx;
-		height: 90upx;
+		width: 96upx;
+		height: 96upx;
 		border-radius: 50%;
 		margin-right: 10upx;
 		border: 6upx solid rgba(255, 255, 255, 0.4);
 	}
 
 	.internet-my-center text {
+		padding-right: 24upx;
 		font-size: 28upx;
 		color: #FFFFFF;
 	}
-
-	.home-menu {
-		position: relative;
-		margin-top:-66upx;
-	}
-	.home-menu-boxs{
-		background: rgba(255,255,255,0.9);
-		box-shadow: 0 4upx 68upx 0 rgba(9,63,127,0.25);
-		border-radius: 24upx;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		margin:0 32upx;
-		height:132upx;
-		position: relative;
-	}
-	.home-menu-boxs:after{
-		content: "";
-		position: absolute;
-		width:6upx;
-		height:80upx;
-		left:0;
-		top:26upx;
-		background: #44AAC8;
-		border-top-right-radius:6upx;
-		border-bottom-right-radius:6upx;
-	}
-	.home-menu-boxs:before{
-		content: "";
-		position: absolute;
-		width:6upx;
-		height:80upx;
-		right:0;
-		top:26upx;
-		background: #44AAC8;
-		border-top-left-radius:6upx;
-		border-bottom-left-radius:6upx;
-	}
-	.home-menu-boxs image{
-		width: 64upx;
-		height: 64upx;
-		margin-right: 6upx;
-	}
-	.home-menu-boxs text{
-		font-size:32upx;
-		color: #3691B7;
-		font-weight:bold;
-	}
 	.home-option{
-		margin-top:30upx;
+		margin:32upx;
 	}
-	.home-option .grace-items{
-		padding:0 30upx;
+	.home-option .grace-rows{
+		margin-bottom: 20upx;
+	}
+	.home-option .grace-rows:last-child{
+		margin-bottom: none;
+	}
+	.home-option .grace-items:nth-child(odd){
+		margin-right: 22upx;
 	}
 	.option-boxs{
 		position: relative;
+		width: 332upx;
 		height:186upx;
-		border-radius: 12upx;
+		background: #FFFFFF;
+		box-shadow: 0 2px 14px 0 rgba(9,63,127,0.10);
+		border-radius: 8px;
 		overflow: hidden;
-	}
-	.option-boxs .option-bg{
-		height:100%;
-		width:100%;
 	}
 	.option-btn{
 		position: absolute;
-		top:0;
+		top:30upx;
 		left:0;
-		height:100%;
 		width:100%;
 		text-align: center;
 	}
@@ -390,21 +353,17 @@
 		height: 64upx;
 		display:block;
 		margin:0 auto;
-		margin-top:36upx;
 	}
 	.option-btn text{
-		font-size: 30upx;
-		color: #FFFFFF;
+		display: inline-block;
+		font-size: 28upx;
+		color: #1D617E;
 		opacity: 0.8;
+		padding-top: 12upx;
 	}
-	.light {
-		box-shadow: 0 2upx 0 0 rgba(214, 214, 214, 0.50), 0 2upx 28upx 0 rgba(9, 63, 127, 0.05);
-		padding: 0 30upx;
-	}
-
 	.light .light-list {
 		border-bottom: 2upx solid rgba(214, 214, 214, 0.50);
-		padding: 20upx 0;
+		padding: 24upx 0;
 	}
 
 	.light .light-list:last-child {
@@ -429,11 +388,12 @@
 	.laws,
 	.department {
 		background: #fff;
-		margin-top: 30upx;
-		box-shadow: 0 1px 0 0 rgba(214, 214, 214, 0.50), 0 2px 14px 0 rgba(9, 63, 127, 0.05);
+		padding: 0 44px;
 	}
-
+	
 	.laws-header {
+		width: auto;
+		padding: 14upx 0;
 		border-bottom: 2upx solid rgba(214, 214, 214, 0.50);
 	}
 

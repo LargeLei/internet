@@ -1,29 +1,43 @@
 {
 	"pages": [
 		//pages数组中第一项表示应用启动页
-			
-		{
-			"path": "pages/index/index",
-			"style": {
-				"bounce": "none",
-				"navigationBarTitleText": "首页",
-				"app-plus": {
-                    "titleNView": false //禁用原生导航栏
-                }
-			}
-		},
-		{
-			"path": "pages/regulatory/regulatory",
-			"style": {
-				"navigationBarTitleText": "监管动态"
-			}
-		},
-		{
-			"path": "pages/republic/republic",
-			"style": {
-				"navigationBarTitleText": "监管公开"
-			}
-		},
+		
+		// {
+		// 	"path": "pages/supervisionInfo/supervisionInfo",
+		// 	"style": {
+		// 		"navigationBarTitleText": "监管信息详情"
+		// 	}
+		// },
+		// {
+		// 	"path": "pages/digest/digest",
+		// 	"style": {
+		// 		"navigationBarTitleText": "清单详情"
+		// 	}
+		// },
+		// {
+		// 	"path": "pages/complaintInfo/complaintInfo",
+		// 	"style": {
+		// 		"navigationBarTitleText": "填写投诉人信息"
+		// 	}
+		// },
+		// {
+		// 	"path": "pages/lighthouseDetail/lighthouseDetail",
+		// 	"style": {
+		// 		"navigationBarTitleText": "监管分析"
+		// 	}
+		// },
+		// {
+		// 	"path": "pages/regulatory/regulatory",
+		// 	"style": {
+		// 		"navigationBarTitleText": "监管动态"
+		// 	}
+		// },
+		// {
+		// 	"path": "pages/republic/republic",
+		// 	"style": {
+		// 		"navigationBarTitleText": "监管公开"
+		// 	}
+		// },
 		{
 			"path": "pages/itemList/itemList",
 			"style": {
@@ -31,9 +45,21 @@
 			}
 		},
 		{
-			"path": "pages/itemListDetail/itemListDetail",
+			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "事项清单详情"
+				"bounce": "none",
+				"navigationBarTitleText": "国家 “互联网+监管”系统",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"app-plus": {
+                    "titleNView": false //禁用原生导航栏
+                }
+			}
+		},
+		{
+			"path": "pages/supervisionInfoQuery/supervisionInfoQuery",
+			"style": {
+				"navigationBarTitleText": "监管信息查询"
 			}
 		},
 		{
@@ -43,15 +69,16 @@
 			}
 		},
 		{
-			"path": "pages/blogroll/blogroll",
+			"path": "pages/lawsDetail/lawsDetail",
 			"style": {
-				"navigationBarTitleText": "友情链接"
+				"navigationBarTitleText": "曝光台详情"
 			}
 		},
+		
 		{
-			"path": "pages/lighthouseDetail/lighthouseDetail",
+			"path": "pages/itemListDetail/itemListDetail",
 			"style": {
-				"navigationBarTitleText": "监管分析"
+				"navigationBarTitleText": "事项清单详情"
 			}
 		},
 		{
@@ -78,49 +105,14 @@
 				"navigationBarTitleText": "选择投诉对象"
 			}
 		},
-	
-		// {
-		// 	"path": "pages/complaintInfo/complaintInfo",
-		// 	"style": {
-		// 		"navigationBarTitleText": "填写投诉人信息"
-		// 	}
-		// },
 		{
 			"path": "pages/addServiceInfo/addServiceInfo",
 			"style": {
 				"navigationBarTitleText": "填写业务信息"
 			}
 		},
-		{
-			"path": "pages/digest/digest",
-			"style": {
-				"navigationBarTitleText": "清单详情"
-			}
-		},
-		{
-			"path": "pages/lawsList/lawsList",
-			"style": {
-				"navigationBarTitleText": "法律法规列表"
-			}
-		},
-		{
-			"path": "pages/lawsDetail/lawsDetail",
-			"style": {
-				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "pages/supervisionInfoQuery/supervisionInfoQuery",
-			"style": {
-				"navigationBarTitleText": "监管信息查询"
-			}
-		},
-		{
-			"path": "pages/supervisionInfo/supervisionInfo",
-			"style": {
-				"navigationBarTitleText": "监管信息详情"
-			}
-		},
+		
+		
 		{
 			"path": "pages/my/my",
 			"style": {
@@ -180,7 +172,20 @@
 			"style": {
 				"navigationBarTitleText": "我的收藏"
 			}
+		},
+		{
+			"path": "pages/blogroll/blogroll",
+			"style": {
+				"navigationBarTitleText": "友情链接"
+			}
+		},
+		{
+			"path": "pages/lawsList/lawsList",
+			"style": {
+				"navigationBarTitleText": "法律法规列表"
+			}
 		}
+		
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",

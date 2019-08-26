@@ -1,5 +1,10 @@
 <template>
 	<view class="grace-padding">
+		<view class="bm-df" v-for="(item,index) in bmSxStyle" :key='index' v-if="bmSxType == item.type">
+			<view class="list" :style="{'color':item.bmColor,'border-bottom':item.bmBorderBottom}">部门事项</view>
+			
+			<view class="list">地方事项</view>
+		</view>
 		<view class="grace-cate">
 			<scroll-view class="grace-cate-left" scroll-y="true">
 				<view v-for="(item, index) in mainCate" :id="index" :data-departmentCode='item.code' :key="index" :class="[currentCateIndex == index ? 'current' : '']"
@@ -35,6 +40,21 @@
 		
 		data() {
 			return {
+				
+				bmSxType:1,
+				bmSxStyle:[{
+					type:1,
+					bmColor:'#3691B7',
+					sxColor:'#000',
+					bmBorderBottom:'1px solid #3691B7',
+					sxBorderBottom:'none',
+				},{
+					type:2,
+					bmColor:'#000',
+					sxColor:'#3691B7',
+					bmBorderBottom:'none',
+					sxBorderBottom:'1px solid #3691B7',
+				}],
 				currentCateIndex: 0,
 				//tabID
 				departmentCode:'00000011',
@@ -207,7 +227,7 @@
 	}
 </script>
 
-<style>
+<style lang="less">
 	::-webkit-scrollbar {
 		width: 0;
 		height: 0;
@@ -233,12 +253,22 @@
 		padding: 0;
 		width: 100%;
 	}
-
-	.grace-cate {
-		height: 98.5%;
-		top: 1.5%;
+	
+	.bm-df{
+		display: -webkit-box;
+		background: #fff;
+		text-align: center;
+		.list{
+			-webkit-box-flex:1;
+			 padding: 24upx 0
+		}
 	}
-
+	
+	.grace-cate {
+		height: 92%;
+		top: 102upx;
+	}
+	
 	.grace-cate-left view {
 		opacity: 0.5;
 		font-size: 30upx;

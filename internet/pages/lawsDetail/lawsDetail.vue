@@ -33,9 +33,9 @@
 			}
 			this.getArticle();
 			this.getColect();
-			uni.setNavigationBarTitle({
-　				title:"曝光台详情"
-			})
+// 			uni.setNavigationBarTitle({
+// 　				title:"曝光台详情"
+// 			})
 		},
 		data() {
 			return {
